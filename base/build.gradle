@@ -35,6 +35,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile project(':bmob')
+    compile project(':amap')
 
     /* Android support library */
     compile "com.android.support.constraint:constraint-layout:$rootProject.ext.constraint_layout" //

@@ -21,6 +21,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'assets/*'
+        exclude 'META-INF/*'
+    }
 }
 
 dependencies {
@@ -30,5 +34,6 @@ dependencies {
     })
 
     compile project(':base')
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
 }
