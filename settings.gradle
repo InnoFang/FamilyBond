@@ -1,1 +1,1 @@
-include ':app', ':children', ':parents', ':base', ':amap', ':bmob', ':xfyun'
+include ':app', ':children', ':parents', ':base', ':amap', ':bmob', ':xfyun', ':test'
