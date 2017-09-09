@@ -33,6 +33,9 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
+
+    compile project(':bmob')
+
     /* Android support library */
     compile "com.android.support.constraint:constraint-layout:$rootProject.ext.constraint_layout" //
     compile "com.android.support:appcompat-v7:$rootProject.ext.supportVersion"                    //
