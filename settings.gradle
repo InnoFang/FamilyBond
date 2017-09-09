@@ -1,0 +1,1 @@
+include ':app', ':children', ':parents', ':base', ':amap', ':bmob', ':xfyun'

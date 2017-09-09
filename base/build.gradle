@@ -1,0 +1,56 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ moduleName : project.getName() ]
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile 'junit:junit:4.12'
+    /* Android support library */
+    compile "com.android.support.constraint:constraint-layout:$rootProject.ext.constraint_layout" //
+    compile "com.android.support:appcompat-v7:$rootProject.ext.supportVersion"                    //
+    compile "com.android.support:design:$rootProject.ext.supportVersion"                          //
+    compile "com.android.support:recyclerview-v7:$rootProject.ext.supportVersion"                 //
+    compile "com.android.support:cardview-v7:$rootProject.ext.supportVersion"                     //
+    /* Gson */
+    compile "com.google.code.gson:gson:$rootProject.ext.gson"                                     //
+    /* Glide */
+    compile "com.github.bumptech.glide:glide:$rootProject.ext.glide"                              //
+    /* RxJava2 */
+    compile "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxjava2"                                //
+    compile "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxandroid"                           //
+    /* EventBus */
+    compile "org.greenrobot:eventbus:$rootProject.ext.eventbus"                                   //
+    /* ARouter */
+    compile "com.alibaba:arouter-api:$rootProject.ext.arouter_api"                                //
+    annotationProcessor "com.alibaba:arouter-compiler:$rootProject.ext.arouter_comiler"           //
+    /* Kotlin */
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"                                  //
+}
