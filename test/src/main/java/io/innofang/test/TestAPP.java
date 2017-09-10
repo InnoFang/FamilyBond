@@ -1,38 +1,31 @@
-package io.innofang.bmob;
+package io.innofang.test;
 
-import android.content.Context;
+import android.app.Application;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
-import cn.bmob.newim.BmobIM;
-import cn.bmob.newim.listener.BmobIMMessageHandler;
-import cn.bmob.v3.Bmob;
+import io.innofang.bmob.BmobAPI;
+import io.innofang.test.IM.DemoMessageHandler;
 
 /**
  * Author: Inno Fang
- * Time: 2017/9/9 15:29
+ * Time: 2017/9/10 16:05
  * Description:
  */
 
 
-public class BmobAPI{
-
-    public static void init(Context context, BmobIMMessageHandler handler) {
-        Bmob.initialize(context, "6e93f68a2c1522791bb39accfe44237d");
-
-        /* 集成：初始化IM SDK，并注册消息接收器，只有主进程运行的时候才需要初始化 */
-        if (context.getApplicationInfo().packageName.equals(getMyProcessName())) {
-            BmobIM.init(context);
-            BmobIM.registerDefaultMessageHandler(handler);
-        }
-
+public class TestAPP extends Application {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        //TODO 集成：1.8、初始化IM SDK，并注册消息接收器
+        BmobAPI.init(this, new DemoMessageHandler(this));
     }
 
     /**
      * 获取当前运行的进程名
-     *
      * @return
      */
     public static String getMyProcessName() {
@@ -47,5 +40,4 @@ public class BmobAPI{
             return null;
         }
     }
-
 }
