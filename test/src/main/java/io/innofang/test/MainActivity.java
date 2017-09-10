@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import io.innofang.test.card.CardActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -17,6 +19,12 @@ public class MainActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.amap_button:
                 startActivity(new Intent(this, AMapActivity.class));
+                break;
+            case R.id.gallery_button:
+                startActivity(new Intent(this, GalleryActivity.class));
+                break;
+            case R.id.card_button:
+                startActivity(new Intent(this, CardActivity.class));
                 break;
         }
     }

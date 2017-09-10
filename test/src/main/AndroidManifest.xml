@@ -18,6 +18,10 @@
         </activity>
         <activity android:name=".AMapActivity">
         </activity>
+        <activity android:name=".GalleryActivity">
+        </activity>
+        <activity android:name=".card.CardActivity">
+        </activity>
     </application>
 
 </manifest>
