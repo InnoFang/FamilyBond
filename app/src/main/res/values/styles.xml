@@ -8,4 +8,31 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="LoginTextInputLayoutStyle">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:paddingEnd">30dp</item>
+        <item name="android:paddingStart">50dp</item>
+        <item name="android:textColorHint">@color/LoginTextInputLayoutHint</item>
+    </style>
+    <style name="RegisterTextInputLayoutStyle">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:paddingEnd">30dp</item>
+        <item name="android:paddingStart">50dp</item>
+        <item name="android:textColorHint">@color/RegisterTextInputLayoutHint</item>
+    </style>
+
+    <style name="LoginEditTextStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:background">@drawable/bg_login_edit_text_selector</item>
+        <item name="android:paddingBottom">2dp</item>
+    </style>
+
+    <style name="RegisterEditTextStyle">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/bg_register_edit_text_selector</item>
+        <item name="android:paddingBottom">2dp</item>
+    </style>
+
 </resources>
