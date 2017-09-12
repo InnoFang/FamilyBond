@@ -49,11 +49,11 @@ public class RegisterActivity extends BaseActivity {
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ShowEnterAnimation();
+            showEnterAnimation();
         }
     }
 
-    private void ShowEnterAnimation() {
+    private void showEnterAnimation() {
         Transition transition = TransitionInflater.from(this).inflateTransition(R.transition.fabtransition);
         getWindow().setSharedElementEnterTransition(transition);
 
@@ -89,7 +89,9 @@ public class RegisterActivity extends BaseActivity {
     }
 
     public void animateRevealShow() {
-        Animator mAnimator = ViewAnimationUtils.createCircularReveal(mRegisterCardView, mRegisterCardView.getWidth() / 2, 0, mSwitchFab.getWidth() / 2, mRegisterCardView.getHeight());
+        Animator mAnimator = ViewAnimationUtils.createCircularReveal(
+                mRegisterCardView, mRegisterCardView.getWidth() / 2, 0,
+                mSwitchFab.getWidth() / 2, mRegisterCardView.getHeight());
         mAnimator.setDuration(500);
         mAnimator.setInterpolator(new AccelerateInterpolator());
         mAnimator.addListener(new AnimatorListenerAdapter() {
@@ -108,7 +110,9 @@ public class RegisterActivity extends BaseActivity {
     }
 
     public void animateRevealClose() {
-        Animator mAnimator = ViewAnimationUtils.createCircularReveal(mRegisterCardView, mRegisterCardView.getWidth() / 2, 0, mRegisterCardView.getHeight(), mSwitchFab.getWidth() / 2);
+        Animator mAnimator = ViewAnimationUtils.createCircularReveal(
+                mRegisterCardView, mRegisterCardView.getWidth() / 2, 0,
+                mRegisterCardView.getHeight(), mSwitchFab.getWidth() / 2);
         mAnimator.setDuration(500);
         mAnimator.setInterpolator(new AccelerateInterpolator());
         mAnimator.addListener(new AnimatorListenerAdapter() {
