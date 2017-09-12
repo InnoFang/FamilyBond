@@ -9,12 +9,14 @@ import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.innofang.base.base.BaseActivity;
+import io.innofang.base.util.CircularAnimUtils;
 import io.innofang.protectplus.R;
 
 public class LoginActivity extends BaseActivity {
@@ -31,6 +33,8 @@ public class LoginActivity extends BaseActivity {
     CardView mLoginCardView;
     @BindView(R.id.switch_fab)
     FloatingActionButton mSwitchFab;
+    @BindView(R.id.login_in_progress_bar)
+    ProgressBar mLoginInProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,8 @@ public class LoginActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.login_button:
                 toast(R.string.login_success);
+                mLoginInProgressBar.setVisibility(View.VISIBLE);
+                CircularAnimUtils.hide(mLoginButton);
                 break;
             case R.id.forget_password_text_view:
                 break;
@@ -59,6 +65,16 @@ public class LoginActivity extends BaseActivity {
                     startActivity(new Intent(this, RegisterActivity.class));
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mLoginInProgressBar.getVisibility() == View.VISIBLE) {
+            mLoginInProgressBar.setVisibility(View.GONE);
+            CircularAnimUtils.show(mLoginButton);
+        } else {
+            super.onBackPressed();
         }
     }
 }

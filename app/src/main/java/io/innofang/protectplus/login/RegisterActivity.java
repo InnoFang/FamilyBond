@@ -14,6 +14,7 @@ import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +43,9 @@ public class RegisterActivity extends BaseActivity {
     CardView mRegisterCardView;
     @BindView(R.id.switch_fab)
     FloatingActionButton mSwitchFab;
+    @BindView(R.id.register_progress_bar)
+    ProgressBar mRegisterProgressBar;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

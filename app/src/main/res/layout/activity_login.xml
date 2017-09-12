@@ -76,15 +76,29 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/login_button"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:background="@drawable/bg_login_button"
-                android:stateListAnimator="@drawable/state_list_animator_z"
-                android:text="@string/login"
-                android:textColor="#d3d3d3"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ProgressBar
+                    android:id="@+id/login_in_progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"/>
+
+                <Button
+                    android:id="@+id/login_button"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_login_button"
+                    android:stateListAnimator="@drawable/state_list_animator_z"
+                    android:text="@string/login"
+                    android:textColor="#d3d3d3"/>
+            </FrameLayout>
+
 
             <TextView
                 android:id="@+id/forget_password_text_view"
