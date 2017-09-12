@@ -1,17 +1,12 @@
 package io.innofang.base.base;
 
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import org.greenrobot.eventbus.EventBus;
-
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import io.innofang.base.util.ActivityCollector;
 import io.innofang.base.util.RequestPermissions;
 
@@ -27,7 +22,7 @@ public class BaseActivity extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST_CODE = 1;
 
-    private Unbinder unbinder = null;
+//    private Unbinder unbinder = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,30 +30,30 @@ public class BaseActivity extends AppCompatActivity {
         ActivityCollector.addActivity(this);
     }
 
-    @Override
-    public void setContentView(@LayoutRes int layoutResID) {
-        super.setContentView(layoutResID);
-        unbinder = ButterKnife.bind(this);
-    }
+//    @Override
+//    public void setContentView(@LayoutRes int layoutResID) {
+//        super.setContentView(layoutResID);
+//        unbinder = ButterKnife.bind(this);
+//    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        EventBus.getDefault().register(this);
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        EventBus.getDefault().unregister(this);
+//        super.onStop();
+//    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (null != unbinder) {
-            unbinder.unbind();
-        }
+//        if (null != unbinder) {
+//            unbinder.unbind();
+//        }
         ActivityCollector.removeActivty(this);
     }
 

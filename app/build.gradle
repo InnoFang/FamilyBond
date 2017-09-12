@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -26,6 +27,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'assets/*'
+        exclude 'META-INF/*'
+    }
 }
 
 dependencies {
@@ -37,6 +42,6 @@ dependencies {
         compile project(':parents')
         compile project(':children')
     }
-
-    annotationProcessor "com.alibaba:arouter-compiler:$rootProject.ext.arouter_comiler"
+    annotationProcessor 'com.jakewharton:butterknife-compiler:' + rootProject.butter_knife   //
+    annotationProcessor 'com.alibaba:arouter-compiler:' + rootProject.ext.arouter_comiler    //
 }
