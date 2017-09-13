@@ -1,4 +1,4 @@
-package io.innofang.base.util;
+package io.innofang.base.util.common;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

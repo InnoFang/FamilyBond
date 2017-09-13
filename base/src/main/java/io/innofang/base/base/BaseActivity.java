@@ -7,8 +7,8 @@ import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import io.innofang.base.util.ActivityCollector;
-import io.innofang.base.util.RequestPermissions;
+import io.innofang.base.util.common.ActivityCollector;
+import io.innofang.base.util.common.RequestPermissions;
 
 /**
  * Author: Inno Fang

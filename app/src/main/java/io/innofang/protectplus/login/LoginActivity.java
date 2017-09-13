@@ -1,8 +1,5 @@
 package io.innofang.protectplus.login;
 
-import android.app.ActivityOptions;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
@@ -16,10 +13,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.innofang.base.base.BaseActivity;
-import io.innofang.base.util.CircularAnimUtils;
+import io.innofang.base.util.common.CircularAnimUtils;
 import io.innofang.protectplus.R;
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @BindView(R.id.login_username_edit_text)
     EditText mLoginUsernameEditText;
@@ -36,11 +33,15 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.login_in_progress_bar)
     ProgressBar mLoginInProgressBar;
 
+
+    private LoginContract.Presenter mPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        mPresenter = new LoginPresenter(this);
     }
 
     @OnClick({R.id.login_button, R.id.forget_password_text_view, R.id.switch_fab})
@@ -54,16 +55,7 @@ public class LoginActivity extends BaseActivity {
             case R.id.forget_password_text_view:
                 break;
             case R.id.switch_fab:
-                getWindow().setExitTransition(null);
-                getWindow().setEnterTransition(null);
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    ActivityOptions options =
-                            ActivityOptions.makeSceneTransitionAnimation(this, mSwitchFab, mSwitchFab.getTransitionName());
-                    startActivity(new Intent(this, RegisterActivity.class), options.toBundle());
-                } else {
-                    startActivity(new Intent(this, RegisterActivity.class));
-                }
+                mPresenter.switchToRegister(this, mSwitchFab);
                 break;
         }
     }
@@ -76,5 +68,10 @@ public class LoginActivity extends BaseActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void setPresenter(LoginContract.Presenter presenter) {
+        mPresenter = presenter;
     }
 }
