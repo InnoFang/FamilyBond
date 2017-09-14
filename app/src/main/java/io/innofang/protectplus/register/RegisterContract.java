@@ -1,12 +1,11 @@
 package io.innofang.protectplus.register;
 
-import android.app.Activity;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
 
 import io.innofang.base.base.BasePresenter;
 import io.innofang.base.base.BaseView;
-import io.innofang.base.bean.User;
+import io.innofang.base.bean.Client;
 
 /**
  * Author: Inno Fang
@@ -18,16 +17,22 @@ import io.innofang.base.bean.User;
 public class RegisterContract {
 
     interface View extends BaseView<Presenter> {
+        void showInfo(String text);
 
+        void beforeRegister();
+
+        void registerSuccessful();
+
+        void registerFailed(String text);
     }
 
     interface Presenter extends BasePresenter {
-        void showEnterAnimation(Activity activity, CardView cardView, FloatingActionButton fab);
+        void showEnterAnimation(CardView cardView, FloatingActionButton fab);
 
         void animateRevealShow(CardView cardView, FloatingActionButton fab);
 
-        void animateRevealClose(Activity activity, CardView cardView, FloatingActionButton fab);
+        void animateRevealClose(CardView cardView, FloatingActionButton fab);
 
-        void register(User user);
+        void register(String username, String password, String repeatPassword, Client client);
     }
 }

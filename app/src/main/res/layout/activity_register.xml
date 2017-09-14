@@ -15,7 +15,7 @@
         <android.support.v7.widget.CardView
             android:id="@+id/register_card_view"
             android:layout_width="match_parent"
-            android:layout_height="320dp"
+            android:layout_height="330dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             app:cardBackgroundColor="@color/colorAccent"
@@ -90,6 +90,32 @@
 
                 </android.support.design.widget.TextInputLayout>
 
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatRadioButton
+                        android:id="@+id/children_client_radio_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:text="@string/children"
+                        android:textColor="@android:color/white"
+                        app:buttonTint="@android:color/white"/>
+
+                    <android.support.v7.widget.AppCompatRadioButton
+                        android:id="@+id/parents_client_radio_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/parents"
+                        android:textColor="@android:color/white"
+                        app:buttonTint="@android:color/white"/>
+
+                </RadioGroup>
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -107,7 +133,7 @@
                         android:layout_width="150dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/bg_register_button"
                         android:stateListAnimator="@drawable/state_list_animator_z"
                         android:text="@string/next"

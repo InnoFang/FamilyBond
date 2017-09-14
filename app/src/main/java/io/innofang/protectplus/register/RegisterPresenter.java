@@ -5,13 +5,18 @@ import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateInterpolator;
 
+import cn.bmob.v3.exception.BmobException;
+import io.innofang.base.bean.Client;
 import io.innofang.base.bean.User;
+import io.innofang.base.util.bmob.BmobEvent;
+import io.innofang.base.util.bmob.BmobUtil;
 import io.innofang.protectplus.R;
 
 /**
@@ -24,9 +29,11 @@ import io.innofang.protectplus.R;
 public class RegisterPresenter implements RegisterContract.Presenter {
 
     private RegisterContract.View mView;
+    private Activity mActivity;
 
-    public RegisterPresenter(RegisterContract.View view) {
+    public RegisterPresenter(RegisterContract.View view, Activity activity) {
         mView = view;
+        mActivity = activity;
         mView.setPresenter(this);
     }
 
@@ -41,14 +48,44 @@ public class RegisterPresenter implements RegisterContract.Presenter {
     }
 
     @Override
-    public void register(User user) {
+    public void register(final String username, final String password, final String repeatPassword, Client client) {
+        final User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setClient(client);
+        BmobUtil.register(user, new BmobEvent.onRegisterListener() {
+            @Override
+            public boolean beforeRegister() {
+                if (!TextUtils.isEmpty(username)
+                        && !TextUtils.isEmpty(password)
+                        && !TextUtils.isEmpty(repeatPassword)) {
+                    if (password.equals(repeatPassword)) {
+                        mView.beforeRegister();
+                        return true;
+                    }
+                    mView.showInfo(mActivity.getString(R.string.username_or_password_cannot_be_empty));
+                    return false;
+                }
+                mView.showInfo(mActivity.getString(R.string.password_mismatch));
+                return false;
+            }
 
+            @Override
+            public void registerSuccessful(User user) {
+                mView.registerSuccessful();
+            }
+
+            @Override
+            public void registerFailed(BmobException e) {
+                mView.registerFailed(e.getMessage());
+            }
+        });
     }
 
     @Override
-    public void showEnterAnimation(Activity activity, final CardView cardView, final FloatingActionButton fab) {
-        Transition transition = TransitionInflater.from(activity).inflateTransition(R.transition.fabtransition);
-        activity.getWindow().setSharedElementEnterTransition(transition);
+    public void showEnterAnimation(final CardView cardView, final FloatingActionButton fab) {
+        Transition transition = TransitionInflater.from(mActivity).inflateTransition(R.transition.fabtransition);
+        mActivity.getWindow().setSharedElementEnterTransition(transition);
 
         transition.addListener(new Transition.TransitionListener() {
             @Override
@@ -86,7 +123,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
         Animator mAnimator = ViewAnimationUtils.createCircularReveal(
                 cardView, cardView.getWidth() / 2, 0,
                 fab.getWidth() / 2, cardView.getHeight());
-        mAnimator.setDuration(500);
+        mAnimator.setDuration(300);
         mAnimator.setInterpolator(new AccelerateInterpolator());
         mAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -104,11 +141,11 @@ public class RegisterPresenter implements RegisterContract.Presenter {
     }
 
     @Override
-    public void animateRevealClose(final Activity activity, final CardView cardView, final FloatingActionButton fab) {
+    public void animateRevealClose(final CardView cardView, final FloatingActionButton fab) {
         Animator mAnimator = ViewAnimationUtils.createCircularReveal(
                 cardView, cardView.getWidth() / 2, 0,
                 cardView.getHeight(), fab.getWidth() / 2);
-        mAnimator.setDuration(500);
+        mAnimator.setDuration(300);
         mAnimator.setInterpolator(new AccelerateInterpolator());
         mAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -116,7 +153,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                 cardView.setVisibility(View.INVISIBLE);
                 super.onAnimationEnd(animation);
                 fab.setImageResource(R.drawable.ic_login);
-                activity.onBackPressed();
+                mActivity.onBackPressed();
             }
 
             @Override

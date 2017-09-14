@@ -2,6 +2,7 @@ package io.innofang.protectplus.login;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.Button;
@@ -41,33 +42,48 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        mPresenter = new LoginPresenter(this);
+        mPresenter = new LoginPresenter(this, this);
     }
 
     @OnClick({R.id.login_button, R.id.forget_password_text_view, R.id.switch_fab})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.login_button:
-                toast(R.string.login_success);
-                mLoginInProgressBar.setVisibility(View.VISIBLE);
-                CircularAnimUtils.hide(mLoginButton);
+                mPresenter.login(
+                        mLoginUsernameEditText.getText().toString().trim(),
+                        mLoginPasswordEditText.getText().toString().trim()
+                );
                 break;
             case R.id.forget_password_text_view:
+                toast(R.string.forgot_password);
                 break;
             case R.id.switch_fab:
-                mPresenter.switchToRegister(this, mSwitchFab);
+                mPresenter.switchToRegister(mSwitchFab);
                 break;
         }
     }
 
     @Override
-    public void onBackPressed() {
-        if (mLoginInProgressBar.getVisibility() == View.VISIBLE) {
-            mLoginInProgressBar.setVisibility(View.GONE);
-            CircularAnimUtils.show(mLoginButton);
-        } else {
-            super.onBackPressed();
-        }
+    public void showInfo(String text) {
+        Snackbar.make(mLoginCardView, text, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void beforeLogin() {
+        mLoginInProgressBar.setVisibility(View.VISIBLE);
+        CircularAnimUtils.hide(mLoginButton);
+    }
+
+    @Override
+    public void loginSuccessful() {
+        toast(R.string.login_successful);
+    }
+
+    @Override
+    public void loginFailed(String text) {
+        showInfo(text);
+        mLoginInProgressBar.setVisibility(View.GONE);
+        CircularAnimUtils.show(mLoginButton);
     }
 
     @Override

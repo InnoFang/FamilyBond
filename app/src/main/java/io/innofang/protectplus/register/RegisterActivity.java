@@ -4,6 +4,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +16,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.innofang.base.base.BaseActivity;
+import io.innofang.base.bean.Client;
+import io.innofang.base.util.common.CircularAnimUtils;
 import io.innofang.protectplus.R;
 
 /**
@@ -39,6 +43,10 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
     FloatingActionButton mSwitchFab;
     @BindView(R.id.register_progress_bar)
     ProgressBar mRegisterProgressBar;
+    @BindView(R.id.children_client_radio_button)
+    AppCompatRadioButton mChildrenClientRadioButton;
+    @BindView(R.id.parents_client_radio_button)
+    AppCompatRadioButton mParentsClientRadioButton;
 
     private RegisterContract.Presenter mPresenter;
 
@@ -47,28 +55,57 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
-        mPresenter = new RegisterPresenter(this);
+        mPresenter = new RegisterPresenter(this, this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mPresenter.showEnterAnimation(this, mRegisterCardView, mSwitchFab);
+            mPresenter.showEnterAnimation(mRegisterCardView, mSwitchFab);
         }
     }
 
     @Override
     public void onBackPressed() {
-        mPresenter.animateRevealClose(this, mRegisterCardView, mSwitchFab);
+        mPresenter.animateRevealClose(mRegisterCardView, mSwitchFab);
     }
 
     @OnClick({R.id.next_button, R.id.switch_fab})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.next_button:
-                mPresenter.animateRevealClose(this, mRegisterCardView, mSwitchFab);
+                mPresenter.register(
+                        mRegisterUsernameEditText.getText().toString().trim(),
+                        mRegisterPasswordEditText.getText().toString().trim(),
+                        mRegisterRepeatPasswordEditText.getText().toString().trim(),
+                        mChildrenClientRadioButton.isChecked() ? Client.CHILDREN : Client.PARENTS
+                );
                 toast(R.string.register_success);
                 break;
             case R.id.switch_fab:
-                mPresenter.animateRevealClose(this, mRegisterCardView, mSwitchFab);
+                mPresenter.animateRevealClose(mRegisterCardView, mSwitchFab);
                 break;
         }
+    }
+
+    @Override
+    public void showInfo(String text) {
+        Snackbar.make(mRegisterCardView, text, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void beforeRegister() {
+        mRegisterProgressBar.setVisibility(View.VISIBLE);
+        CircularAnimUtils.hide(mNextButton);
+    }
+
+    @Override
+    public void registerSuccessful() {
+        toast(R.string.register_success);
+        finish();
+    }
+
+    @Override
+    public void registerFailed(String text) {
+        showInfo(text);
+        mRegisterProgressBar.setVisibility(View.GONE);
+        CircularAnimUtils.show(mNextButton);
     }
 
     @Override

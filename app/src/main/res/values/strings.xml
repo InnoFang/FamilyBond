@@ -4,10 +4,14 @@
     <string name="login">登录</string>
     <string name="username">用户名</string>
     <string name="password">密码</string>
-    <string name="forgot_password">忘记密码？</string>
+    <string name="forgot_password">忘记密码</string>
     <string name="register">注册</string>
     <string name="repeat_password">重复密码</string>
     <string name="next">下一步</string>
-    <string name="login_success">登录成功</string>
+    <string name="login_successful">登录成功</string>
     <string name="register_success">注册成功</string>
+    <string name="username_or_password_cannot_be_empty">用户名和密码不能空</string>
+    <string name="password_mismatch">两次密码不匹配，请重新输入</string>
+    <string name="children">子女</string>
+    <string name="parents">父母</string>
 </resources>

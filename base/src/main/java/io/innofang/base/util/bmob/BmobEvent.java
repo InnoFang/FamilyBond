@@ -12,7 +12,7 @@ import io.innofang.base.bean.User;
 
 public class BmobEvent {
 
-    interface onLoginListener {
+     public interface onLoginListener {
         boolean beforeLogin();
 
         void loginSuccessful(User user);
@@ -20,7 +20,7 @@ public class BmobEvent {
         void loginFailed(BmobException e);
     }
 
-    interface onRegisterListener {
+    public interface onRegisterListener {
         boolean beforeRegister();
 
         void registerSuccessful(User user);
