@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/item_sms"
+        android:icon="@drawable/ic_sms"
+        android:title="@string/sms"/>
+
+    <item
+        android:id="@+id/item_medically_exam"
+        android:icon="@drawable/ic_medically_exam"
+        android:title="@string/medically_exam"/>
+
+    <item
+        android:id="@+id/item_home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/home"/>
+
+    <item
+        android:id="@+id/item_communication"
+        android:icon="@drawable/ic_communication"
+        android:title="@string/communication"/>
+
+    <item
+        android:id="@+id/item_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/settings"/>
+</menu>

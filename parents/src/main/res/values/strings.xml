@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Parents</string>
+    <string name="medically_exam">体检</string>
+    <string name="sms">短信</string>
+    <string name="communication">交流</string>
+    <string name="home">主页</string>
+    <string name="memorandum">备忘录</string>
+    <string name="settings">设置</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
