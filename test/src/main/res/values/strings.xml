@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Test</string>
-    <string name="title_1">Cool card</string>
-    <string name="title_2">Ok card</string>
+    <string name="card_one">语音提醒</string>
+    <string name="card_two">Ok card</string>
     <string name="title_3">Bad card</string>
     <string name="title_4">Ugly card</string>
 

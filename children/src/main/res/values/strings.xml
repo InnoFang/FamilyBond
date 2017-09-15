@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Children</string>
+    <string name="card_voice_reminder">语音提醒</string>
+    <string name="card_medically_exam">手机体检</string>
+    <string name="card_communication">亲子交流</string>
+    <string name="card_settings">常用设置</string>
+
+    <string name="text_1">这是一个功能，只是还没完成</string>
 </resources>

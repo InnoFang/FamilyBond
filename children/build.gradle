@@ -5,6 +5,7 @@ if (IsDebug.toBoolean()) {
 }
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -44,7 +45,13 @@ android {
                 manifest.srcFile 'src/main/release/AndroidManifest.xml'
             }
         }
-        resourcePrefix "ch_"
+    }
+
+    if (IsDebug.toBoolean()) {
+        packagingOptions {
+            exclude 'assets/*'
+            exclude 'META-INF/*'
+        }
     }
 }
 
@@ -56,6 +63,7 @@ dependencies {
 
     compile project(':base')
 
-    annotationProcessor "com.alibaba:arouter-compiler:$rootProject.ext.arouter_comiler"
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    annotationProcessor 'com.jakewharton:butterknife-compiler:' + rootProject.butter_knife      //
+    annotationProcessor "com.alibaba:arouter-compiler:$rootProject.ext.arouter_comiler"         //
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"                                //
 }

@@ -1,17 +1,19 @@
-package io.innofang.test.card;
+package io.innofang.children;
 
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.innofang.base.widget.card_view_pager.CardAdapter;
-import io.innofang.test.R;
 
 /**
  * Author: Inno Fang
@@ -78,10 +80,12 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
     }
 
     private void bind(CardItem item, View view) {
-        TextView titleTextView = (TextView) view.findViewById(R.id.titleTextView);
-        TextView contentTextView = (TextView) view.findViewById(R.id.contentTextView);
+        TextView titleTextView = (TextView) view.findViewById(R.id.option_text_view);
+        ImageView contentImageView = (ImageView) view.findViewById(R.id.option_image_view);
         titleTextView.setText(item.getTitle());
-        contentTextView.setText(item.getText());
+        Glide.with(view.getContext())
+                .load(item.getImageRes())
+                .into(contentImageView);
     }
 
 }

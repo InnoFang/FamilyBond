@@ -34,8 +34,8 @@ public class CardActivity extends AppCompatActivity implements
         ((CheckBox) findViewById(R.id.checkBox)).setOnCheckedChangeListener(this);
 
         mCardAdapter = new CardPagerAdapter();
-        mCardAdapter.addCardItem(new CardItem(R.string.title_1, R.string.text_1));
-        mCardAdapter.addCardItem(new CardItem(R.string.title_2, R.string.text_1));
+        mCardAdapter.addCardItem(new CardItem(R.string.card_one, R.string.text_1));
+        mCardAdapter.addCardItem(new CardItem(R.string.card_two, R.string.text_1));
         mCardAdapter.addCardItem(new CardItem(R.string.title_3, R.string.text_1));
         mCardAdapter.addCardItem(new CardItem(R.string.title_4, R.string.text_1));
 

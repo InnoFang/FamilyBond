@@ -10,7 +10,6 @@
       <module fileurl="file://$PROJECT_DIR$/children/children.iml" filepath="$PROJECT_DIR$/children/children.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/parents/parents.iml" filepath="$PROJECT_DIR$/parents/parents.iml" />
-      <module fileurl="file://$PROJECT_DIR$/test/test.iml" filepath="$PROJECT_DIR$/test/test.iml" />
       <module fileurl="file://$PROJECT_DIR$/xfyun/xfyun.iml" filepath="$PROJECT_DIR$/xfyun/xfyun.iml" />
     </modules>
   </component>
