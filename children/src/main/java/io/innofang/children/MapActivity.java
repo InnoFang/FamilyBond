@@ -1,9 +1,11 @@
 package io.innofang.children;
 
 import android.Manifest;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -11,6 +13,7 @@ import android.support.v7.widget.AppCompatImageButton;
 import android.util.Log;
 import android.view.View;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -42,7 +45,7 @@ import io.innofang.children.option.OptionActivity;
  * Description:
  */
 
-
+@Route(path = "/children/1")
 public class MapActivity extends BaseActivity implements AMapLocationListener, LocationSource {
 
     @BindView(R.id.map)
@@ -197,11 +200,13 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
                 checkLocationPermission();
                 break;
             case R.id.option_fab:
-//                final View content = findViewById(android.R.id.content).getRootView();
-//                Bitmap image = BlurBuilder.blur(content);
-                Intent intent = new Intent(this, OptionActivity.class);
-//                intent.putExtra("blur", image);
-                startActivity(intent);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    ActivityOptions options =
+                            ActivityOptions.makeSceneTransitionAnimation(this, mOptionFab, mOptionFab.getTransitionName());
+                    startActivity(new Intent(this, OptionActivity.class), options.toBundle());
+                } else {
+                    startActivity(new Intent(this, OptionActivity.class));
+                }
                 break;
         }
     }
@@ -244,6 +249,8 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
             mSensorHelper.registerSensorListener();
         }
     }
+
+
 
     @Override
     protected void onPause() {

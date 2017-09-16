@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Children</string>
-    <string name="card_voice_reminder">语音提醒</string>
+    <string name="voice_reminder">语音提醒</string>
     <string name="card_medically_exam">手机体检</string>
     <string name="card_communication">亲子交流</string>
     <string name="card_settings">常用设置</string>
@@ -14,6 +14,9 @@
     <string name="storage_description_why_we_need_the_permission">你好,地图缓存需要存储权限。你能允许吗?</string>
     <string name="location_description_title">你能允许定位权限吗?</string>
     <string name="location_description_why_we_need_the_permission">你好,定位功能需要获取位置权限。你能允许吗?</string>
+    <string name="option">option</string>
+    <string name="hint_type_the_message">输入文字提醒</string>
+    <string name="reminder_time">提醒时间</string>
 
 
 </resources>

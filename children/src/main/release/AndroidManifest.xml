@@ -15,11 +15,12 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
-            <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
-            <service
-                android:name="com.amap.api.location.APSService" >
-            </service>
         </activity>
+        <activity android:name=".voice_reminder.VoiceReminderActivity"/>
+        <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
+        <service
+            android:name="com.amap.api.location.APSService" >
+        </service>
     </application>
 
 </manifest>
