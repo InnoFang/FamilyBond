@@ -6,7 +6,8 @@
         android:allowBackup="true"
         android:supportsRtl="true">
 
-        <activity android:name=".OptionActivity">
+        <activity android:name=".option.OptionActivity"
+                  android:theme="@style/Transparent">
 
         </activity>
         <activity android:name=".MapActivity">

@@ -14,7 +14,8 @@
             android:name="com.amap.api.v2.apikey"
             android:value="f237e78a9aec77979078f82d8c37c6be"/>
 
-        <activity android:name=".OptionActivity">
+        <activity android:name=".option.OptionActivity"
+            android:theme="@style/Transparent">
 
         </activity>
         <activity android:name=".MapActivity">

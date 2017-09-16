@@ -1,4 +1,4 @@
-package io.innofang.children;
+package io.innofang.children.option;
 
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.innofang.base.widget.card_view_pager.CardAdapter;
+import io.innofang.children.R;
 
 /**
  * Author: Inno Fang
@@ -57,12 +58,12 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup container, final int position) {
         View view = LayoutInflater.from(container.getContext())
                 .inflate(R.layout.item_card, container, false);
         container.addView(view);
         bind(mData.get(position), view);
-        CardView cardView = (CardView) view.findViewById(R.id.cardView);
+        CardView cardView = (CardView) view.findViewById(R.id.card_view);
 
         if (mBaseElevation == 0) {
             mBaseElevation = cardView.getCardElevation();
@@ -70,6 +71,16 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
 
         cardView.setMaxCardElevation(mBaseElevation * MAX_ELEVATION_FACTOR);
         mViews.set(position, cardView);
+
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != mOnItemClickListener) {
+                    mOnItemClickListener.onClick(position);
+                }
+            }
+        });
+
         return view;
     }
 
@@ -88,4 +99,13 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
                 .into(contentImageView);
     }
 
+    private OnItemClickListener mOnItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
+    public interface OnItemClickListener {
+        void onClick(int position);
+    }
 }

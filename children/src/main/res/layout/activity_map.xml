@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
@@ -10,23 +11,22 @@
     <com.amap.api.maps2d.MapView
         android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
-    <LinearLayout
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/locbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <Button
-            android:id="@+id/locbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="定位" />
-        <Button
-            android:id="@+id/stobtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="动态申请存储权限"
-            android:visibility="gone"/>
+        android:padding="13dp"
+        android:src="@drawable/ic_location"/>
 
-    </LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/option_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/ic_option"
+        app:elevation="3dp"
+        app:fabSize="normal"/>
 </FrameLayout>
