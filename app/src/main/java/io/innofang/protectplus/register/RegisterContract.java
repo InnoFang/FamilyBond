@@ -5,7 +5,6 @@ import android.support.v7.widget.CardView;
 
 import io.innofang.base.base.BasePresenter;
 import io.innofang.base.base.BaseView;
-import io.innofang.base.bean.Client;
 
 /**
  * Author: Inno Fang
@@ -33,6 +32,6 @@ public class RegisterContract {
 
         void animateRevealClose(CardView cardView, FloatingActionButton fab);
 
-        void register(String username, String password, String repeatPassword, Client client);
+        void register(String username, String password, String repeatPassword, String client);
     }
 }

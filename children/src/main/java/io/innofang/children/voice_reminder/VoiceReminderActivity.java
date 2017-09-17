@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.innofang.base.base.BaseActivity;
 import io.innofang.children.R;
+import io.innofang.children.R2;
 
 /**
  * Author: Inno Fang
@@ -28,13 +29,13 @@ import io.innofang.children.R;
 
 public class VoiceReminderActivity extends BaseActivity {
 
-    @BindView(R.id.contact_chooser_button)
+    @BindView(R2.id.contact_chooser_button)
     Button mContactChooserButton;
-    @BindView(R.id.type_message_edit_text)
+    @BindView(R2.id.type_message_edit_text)
     EditText mTypeMessageEditText;
-    @BindView(R.id.speak_fab)
+    @BindView(R2.id.speak_fab)
     FloatingActionButton mSpeakFab;
-    @BindView(R.id.time_text_view)
+    @BindView(R2.id.time_text_view)
     TextView mTimeTextView;
 
     @Override
@@ -47,17 +48,16 @@ public class VoiceReminderActivity extends BaseActivity {
         mTimeTextView.setText(df.format(new Date()));
     }
 
-    @OnClick({R.id.contact_chooser_button, R.id.speak_fab, R.id.time_text_view})
+    @OnClick({R2.id.contact_chooser_button, R2.id.speak_fab, R2.id.time_text_view})
     public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.contact_chooser_button:
-                break;
-            case R.id.speak_fab:
-                break;
-            case R.id.time_text_view:
-                DialogFragment newFragment = new TimePickerFragment();
-                newFragment.show(getSupportFragmentManager(),getString(R.string.reminder_time));
-                break;
+        int id = view.getId();
+        if (id == R.id.contact_chooser_button) {
+
+        } else if (id == R.id.speak_fab) {
+
+        } else if (id == R.id.time_text_view) {
+            DialogFragment newFragment = new TimePickerFragment();
+            newFragment.show(getSupportFragmentManager(), getString(R.string.reminder_time));
         }
     }
 

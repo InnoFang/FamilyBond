@@ -2,6 +2,7 @@ package io.innofang.children;
 
 import android.Manifest;
 import android.app.ActivityOptions;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -9,9 +10,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatImageButton;
 import android.util.Log;
-import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.amap.api.location.AMapLocation;
@@ -34,10 +35,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.bmob.v3.BmobUser;
 import io.innofang.base.base.BaseActivity;
+import io.innofang.base.bean.User;
 import io.innofang.base.util.amap.SensorEventHelper;
 import io.innofang.base.util.common.RequestPermissions;
 import io.innofang.children.option.OptionActivity;
+import io.innofang.children.settings.SettingsActivity;
 
 /**
  * Author: Inno Fang
@@ -48,11 +52,11 @@ import io.innofang.children.option.OptionActivity;
 @Route(path = "/children/1")
 public class MapActivity extends BaseActivity implements AMapLocationListener, LocationSource {
 
-    @BindView(R.id.map)
+    @BindView(R2.id.map)
     MapView mMapView;
-    @BindView(R.id.locbtn)
+    @BindView(R2.id.locbtn)
     AppCompatImageButton mLocbtn;
-    @BindView(R.id.option_fab)
+    @BindView(R2.id.option_fab)
     FloatingActionButton mOptionFab;
 
     private AMap mAMap;
@@ -76,10 +80,33 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
         //初始化定位参数
         initLocation();
         //初始化请求权限，存储权限
-        checkLocationPermission();
         mMapView.onCreate(savedInstanceState);
         init();
+        checkLocationPermission();
 
+        showAddContactTip();
+    }
+
+    private void showAddContactTip() {
+        User user =  BmobUser.getCurrentUser(User.class);
+        if (user.getContact().isEmpty()) {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.add_contact)
+                    .setMessage(R.string.tip_of_add_contact)
+                    .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivity(new Intent(MapActivity.this, SettingsActivity.class));
+                        }
+                    })
+                    .setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .show();
+        }
     }
 
     private void init() {
@@ -193,21 +220,19 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
         mLocMarker.setTitle(LOCATION_MARKER_FLAG);
     }
 
-    @OnClick({R.id.locbtn, R.id.option_fab})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.locbtn:
-                checkLocationPermission();
-                break;
-            case R.id.option_fab:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    ActivityOptions options =
-                            ActivityOptions.makeSceneTransitionAnimation(this, mOptionFab, mOptionFab.getTransitionName());
-                    startActivity(new Intent(this, OptionActivity.class), options.toBundle());
-                } else {
-                    startActivity(new Intent(this, OptionActivity.class));
-                }
-                break;
+    @OnClick(R2.id.locbtn)
+    public void onLocBtnClick() {
+        checkLocationPermission();
+    }
+
+    @OnClick(R2.id.option_fab)
+    public void onOptionFabClick() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ActivityOptions options =
+                    ActivityOptions.makeSceneTransitionAnimation(this, mOptionFab, mOptionFab.getTransitionName());
+            startActivity(new Intent(this, OptionActivity.class), options.toBundle());
+        } else {
+            startActivity(new Intent(this, OptionActivity.class));
         }
     }
 
@@ -249,7 +274,6 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
             mSensorHelper.registerSensorListener();
         }
     }
-
 
 
     @Override

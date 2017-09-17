@@ -26,6 +26,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".voice_reminder.VoiceReminderActivity"/>
+        <activity android:name=".settings.SettingsActivity"
+                  android:windowSoftInputMode="adjustResize"/>
     </application>
 
 </manifest>

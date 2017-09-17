@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import com.alibaba.android.arouter.launcher.ARouter;
 
 import cn.bmob.v3.exception.BmobException;
-import io.innofang.base.bean.Client;
 import io.innofang.base.bean.User;
 import io.innofang.base.util.bmob.BmobEvent;
 import io.innofang.base.util.bmob.BmobUtil;
@@ -61,7 +60,7 @@ public class LoginPresenter implements LoginContract.Presenter {
             @Override
             public void loginSuccessful(User user) {
                 mView.loginSuccessful();
-                if (user.getClient() == Client.CHILDREN) {
+                if (user.getClient() == User.CHILDREN) {
                     ARouter.getInstance().build("/children/1").navigation();
                     mView.showInfo("Children");
                 } else {

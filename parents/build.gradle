@@ -68,5 +68,4 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:' + rootProject.butter_knife      //
     annotationProcessor "com.alibaba:arouter-compiler:$rootProject.ext.arouter_comiler"         //
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"                                //
-    compile 'com.android.support:support-v4:25.3.1'
 }

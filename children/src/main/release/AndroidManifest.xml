@@ -6,8 +6,13 @@
         android:allowBackup="true"
         android:supportsRtl="true">
 
-        <activity android:name=".option.OptionActivity"
-                  android:theme="@style/Transparent">
+        <!--<meta-data-->
+        <!--android:name="com.amap.api.v2.apikey"-->
+        <!--android:value="f237e78a9aec77979078f82d8c37c6be"/>-->
+
+        <activity
+            android:name=".option.OptionActivity"
+            android:theme="@style/Transparent">
 
         </activity>
         <activity android:name=".MapActivity">
@@ -17,10 +22,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".voice_reminder.VoiceReminderActivity"/>
-        <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
-        <service
-            android:name="com.amap.api.location.APSService" >
-        </service>
+        <activity android:name=".settings.SettingsActivity"
+                  android:windowSoftInputMode="adjustResize"/>
     </application>
 
 </manifest>

@@ -26,9 +26,9 @@ import io.innofang.parents.sms.SmsFragment;
 public class MainActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.view_pager)
+    @BindView(R2.id.view_pager)
     ViewPager mViewPager;
-    @BindView(R.id.bottom_navigation_view)
+    @BindView(R2.id.bottom_navigation_view)
     BottomNavigationView mBottomNavigationView;
 
     private MenuItem mMenuItem;
@@ -77,19 +77,19 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.item_sms:
+            case R2.id.item_sms:
                 mViewPager.setCurrentItem(0);
                 break;
-            case R.id.item_medically_exam:
+            case R2.id.item_medically_exam:
                 mViewPager.setCurrentItem(1);
                 break;
-            case R.id.item_home:
+            case R2.id.item_home:
                 mViewPager.setCurrentItem(2);
                 break;
-            case R.id.item_communication:
+            case R2.id.item_communication:
                 mViewPager.setCurrentItem(3);
                 break;
-            case R.id.item_settings:
+            case R2.id.item_settings:
                 mViewPager.setCurrentItem(4);
                 break;
             default:

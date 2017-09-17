@@ -11,15 +11,17 @@ import butterknife.OnClick;
 import io.innofang.base.base.BaseActivity;
 import io.innofang.base.widget.card_view_pager.ShadowTransformer;
 import io.innofang.children.R;
+import io.innofang.children.R2;
+import io.innofang.children.settings.SettingsActivity;
 import io.innofang.children.voice_reminder.VoiceReminderActivity;
 
 
 public class OptionActivity extends BaseActivity {
 
 
-    @BindView(R.id.card_view_pager)
+    @BindView(R2.id.card_view_pager)
     ViewPager mCardViewPager;
-    @BindView(R.id.option_fab)
+    @BindView(R2.id.option_fab)
     FloatingActionButton mOptionFab;
 
     private CardPagerAdapter mCardAdapter;
@@ -61,14 +63,14 @@ public class OptionActivity extends BaseActivity {
                         toast("与父母交流");
                         break;
                     case 3:
-                        toast("设置");
+                        startActivity(new Intent(OptionActivity.this, SettingsActivity.class));
                         break;
                 }
             }
         });
     }
 
-    @OnClick(R.id.option_fab)
+    @OnClick(R2.id.option_fab)
     public void onViewClicked() {
         finish();
     }

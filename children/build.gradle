@@ -21,9 +21,6 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
 
-        renderscriptTargetApi 18
-        renderscriptSupportModeEnabled true
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
@@ -54,10 +51,6 @@ android {
         packagingOptions {
             exclude 'assets/*'
             exclude 'META-INF/*'
-//            exclude 'lib/arm64-v8a/*'
-//            exclude 'lib/x86/*'
-//            exclude 'lib/armeabi/*'
-
         }
     }
 }

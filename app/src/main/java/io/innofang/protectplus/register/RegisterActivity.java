@@ -16,7 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.innofang.base.base.BaseActivity;
-import io.innofang.base.bean.Client;
+import io.innofang.base.bean.User;
 import io.innofang.base.util.common.CircularAnimUtils;
 import io.innofang.protectplus.R;
 
@@ -74,7 +74,7 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
                         mRegisterUsernameEditText.getText().toString().trim(),
                         mRegisterPasswordEditText.getText().toString().trim(),
                         mRegisterRepeatPasswordEditText.getText().toString().trim(),
-                        mChildrenClientRadioButton.isChecked() ? Client.CHILDREN : Client.PARENTS
+                        mChildrenClientRadioButton.isChecked() ? User.CHILDREN : User.PARENTS
                 );
                 toast(R.string.register_success);
                 break;

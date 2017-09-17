@@ -15,4 +15,10 @@
         <item name="android:backgroundDimEnabled">true</item><!--模糊-->
     </style>
 
+    <style name="PopupWindowAnimStyle">
+        <item name="android:windowEnterAnimation">@anim/popup_show</item>
+        <item name="android:windowExitAnimation">@anim/popup_hide</item>
+    </style>
+
+
 </resources>

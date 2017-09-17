@@ -10,10 +10,14 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.bmob.v3.BmobUser;
 import io.innofang.base.base.BaseActivity;
+import io.innofang.base.bean.User;
 import io.innofang.base.util.common.CircularAnimUtils;
 import io.innofang.protectplus.R;
 
@@ -43,6 +47,16 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         mPresenter = new LoginPresenter(this, this);
+
+        User user = null;
+        if ((user = BmobUser.getCurrentUser(User.class)) != null) {
+            if (user.getClient().equals(User.CHILDREN)) {
+                ARouter.getInstance().build("/children/1").navigation();
+            } else {
+                ARouter.getInstance().build("/parents/1").navigation();
+            }
+            finish();
+        }
     }
 
     @OnClick({R.id.login_button, R.id.forget_password_text_view, R.id.switch_fab})

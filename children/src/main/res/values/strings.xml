@@ -8,8 +8,8 @@
     <string name="text_1">这是一个功能，只是还没完成</string>
 
 
-    <string name="alert_dialog_ok">OK</string>
-    <string name="alert_dialog_cancel">Cancel</string>
+    <string name="alert_dialog_ok">确定</string>
+    <string name="alert_dialog_cancel">取消</string>
     <string name="storage_description_title">你能允许存储权限吗?</string>
     <string name="storage_description_why_we_need_the_permission">你好,地图缓存需要存储权限。你能允许吗?</string>
     <string name="location_description_title">你能允许定位权限吗?</string>
@@ -17,6 +17,12 @@
     <string name="option">option</string>
     <string name="hint_type_the_message">输入文字提醒</string>
     <string name="reminder_time">提醒时间</string>
+    <string name="add_contact">添加联系人</string>
+    <string name="input_contact_username">输入联系人用户名</string>
+    <string name="contact_list">联系人列表</string>
+    <string name="delete_of">Delete \\\"%s\\\".</string>
+    <string name="cannot_be_empty">不能为空</string>
+    <string name="tip_of_add_contact">你还没有关联对象，点击确定去添加</string>
 
 
 </resources>

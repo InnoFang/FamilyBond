@@ -13,7 +13,6 @@ import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateInterpolator;
 
 import cn.bmob.v3.exception.BmobException;
-import io.innofang.base.bean.Client;
 import io.innofang.base.bean.User;
 import io.innofang.base.util.bmob.BmobEvent;
 import io.innofang.base.util.bmob.BmobUtil;
@@ -48,7 +47,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
     }
 
     @Override
-    public void register(final String username, final String password, final String repeatPassword, Client client) {
+    public void register(final String username, final String password, final String repeatPassword, String client) {
         final User user = new User();
         user.setUsername(username);
         user.setPassword(password);

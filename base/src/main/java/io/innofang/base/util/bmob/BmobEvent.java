@@ -1,5 +1,7 @@
 package io.innofang.base.util.bmob;
 
+import java.util.List;
+
 import cn.bmob.v3.exception.BmobException;
 import io.innofang.base.bean.User;
 
@@ -26,6 +28,22 @@ public class BmobEvent {
         void registerSuccessful(User user);
 
         void registerFailed(BmobException e);
+    }
+
+    public interface onUpdateListener {
+        boolean beforeUpdate();
+
+        void updateSuccessful();
+
+        void updateFailed(BmobException e);
+    }
+
+    public interface onQueryListener {
+        boolean beforeQuery();
+
+        void querySuccessful(List<User> list);
+
+        void queryFailed(BmobException e);
     }
 
 }
