@@ -1,7 +1,12 @@
 package io.innofang.base.util.bmob;
 
+import android.text.TextUtils;
+
 import java.util.List;
 
+import cn.bmob.newim.BmobIM;
+import cn.bmob.newim.core.ConnectionStatus;
+import cn.bmob.newim.listener.ConnectListener;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
@@ -69,6 +74,7 @@ public class BmobUtil {
         if (listener.beforeQuery()) {
             BmobQuery<User> query = new BmobQuery<>();
             query.addWhereEqualTo("username", username);
+            query.setLimit(1);
             query.findObjects(new FindListener<User>() {
                 @Override
                 public void done(List<User> list, BmobException e) {
@@ -76,6 +82,26 @@ public class BmobUtil {
                         listener.querySuccessful(list);
                     } else {
                         listener.queryFailed(e);
+                    }
+                }
+            });
+        }
+    }
+
+    public static void connect(final User user, final BmobEvent.onConnectListener listener) {
+        User curr = BmobUser.getCurrentUser(User.class);
+        if (!TextUtils.isEmpty(curr.getObjectId())) {
+            BmobIM.connect(user.getObjectId(), new ConnectListener() {
+                @Override
+                public void done(String s, BmobException e) {
+                    if (null == e) {
+                        if (BmobIM.getInstance().getCurrentStatus().getCode() != ConnectionStatus.CONNECTED.getCode()) {
+                            listener.connectFailed("haven't connect server");
+                            return;
+                        }
+                        listener.connectSuccessful(user);
+                    } else {
+                        listener.connectFailed(e.getMessage());
                     }
                 }
             });

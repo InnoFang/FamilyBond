@@ -46,4 +46,9 @@ public class BmobEvent {
         void queryFailed(BmobException e);
     }
 
+    public interface onConnectListener {
+        void connectSuccessful(User user);
+
+        void connectFailed(String error);
+    }
 }

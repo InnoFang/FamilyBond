@@ -20,9 +20,14 @@
     <string name="add_contact">添加联系人</string>
     <string name="input_contact_username">输入联系人用户名</string>
     <string name="contact_list">联系人列表</string>
-    <string name="delete_of">Delete \\\"%s\\\".</string>
+    <string name="delete_of">删除 \\\"%s\\\".</string>
     <string name="cannot_be_empty">不能为空</string>
     <string name="tip_of_add_contact">你还没有关联对象，点击确定去添加</string>
+    <string name="voice_up_tips">手指上滑,取消发送</string>
+    <string name="voice_cancel_tips">松开手指，取消发送</string>
+    <string name="voice_seconds_tips">还可以说%1$s秒</string>
+    <string name="voice_short_tips">录音时间太短</string>
+    <string name="have_not_choose_a_contact">你还没有选择联系人</string>
 
 
 </resources>
