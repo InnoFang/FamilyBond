@@ -28,6 +28,6 @@
     <string name="voice_seconds_tips">还可以说%1$s秒</string>
     <string name="voice_short_tips">录音时间太短</string>
     <string name="have_not_choose_a_contact">你还没有选择联系人</string>
-
+    <string name="send_reminder_button">发送提醒</string>
 
 </resources>

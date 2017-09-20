@@ -37,5 +37,11 @@
         <item name="android:textColor">@color/base_color_text_white</item>
     </style>
 
+    <style name="chat_text_name_style">
+        <item name="android:textColor">#818181</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 
 </resources>

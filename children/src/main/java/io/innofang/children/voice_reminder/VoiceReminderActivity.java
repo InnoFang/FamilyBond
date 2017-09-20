@@ -1,5 +1,6 @@
 package io.innofang.children.voice_reminder;
 
+import android.Manifest;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,18 +14,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.innofang.base.base.BaseActivity;
+import io.innofang.base.util.common.RequestPermissions;
 import io.innofang.children.R;
 import io.innofang.children.R2;
 
@@ -51,6 +55,14 @@ public class VoiceReminderActivity extends BaseActivity implements VoiceReminder
     TextView mVoiceTipsTextView;
     @BindView(R2.id.record_layout)
     RelativeLayout mRecordLayout;
+    @BindView(R2.id.voice_length_text_view)
+    TextView mVoiceLengthTextView;
+    @BindView(R2.id.progress_load)
+    ProgressBar mProgressLoad;
+    @BindView(R2.id.voice_record_layout)
+    RelativeLayout mVoiceRecordLayout;
+    @BindView(R2.id.send_button)
+    Button mSendButton;
 
     private VoiceReminderContract.Presenter mPresenter;
     private Toast toast;
@@ -61,12 +73,26 @@ public class VoiceReminderActivity extends BaseActivity implements VoiceReminder
         setContentView(R.layout.activity_voice_reminder);
         ButterKnife.bind(this);
 
+        RequestPermissions.requestRuntimePermission(new String[]{
+                Manifest.permission.RECORD_AUDIO
+        }, new RequestPermissions.OnRequestPermissionsListener() {
+            @Override
+            public void onGranted() {
+
+            }
+
+            @Override
+            public void onDenied(List<String> deniedPermission) {
+                toast("取消权限将无法发送语音提醒");
+            }
+        });
+
         mPresenter = new VoiceReminderPresenter(this);
         SimpleDateFormat df = new SimpleDateFormat("HH:mm", Locale.CHINA);//设置日期格式
         mTimeTextView.setText(df.format(new Date()));
     }
 
-    @OnClick({R2.id.contact_chooser_button, R2.id.speak_fab, R2.id.time_text_view})
+    @OnClick({R2.id.contact_chooser_button, R2.id.speak_fab, R2.id.time_text_view, R2.id.voice_record_layout, R2.id.send_button})
     public void onViewClicked(View view) {
         int id = view.getId();
         if (id == R.id.contact_chooser_button) {
@@ -82,6 +108,10 @@ public class VoiceReminderActivity extends BaseActivity implements VoiceReminder
         } else if (id == R.id.time_text_view) {
             DialogFragment newFragment = new TimePickerFragment();
             newFragment.show(getSupportFragmentManager(), getString(R.string.reminder_time));
+        } else if (id == R.id.voice_record_layout) {
+            mPresenter.playRecordVoice();
+        } else if (id == R.id.send_button) {
+            mPresenter.sendReminder();
         }
     }
 
@@ -136,6 +166,11 @@ public class VoiceReminderActivity extends BaseActivity implements VoiceReminder
         return mContactChooserButton.getText().toString();
     }
 
+    @Override
+    public String getReminderText() {
+        return mTypeMessageEditText.getText().toString();
+    }
+
     /**
      * 显示录音时间过短的Toast
      */
@@ -151,4 +186,5 @@ public class VoiceReminderActivity extends BaseActivity implements VoiceReminder
         toast.setDuration(Toast.LENGTH_SHORT);
         return toast;
     }
+
 }

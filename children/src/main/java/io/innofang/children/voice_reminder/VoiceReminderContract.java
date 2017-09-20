@@ -32,10 +32,13 @@ public class VoiceReminderContract {
         Drawable[] getVoiceAnimDrawable();
         Toast showVoiceShortToast();
         String getContact();
+        String getReminderText();
     }
 
     interface Presenter extends BasePresenter {
         void chooseContact(Context context, Button button);
         void initRecordManager(Context context);
+        void sendReminder();
+        void playRecordVoice();
     }
 }

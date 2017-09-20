@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -30,7 +31,9 @@ import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMAudioMessage;
 import cn.bmob.newim.bean.BmobIMConversation;
 import cn.bmob.newim.bean.BmobIMMessage;
+import cn.bmob.newim.bean.BmobIMTextMessage;
 import cn.bmob.newim.bean.BmobIMUserInfo;
+import cn.bmob.newim.core.BmobIMClient;
 import cn.bmob.newim.core.BmobRecordManager;
 import cn.bmob.newim.listener.MessageSendListener;
 import cn.bmob.newim.listener.OnRecordChangeListener;
@@ -62,7 +65,7 @@ public class VoiceReminderPresenter implements VoiceReminderContract.Presenter {
     private FloatingActionButton mSpeakFab;
 
     private Drawable[] mVoiceAnimDrawables;// 话筒动画
-    private List<BmobIMConversation> mIMConversations;
+    private List<BmobIMConversation> mIMConversations = new ArrayList<>();
 
     // isn't initialize, please fix me
     private BmobIMConversation mConversationManager;
@@ -75,7 +78,11 @@ public class VoiceReminderPresenter implements VoiceReminderContract.Presenter {
         mVoiceTipsTextView = mView.getVoiceTipsTextView();
         mSpeakFab = mView.getSpeakFab();
         mVoiceAnimDrawables = mView.getVoiceAnimDrawable();
-        mIMConversations = BmobIM.getInstance().loadAllConversation();
+
+        List<BmobIMConversation> list = BmobIM.getInstance().loadAllConversation();
+        if (null != list) {
+            mIMConversations.addAll(list);
+        }
     }
 
     @Override
@@ -181,6 +188,26 @@ public class VoiceReminderPresenter implements VoiceReminderContract.Presenter {
         });
     }
 
+    @Override
+    public void sendReminder() {
+        sendVoiceMessage(mRecordManager.getRecordFilePath(mConversationManager.getConversationId()), mRecordManager.stopRecording());
+        String text = mView.getReminderText();
+        if (!TextUtils.isEmpty(text)) {
+            BmobIMTextMessage msg = new BmobIMTextMessage();
+            msg.setContent(text);
+            //可随意设置额外信息
+            Map<String, Object> map = new HashMap<>();
+            map.put("level", "text");
+            msg.setExtraMap(map);
+            mConversationManager.sendMessage(msg, listener);
+        }
+    }
+
+    @Override
+    public void playRecordVoice() {
+
+    }
+
     public class VoiceTouchListener implements View.OnTouchListener {
 
         @Override
@@ -222,7 +249,7 @@ public class VoiceReminderPresenter implements VoiceReminderContract.Presenter {
                             int recordTime = mRecordManager.stopRecording();
                             if (recordTime > 1) {
                                 // 发送语音文件
-                                sendVoiceMessage(mRecordManager.getRecordFilePath(mConversationManager.getConversationId()), recordTime);
+//                                sendVoiceMessage(mRecordManager.getRecordFilePath(mConversationManager.getConversationId()), recordTime);
                             } else {// 录音时间过短，则提示录音过短的提示
                                 mRecordLayout.setVisibility(View.GONE);
                                 mView.showVoiceShortToast().show();
@@ -244,7 +271,7 @@ public class VoiceReminderPresenter implements VoiceReminderContract.Presenter {
         BmobIMAudioMessage audio = new BmobIMAudioMessage(local);
         //可设置额外信息-开发者设置的额外信息，需要开发者自己从extra中取出来
         Map<String, Object> map = new HashMap<>();
-        map.put("from", "优酷");
+        map.put("level", "voice");
         // 自定义消息： 给消息设置额外信息
         audio.setExtraMap(map);
         //设置语音文件时长：可选
@@ -253,12 +280,14 @@ public class VoiceReminderPresenter implements VoiceReminderContract.Presenter {
     }
 
     private void checkConversations(String username) {
-        for (BmobIMConversation imConversation : mIMConversations) {
-            if (imConversation.getConversationTitle().equals(username)) {
-                mConversationManager = imConversation;
+        if (null != mIMConversations && !mIMConversations.isEmpty()) {
+            for (BmobIMConversation conversationEntrance : mIMConversations) {
+                if (conversationEntrance.getConversationTitle().equals(username)) {
+                    mConversationManager = BmobIMConversation.obtain(
+                            BmobIMClient.getInstance(), conversationEntrance);
+                }
             }
-        }
-        if (null == mIMConversations || mIMConversations.isEmpty()) {
+        } else {
             BmobUtil.query(mView.getContact(), new BmobEvent.onQueryListener() {
                 @Override
                 public boolean beforeQuery() {
@@ -277,7 +306,7 @@ public class VoiceReminderPresenter implements VoiceReminderContract.Presenter {
                             BmobIMUserInfo info = new BmobIMUserInfo(user.getObjectId(), user.getUsername(), null);
                             BmobIMConversation conversationEntrance = BmobIM.getInstance().startPrivateConversation(info, null);
                             mIMConversations.add(conversationEntrance);
-                            mConversationManager = conversationEntrance;
+                            mConversationManager = BmobIMConversation.obtain(BmobIMClient.getInstance(), conversationEntrance);
                         }
 
                         @Override
@@ -317,7 +346,9 @@ public class VoiceReminderPresenter implements VoiceReminderContract.Presenter {
         public void done(BmobIMMessage msg, BmobException e) {
             //java.lang.NullPointerException: Attempt to invoke virtual method 'void android.widget.TextView.setText(java.lang.CharSequence)' on a null object reference
             if (e != null) {
-                mView.showInfo("Error" + e.getMessage());
+                mView.showInfo("Error " + e.getMessage());
+            } else {
+                mView.showInfo("发送成功");
             }
         }
     };

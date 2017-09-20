@@ -1,121 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:gravity="center_vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <View
-            android:layout_width="10dp"
-            android:layout_height="40dp"
-            android:background="#6d616e"/>
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:text="@string/voice_reminder"
-            android:textSize="25sp"
-            android:textStyle="bold"/>
+            android:layout_marginTop="25dp"
+            android:gravity="center_vertical">
 
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginStart="25dp">
-
-        <Button
-            android:id="@+id/contact_chooser_button"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_alignParentBottom="true"
-            android:background="#dddddd"
-            android:textAllCaps="false"/>
-
-        <TextView
-            android:id="@+id/time_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:textSize="60sp"
-            tools:text="17:48"/>
-    </RelativeLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="300dp">
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/message_card_view"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginEnd="25dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="10dp"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="3dp">
-
-            <EditText
-                android:id="@+id/type_message_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:background="@null"
-                android:gravity="top"
-                android:hint="@string/hint_type_the_message"
-                android:inputType="textMultiLine"
-                android:padding="20dp"/>
-
-        </android.support.v7.widget.CardView>
-
-        <RelativeLayout
-            android:id="@+id/record_layout"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center"
-            android:background="@drawable/chat_top_voice_bg"
-            android:padding="10dp"
-            android:visibility="invisible">
-
-            <ImageView
-                android:id="@+id/record_image_view"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_centerHorizontal="true"
-                android:src="@mipmap/chat_icon_voice1"/>
+            <View
+                android:layout_width="10dp"
+                android:layout_height="40dp"
+                android:background="#6d616e"/>
 
             <TextView
-                android:id="@+id/voice_tips_text_view"
-                style="@style/style_text_white"
-                android:layout_below="@id/record_image_view"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:text="@string/voice_up_tips"
-                android:textSize="14sp"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="@string/voice_reminder"
+                android:textSize="25sp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginStart="25dp">
+
+            <Button
+                android:id="@+id/contact_chooser_button"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_alignParentBottom="true"
+                android:background="#dddddd"
+                android:textAllCaps="false"/>
+
+            <TextView
+                android:id="@+id/time_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:textSize="60sp"
+                tools:text="17:48"/>
         </RelativeLayout>
 
-    </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="350dp">
 
+            <android.support.v7.widget.CardView
+                android:id="@+id/message_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="25dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/type_message_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:gravity="top"
+                        android:hint="@string/hint_type_the_message"
+                        android:inputType="textMultiLine"
+                        android:padding="10dp"/>
+
+                    <RelativeLayout
+                        android:id="@+id/voice_record_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp">
+
+                        <ImageView
+                            android:id="@+id/record_voice_image_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_record_voice"/>
+
+                        <TextView
+                            android:id="@+id/voice_length_text_view"
+                            style="@style/chat_text_name_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_toRightOf="@id/record_voice_image_view"
+                            android:gravity="center"/>
+
+                        <ProgressBar
+                            android:id="@+id/progress_load"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_toRightOf="@id/record_voice_image_view"
+                            android:visibility="invisible"/>
+                    </RelativeLayout>
+                </LinearLayout>
+
+
+
+                <RelativeLayout
+                    android:id="@+id/record_layout"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/chat_top_voice_bg"
+                    android:padding="10dp"
+                    android:visibility="invisible">
+
+                    <ImageView
+                        android:id="@+id/record_image_view"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerHorizontal="true"
+                        android:src="@mipmap/chat_icon_voice1"/>
+
+                    <TextView
+                        android:id="@+id/voice_tips_text_view"
+                        style="@style/style_text_white"
+                        android:layout_below="@id/record_image_view"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/voice_up_tips"
+                        android:textSize="14sp"/>
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </FrameLayout>
+
+
+        <Button
+            android:id="@+id/send_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:padding="10dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:text="@string/send_reminder_button"/>
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/speak_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
         android:layout_margin="20dp"
         android:src="@drawable/ic_voice"
-        app:fabSize="normal"/>
-
-
-</LinearLayout>
+        app:fabSize="normal"
+        app:layout_anchor="@id/voice_record_layout"
+        app:layout_anchorGravity="bottom|end"/>
+</android.support.design.widget.CoordinatorLayout>
