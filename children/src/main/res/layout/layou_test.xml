@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="350dp">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/message_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="3dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/type_message_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:gravity="top"
+                    android:hint="@string/hint_type_the_message"
+                    android:inputType="textMultiLine"
+                    android:padding="10dp"/>
+
+                <RelativeLayout
+                    android:id="@+id/voice_record_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp">
+
+                    <ImageView
+                        android:id="@+id/record_voice_image_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_record_voice"/>
+
+                    <TextView
+                        android:id="@+id/voice_length_text_view"
+                        style="@style/chat_text_name_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/record_voice_image_view"
+                        android:gravity="center"/>
+
+                    <ProgressBar
+                        android:id="@+id/progress_load"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/record_voice_image_view"
+                        android:visibility="invisible"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/record_layout"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:background="@drawable/chat_top_voice_bg"
+                android:padding="10dp"
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/record_image_view"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/chat_icon_voice1"/>
+
+                <TextView
+                    android:id="@+id/voice_tips_text_view"
+                    style="@style/style_text_white"
+                    android:layout_below="@id/record_image_view"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/voice_up_tips"
+                    android:textSize="14sp"/>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+
+
+
+    </FrameLayout>
+</LinearLayout>

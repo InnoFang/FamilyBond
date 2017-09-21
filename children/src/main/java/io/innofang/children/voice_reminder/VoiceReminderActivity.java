@@ -111,7 +111,11 @@ public class VoiceReminderActivity extends BaseActivity implements VoiceReminder
         } else if (id == R.id.voice_record_layout) {
             mPresenter.playRecordVoice();
         } else if (id == R.id.send_button) {
-            mPresenter.sendReminder();
+            if (mContactChooserButton.getText().toString().isEmpty()) {
+                showInfo(getString(R.string.have_not_choose_a_contact));
+            } else {
+                mPresenter.sendReminder();
+            }
         }
     }
 

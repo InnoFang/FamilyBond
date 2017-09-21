@@ -35,6 +35,7 @@ public class IMMessageHandler extends BmobIMMessageHandler {
     @Override
     public void onOfflineReceive(OfflineMessageEvent offlineMessageEvent) {
         super.onOfflineReceive(offlineMessageEvent);
+        EventBus.getDefault().post(offlineMessageEvent);
     }
 
     private void executeMessage(final MessageEvent event) {
