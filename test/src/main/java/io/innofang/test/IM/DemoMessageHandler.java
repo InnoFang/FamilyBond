@@ -41,6 +41,7 @@ public class DemoMessageHandler extends BmobIMMessageHandler {
     @Override
     public void onOfflineReceive(OfflineMessageEvent offlineMessageEvent) {
         super.onOfflineReceive(offlineMessageEvent);
+
     }
 
     private void executeMessage(final MessageEvent event) {

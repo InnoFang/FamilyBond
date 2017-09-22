@@ -19,16 +19,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.bmob.newim.BmobIM;
-import cn.bmob.newim.bean.BmobIMAudioMessage;
 import cn.bmob.newim.bean.BmobIMConversation;
 import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMMessageType;
-import cn.bmob.newim.core.BmobDownloadManager;
 import cn.bmob.newim.event.MessageEvent;
 import cn.bmob.newim.event.OfflineMessageEvent;
-import cn.bmob.newim.listener.FileDownloadListener;
-import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.exception.BmobException;
 import io.innofang.parents.R;
 import io.innofang.parents.R2;
 
@@ -46,17 +41,13 @@ public class HomeFragment extends Fragment {
     Unbinder unbinder;
 
     public static HomeFragment newInstance() {
-        return Holder.sInstance;
+        return new HomeFragment();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-    }
-
-    private static class Holder {
-        private static final HomeFragment sInstance = new HomeFragment();
     }
 
     @Override
@@ -88,29 +79,8 @@ public class HomeFragment extends Fragment {
      */
     @Subscribe
     public void onHandleMessageEvent(MessageEvent event) {
-        Log.i("tag", "handle message");
-        if (null != event && null != event.getMessage()) {
-            BmobIMMessage msg = event.getMessage();
-            mMessageTextView.setText(msg.getContent());
-
-            BmobIMAudioMessage message = BmobIMAudioMessage.buildFromDB(false, msg);
-            String currentUid = BmobUser.getCurrentUser().getObjectId();
-            boolean isExists = BmobDownloadManager.isAudioExist(currentUid, message);
-            if (!isExists) {
-                BmobDownloadManager downloadManager = new BmobDownloadManager(getContext(), msg, new FileDownloadListener() {
-                    @Override
-                    public void onStart() {
-                        super.onStart();
-                    }
-
-                    @Override
-                    public void done(BmobException e) {
-
-                    }
-                });
-                downloadManager.execute(message.getContent());
-            }
-        }
+        Log.i("tag", "onHandleMessageEvent: iscalled");
+        handleMessage();
     }
 
     /**
@@ -120,11 +90,13 @@ public class HomeFragment extends Fragment {
      */
     @Subscribe
     public void onHandleMessageEvent(OfflineMessageEvent event) {
+        Log.i("tag", "onHandleMessageEvent: is called");
         handleMessage();
     }
 
 
     private void handleMessage() {
+        Log.i("tag", "handle message");
         List<BmobIMConversation> list = BmobIM.getInstance().loadAllConversation();
         if (null != list) {
             BmobIMMessage message = list.get(0).getMessages().get(0);

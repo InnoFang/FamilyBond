@@ -1,6 +1,7 @@
 package io.innofang.bmob;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -29,12 +30,14 @@ public class IMMessageHandler extends BmobIMMessageHandler {
     @Override
     public void onMessageReceive(MessageEvent messageEvent) {
         super.onMessageReceive(messageEvent);
+        Log.i("tag", "onMessageReceive: is called");
         executeMessage(messageEvent);
     }
 
     @Override
     public void onOfflineReceive(OfflineMessageEvent offlineMessageEvent) {
         super.onOfflineReceive(offlineMessageEvent);
+        Log.i("tag", "onOfflineReceive: is called");
         EventBus.getDefault().post(offlineMessageEvent);
     }
 

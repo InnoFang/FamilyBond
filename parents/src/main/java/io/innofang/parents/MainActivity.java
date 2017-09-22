@@ -5,16 +5,28 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bmob.newim.BmobIM;
+import cn.bmob.newim.bean.BmobIMMessage;
+import cn.bmob.newim.bean.BmobIMUserInfo;
+import cn.bmob.newim.core.ConnectionStatus;
+import cn.bmob.newim.listener.ConnectStatusChangeListener;
+import cn.bmob.v3.BmobUser;
+import io.innofang.base.base.BaseActivity;
+import io.innofang.base.bean.User;
+import io.innofang.base.util.bmob.BmobEvent;
+import io.innofang.base.util.bmob.BmobUtil;
 import io.innofang.base.util.common.BottomNavigationViewHelper;
 import io.innofang.parents.communication.CommunicationFragment;
 import io.innofang.parents.home.HomeFragment;
@@ -23,7 +35,7 @@ import io.innofang.parents.settings.SettingsFragment;
 import io.innofang.parents.sms.SmsFragment;
 
 @Route(path = "/parents/1")
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R2.id.view_pager)
@@ -72,6 +84,37 @@ public class MainActivity extends AppCompatActivity
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), list);
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(2);
+
+        checkConnect();
+    }
+
+    private void checkConnect() {
+
+        BmobUtil.connect(BmobUser.getCurrentUser(User.class), new BmobEvent.onConnectListener() {
+            @Override
+            public void connectSuccessful(User user) {
+                //服务器连接成功就发送一个更新事件，同步更新会话及主页的小红点
+                EventBus.getDefault().post(new BmobIMMessage());
+                //TODO 会话：2.7、更新用户资料，用于在会话页面、聊天页面以及个人信息页面显示
+                BmobIM.getInstance().
+                        updateUserInfo(new BmobIMUserInfo(user.getObjectId(),
+                                user.getUsername(), null));
+            }
+
+            @Override
+            public void connectFailed(String error) {
+                toast(error);
+            }
+        });
+        //TODO 连接：3.3、监听连接状态，可通过BmobIM.getInstance().getCurrentStatus()来获取当前的长连接状态
+        BmobIM.getInstance().setOnConnectStatusChangeListener(new ConnectStatusChangeListener() {
+            @Override
+            public void onChange(ConnectionStatus status) {
+                toast(status.getMsg());
+                Log.i("tag", BmobIM.getInstance().getCurrentStatus().getMsg());
+            }
+        });
+
     }
 
     @Override

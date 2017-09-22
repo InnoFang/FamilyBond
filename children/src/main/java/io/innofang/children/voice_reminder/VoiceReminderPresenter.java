@@ -190,7 +190,7 @@ public class VoiceReminderPresenter implements VoiceReminderContract.Presenter {
 
     @Override
     public void sendReminder() {
-        sendVoiceMessage(mRecordManager.getRecordFilePath(mConversationManager.getConversationId()), mRecordManager.stopRecording());
+//        sendVoiceMessage(mRecordManager.getRecordFilePath(mConversationManager.getConversationId()), mRecordManager.stopRecording());
         String text = mView.getReminderText();
         if (!TextUtils.isEmpty(text)) {
             BmobIMTextMessage msg = new BmobIMTextMessage();
@@ -281,6 +281,7 @@ public class VoiceReminderPresenter implements VoiceReminderContract.Presenter {
 
     private void checkConversations(String username) {
         if (null != mIMConversations && !mIMConversations.isEmpty()) {
+
             for (BmobIMConversation conversationEntrance : mIMConversations) {
                 if (conversationEntrance.getConversationTitle().equals(username)) {
                     mConversationManager = BmobIMConversation.obtain(
@@ -296,10 +297,6 @@ public class VoiceReminderPresenter implements VoiceReminderContract.Presenter {
 
                 @Override
                 public void querySuccessful(final List<User> list) {
-                    if (list.isEmpty()) {
-                        mView.showInfo("没有该联系人");
-                        return;
-                    }
                     BmobUtil.connect(list.get(0), new BmobEvent.onConnectListener() {
                         @Override
                         public void connectSuccessful(User user) {

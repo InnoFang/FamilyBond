@@ -73,13 +73,25 @@ public class BmobUtil {
     public static void query(String username, final BmobEvent.onQueryListener listener) {
         if (listener.beforeQuery()) {
             BmobQuery<User> query = new BmobQuery<>();
+            //去掉当前用户
+            try {
+                BmobUser user = BmobUser.getCurrentUser();
+                query.addWhereNotEqualTo("username", user.getUsername());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             query.addWhereEqualTo("username", username);
             query.setLimit(1);
+            query.order("-createdAt");
             query.findObjects(new FindListener<User>() {
                 @Override
                 public void done(List<User> list, BmobException e) {
                     if (null == e) {
-                        listener.querySuccessful(list);
+                        if (list != null && list.size() > 0) {
+                            listener.querySuccessful(list);
+                        } else {
+                            listener.queryFailed(new BmobException("查无此人"));
+                        }
                     } else {
                         listener.queryFailed(e);
                     }

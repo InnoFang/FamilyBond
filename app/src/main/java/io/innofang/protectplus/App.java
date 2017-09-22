@@ -20,6 +20,7 @@ public class App extends Application {
         super.onCreate();
 
         BmobAPI.init(this);
+
         if (BuildConfig.DEBUG) {
             ARouter.openLog();
             ARouter.openDebug();
