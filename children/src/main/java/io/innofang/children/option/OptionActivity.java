@@ -13,7 +13,7 @@ import io.innofang.base.widget.card_view_pager.ShadowTransformer;
 import io.innofang.children.R;
 import io.innofang.children.R2;
 import io.innofang.children.settings.SettingsActivity;
-import io.innofang.children.voice_reminder.VoiceReminderActivity;
+import io.innofang.children.reminder.ReminderActivity;
 
 
 public class OptionActivity extends BaseActivity {
@@ -57,7 +57,7 @@ public class OptionActivity extends BaseActivity {
                         toast(" 体检");
                         break;
                     case 1:
-                        startActivity(new Intent(OptionActivity.this, VoiceReminderActivity.class));
+                        startActivity(new Intent(OptionActivity.this, ReminderActivity.class));
                         break;
                     case 2:
                         toast("与父母交流");

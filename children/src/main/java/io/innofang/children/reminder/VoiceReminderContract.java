@@ -1,4 +1,4 @@
-package io.innofang.children.voice_reminder;
+package io.innofang.children.reminder;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -33,6 +33,7 @@ public class VoiceReminderContract {
         Toast showVoiceShortToast();
         String getContact();
         String getReminderText();
+        String getReminderTime();
     }
 
     interface Presenter extends BasePresenter {

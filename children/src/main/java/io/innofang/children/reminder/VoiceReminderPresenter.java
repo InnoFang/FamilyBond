@@ -1,4 +1,4 @@
-package io.innofang.children.voice_reminder;
+package io.innofang.children.reminder;
 
 import android.content.Context;
 import android.content.DialogInterface;

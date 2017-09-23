@@ -1,4 +1,4 @@
-package io.innofang.children.voice_reminder;
+package io.innofang.children.reminder;
 
 import android.Manifest;
 import android.graphics.drawable.Drawable;
@@ -39,7 +39,7 @@ import io.innofang.children.R2;
  */
 
 
-public class VoiceReminderActivity extends BaseActivity implements VoiceReminderContract.View {
+public class ReminderActivity extends BaseActivity implements VoiceReminderContract.View {
 
     @BindView(R2.id.contact_chooser_button)
     Button mContactChooserButton;
@@ -90,6 +90,8 @@ public class VoiceReminderActivity extends BaseActivity implements VoiceReminder
         mPresenter = new VoiceReminderPresenter(this);
         SimpleDateFormat df = new SimpleDateFormat("HH:mm", Locale.CHINA);//设置日期格式
         mTimeTextView.setText(df.format(new Date()));
+
+
     }
 
     @OnClick({R2.id.contact_chooser_button, R2.id.speak_fab, R2.id.time_text_view, R2.id.voice_record_layout, R2.id.send_button})
@@ -103,6 +105,7 @@ public class VoiceReminderActivity extends BaseActivity implements VoiceReminder
             } else {
                 mSpeakFab.setOnTouchListener(
                         ((VoiceReminderPresenter) mPresenter).new VoiceTouchListener());
+                 /* initialize record manager */
                 mPresenter.initRecordManager(this);
             }
         } else if (id == R.id.time_text_view) {
@@ -173,6 +176,11 @@ public class VoiceReminderActivity extends BaseActivity implements VoiceReminder
     @Override
     public String getReminderText() {
         return mTypeMessageEditText.getText().toString();
+    }
+
+    @Override
+    public String getReminderTime() {
+        return mTimeTextView.getText().toString();
     }
 
     /**

@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-        <activity android:name=".voice_reminder.VoiceReminderActivity"/>
+        <activity android:name=".reminder.ReminderActivity"/>
         <activity android:name=".settings.SettingsActivity"
                   android:windowSoftInputMode="adjustResize"/>
     </application>
