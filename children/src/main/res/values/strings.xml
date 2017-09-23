@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Children</string>
-    <string name="voice_reminder">语音提醒</string>
+    <string name="reminder">消息提醒</string>
     <string name="card_medically_exam">手机体检</string>
     <string name="card_communication">亲子交流</string>
     <string name="card_settings">常用设置</string>
@@ -29,5 +29,9 @@
     <string name="voice_short_tips">录音时间太短</string>
     <string name="have_not_choose_a_contact">你还没有选择联系人</string>
     <string name="send_reminder_button">发送提醒</string>
+    <string name="voice_reminder">语音提醒</string>
+    <string name="text_reminder">文本提醒</string>
+    <string name="input_reminder_hint">输入你的消息提醒</string>
+    <string name="repeat">重复</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package io.innofang.base.widget.simple_adapter;
+package io.innofang.base.widget.base_simple_adapter;
 
 import android.content.Context;
 import android.support.annotation.LayoutRes;
@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 
-public abstract class SimpleAdapter<T> extends RecyclerView.Adapter<SimpleViewHolder> {
+public abstract class BaseSimpleAdapter<T> extends RecyclerView.Adapter<BaseSimpleViewHolder> {
 
 
     private Context mContext;
@@ -22,7 +22,7 @@ public abstract class SimpleAdapter<T> extends RecyclerView.Adapter<SimpleViewHo
     @LayoutRes
     private int mLayoutResId;
 
-    public SimpleAdapter(Context context, @LayoutRes int id, List<T> list) {
+    public BaseSimpleAdapter(Context context, @LayoutRes int id, List<T> list) {
         mContext = context;
         mLayoutResId = id;
         mList = list;
@@ -52,12 +52,12 @@ public abstract class SimpleAdapter<T> extends RecyclerView.Adapter<SimpleViewHo
 
     @SuppressWarnings("unchecked")
     @Override
-    public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return SimpleViewHolder.getViewHolder(mContext, parent, mLayoutResId);
+    public BaseSimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return BaseSimpleViewHolder.getViewHolder(mContext, parent, mLayoutResId);
     }
 
     @Override
-    public void onBindViewHolder(SimpleViewHolder holder, int position) {
+    public void onBindViewHolder(BaseSimpleViewHolder holder, int position) {
         bindViewHolder(holder, getList().get(position), position);
     }
 
@@ -66,5 +66,5 @@ public abstract class SimpleAdapter<T> extends RecyclerView.Adapter<SimpleViewHo
         return getList() == null ? 0 : getList().size();
     }
 
-    protected abstract void bindViewHolder(SimpleViewHolder viewHolder, T t, int position);
+    protected abstract void bindViewHolder(BaseSimpleViewHolder viewHolder, T t, int position);
 }

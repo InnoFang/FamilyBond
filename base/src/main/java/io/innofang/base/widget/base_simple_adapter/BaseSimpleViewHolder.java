@@ -1,4 +1,4 @@
-package io.innofang.base.widget.simple_adapter;
+package io.innofang.base.widget.base_simple_adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -21,20 +21,20 @@ import android.widget.TextView;
  */
 
 
-public class SimpleViewHolder extends RecyclerView.ViewHolder {
+public class BaseSimpleViewHolder extends RecyclerView.ViewHolder {
 
     private SparseArray<View> mViews;
     private View mItemView;
 
-    public SimpleViewHolder(View itemView) {
+    public BaseSimpleViewHolder(View itemView) {
         super(itemView);
         mItemView = itemView;
         mViews = new SparseArray<>();
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends SimpleViewHolder> T getViewHolder(Context context, ViewGroup parent, @LayoutRes int layoutId) {
-        return (T) new SimpleViewHolder(LayoutInflater.from(context).inflate(layoutId, parent, false));
+    public static <T extends BaseSimpleViewHolder> T getViewHolder(Context context, ViewGroup parent, @LayoutRes int layoutId) {
+        return (T) new BaseSimpleViewHolder(LayoutInflater.from(context).inflate(layoutId, parent, false));
     }
 
     @SuppressWarnings("unchecked")

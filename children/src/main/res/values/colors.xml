@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="base_color_text_white">#ffffff</color>
+
+    <!-- Multi selector colors -->
+    <color name="itemSelected">#E0E0E0</color>
 </resources>

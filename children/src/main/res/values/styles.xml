@@ -44,4 +44,19 @@
     </style>
 
 
+    <style name="TabLayoutStyle" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@android:color/black</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabBackground">@android:color/transparent</item>
+        <item name="tabTextAppearance">@style/CustomTabTextAppearance</item>
+        <item name="tabSelectedTextColor">@android:color/black</item>
+    </style>
+
+    <style name="CustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
 </resources>

@@ -72,6 +72,7 @@
                     android:layout_width="205dp"
                     android:layout_height="wrap_content"
                     android:hint="@string/password"
+                    android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"/>
 
             </android.support.design.widget.TextInputLayout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/reminder_content_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:cardCornerRadius="4dp"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="4dp">
+
+        <EditText
+            android:id="@+id/reminder_content_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:layout_below="@id/alertTitle"
+            android:background="@null"
+            android:gravity="start"
+            android:hint="@string/input_reminder_hint"
+            android:inputType="textMultiLine"
+            android:padding="4dp"/>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/reminder_content_card_view"
+        android:layout_gravity="center"
+        android:layout_marginBottom="70dp"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardUseCompatPadding="true"
+        card_view:contentPadding="4dp">
+
+        <ListView
+            android:id="@+id/reminder_settings_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </android.support.v7.widget.CardView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/send_reminder_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="20dp"
+        android:src="@android:drawable/ic_dialog_email"
+        app:fabSize="normal"/>
+</RelativeLayout>
+
+

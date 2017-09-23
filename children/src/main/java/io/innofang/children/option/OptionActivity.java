@@ -12,8 +12,8 @@ import io.innofang.base.base.BaseActivity;
 import io.innofang.base.widget.card_view_pager.ShadowTransformer;
 import io.innofang.children.R;
 import io.innofang.children.R2;
-import io.innofang.children.settings.SettingsActivity;
 import io.innofang.children.reminder.ReminderActivity;
+import io.innofang.children.settings.SettingsActivity;
 
 
 public class OptionActivity extends BaseActivity {
@@ -39,7 +39,7 @@ public class OptionActivity extends BaseActivity {
     private void init() {
         mCardAdapter = new CardPagerAdapter();
         mCardAdapter.addCardItem(new CardItem(R.string.card_medically_exam, R.drawable.medically_exam));
-        mCardAdapter.addCardItem(new CardItem(R.string.voice_reminder, R.drawable.voice_reminder));
+        mCardAdapter.addCardItem(new CardItem(R.string.reminder, R.drawable.voice_reminder));
         mCardAdapter.addCardItem(new CardItem(R.string.card_communication, R.drawable.communication));
         mCardAdapter.addCardItem(new CardItem(R.string.card_settings, R.drawable.settings));
 
