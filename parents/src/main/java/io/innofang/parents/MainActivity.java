@@ -1,12 +1,21 @@
 package io.innofang.parents;
 
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 
@@ -45,6 +54,22 @@ public class MainActivity extends BaseActivity
 
     private MenuItem mMenuItem;
 
+    private int[] stringIds = {
+            R.string.sms,
+            R.string.medically_exam,
+            R.string.home,
+            R.string.communication,
+            R.string.settings
+    };
+
+    private int[] drawableIds = {
+            R.drawable.ic_sms,
+            R.drawable.ic_medically_exam,
+            R.drawable.ic_home,
+            R.drawable.ic_communication,
+            R.drawable.ic_settings
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +93,7 @@ public class MainActivity extends BaseActivity
                 }
                 mMenuItem = mBottomNavigationView.getMenu().getItem(position);
                 mMenuItem.setChecked(true);
+                tips(stringIds[position], drawableIds[position]);
             }
 
             @Override
@@ -139,5 +165,37 @@ public class MainActivity extends BaseActivity
                 break;
         }
         return false;
+    }
+
+    Toast mToast;
+    View mToastView;
+    TextView mToastTextView;
+    ImageView mToastImageView;
+
+    private void showToast(@StringRes int strId, @DrawableRes int imgId) {
+        if (null == mToast) {
+            mToast = new Toast(this);
+            mToastView = LayoutInflater.from(this).inflate(R.layout.layout_toast, null);
+            mToast.setView(mToastView);
+            mToastTextView = (TextView) mToastView.findViewById(R.id.toast_text_view);
+            mToastImageView = (ImageView) mToastView.findViewById(R.id.toast_image_view);
+        }
+        mToastTextView.setText(strId);
+        mToastImageView.setImageResource(imgId);
+        mToast.setGravity(Gravity.CENTER, 0, 0);
+        mToast.setDuration(Toast.LENGTH_SHORT);
+        mToast.show();
+    }
+
+
+    private void tips(@StringRes int strId, @DrawableRes int imgId) {
+        if (null == mToast) {
+            mToast = Toast.makeText(this, strId, Toast.LENGTH_SHORT);
+            mToastImageView = new ImageView(this);
+            ((LinearLayout)mToast.getView()).addView(mToastImageView, 0);
+        }
+        mToast.setText(strId);
+        mToastImageView.setImageResource(imgId);
+        mToast.show();
     }
 }
