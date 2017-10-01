@@ -1,5 +1,6 @@
 package io.innofang.children.option;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -7,10 +8,13 @@ import android.support.v4.view.ViewPager;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.innofang.base.base.BaseActivity;
+import io.innofang.base.util.common.RequestPermissions;
 import io.innofang.base.widget.card_view_pager.ShadowTransformer;
 import io.innofang.children.R;
 import io.innofang.children.R2;
@@ -56,7 +60,19 @@ public class OptionActivity extends BaseActivity {
             public void onClick(int position) {
                 switch (position) {
                     case 0:
-                        ARouter.getInstance().build("/heart_beat/1").navigation();
+                        RequestPermissions.requestRuntimePermission(
+                                new String[]{Manifest.permission.CAMERA}, new RequestPermissions.OnRequestPermissionsListener() {
+                                    @Override
+                                    public void onGranted() {
+                                        ARouter.getInstance().build("/heart_beat/1").navigation();
+                                    }
+
+                                    @Override
+                                    public void onDenied(List<String> deniedPermission) {
+
+                                    }
+                                }
+                        );
                         break;
                     case 1:
                         startActivity(new Intent(OptionActivity.this, ReminderActivity.class));

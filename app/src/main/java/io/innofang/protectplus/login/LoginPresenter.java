@@ -60,7 +60,7 @@ public class LoginPresenter implements LoginContract.Presenter {
             @Override
             public void loginSuccessful(User user) {
                 mView.loginSuccessful();
-                if (user.getClient() == User.CHILDREN) {
+                if (user.getClient().equals(User.CHILDREN)) {
                     ARouter.getInstance().build("/children/1").navigation();
                     mView.showInfo("Children");
                 } else {

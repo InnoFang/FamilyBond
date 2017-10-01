@@ -14,4 +14,5 @@
     <string name="password_mismatch">两次密码不匹配，请重新输入</string>
     <string name="children">子女</string>
     <string name="parents">父母</string>
+    <string name="app_name_english">Family  Bond</string>
 </resources>
