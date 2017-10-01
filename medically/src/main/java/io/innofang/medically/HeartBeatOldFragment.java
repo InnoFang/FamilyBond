@@ -1,5 +1,6 @@
 package io.innofang.medically;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -29,9 +31,12 @@ import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import io.innofang.base.util.common.RequestPermissions;
 
 /**
  * Author: Inno Fang
@@ -46,7 +51,7 @@ public class HeartBeatOldFragment extends Fragment {
     private static final String TAG = "HeartBeatOldFragment";
 
     public static HeartBeatOldFragment newInstance() {
-       return new HeartBeatOldFragment();
+        return new HeartBeatOldFragment();
     }
 
     //	曲线
@@ -300,19 +305,34 @@ public class HeartBeatOldFragment extends Fragment {
     public void onResume() {
         super.onResume();
         wakeLock.acquire();
-        camera = Camera.open();
-        camera.setDisplayOrientation(90);
         startTime = System.currentTimeMillis();
+        RequestPermissions.requestRuntimePermission(
+                new String[]{Manifest.permission.CAMERA}, new RequestPermissions.OnRequestPermissionsListener() {
+                    @Override
+                    public void onGranted() {
+                        camera = Camera.open();
+                        camera.setDisplayOrientation(90);
+                    }
+
+                    @Override
+                    public void onDenied(List<String> deniedPermission) {
+
+                    }
+                }
+        );
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
         wakeLock.release();
-        camera.setPreviewCallback(null);
-        camera.stopPreview();
-        camera.release();
-        camera = null;
+        if (null != camera) {
+            camera.setPreviewCallback(null);
+            camera.stopPreview();
+            camera.release();
+            camera = null;
+        }
     }
 
     private static Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
@@ -414,12 +434,24 @@ public class HeartBeatOldFragment extends Fragment {
     private static SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
 
         public void surfaceCreated(SurfaceHolder holder) {
-            try {
-                camera.setPreviewDisplay(previewHolder);
-                camera.setPreviewCallback(previewCallback);
-            } catch (Throwable t) {
-                Log.e(TAG, "Exception in setPreviewDisplay()", t);
-            }
+            RequestPermissions.requestRuntimePermission(
+                    new String[]{Manifest.permission.CAMERA}, new RequestPermissions.OnRequestPermissionsListener() {
+                        @Override
+                        public void onGranted() {
+                            try {
+                                camera.setPreviewDisplay(previewHolder);
+                                camera.setPreviewCallback(previewCallback);
+                            } catch (Throwable t) {
+                                Log.e(TAG, "Exception in setPreviewDisplay()", t);
+                            }
+                        }
+
+                        @Override
+                        public void onDenied(List<String> deniedPermission) {
+
+                        }
+                    }
+            );
         }
 
         public void surfaceChanged(SurfaceHolder holder, int format, int width,
@@ -458,4 +490,9 @@ public class HeartBeatOldFragment extends Fragment {
         return result;
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        RequestPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 }

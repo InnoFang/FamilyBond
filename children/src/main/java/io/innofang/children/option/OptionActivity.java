@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -54,7 +56,7 @@ public class OptionActivity extends BaseActivity {
             public void onClick(int position) {
                 switch (position) {
                     case 0:
-                        toast(" 体检");
+                        ARouter.getInstance().build("/heart_beat/1").navigation();
                         break;
                     case 1:
                         startActivity(new Intent(OptionActivity.this, ReminderActivity.class));

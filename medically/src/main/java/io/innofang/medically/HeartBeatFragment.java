@@ -309,4 +309,6 @@ public class HeartBeatFragment extends Fragment {
         super.onDestroy();
         closeCamera();
     }
+
+
 }
