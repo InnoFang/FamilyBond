@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 
-import com.alibaba.android.arouter.launcher.ARouter;
-
 import java.util.List;
 
 import butterknife.BindView;
@@ -20,6 +18,7 @@ import io.innofang.children.R;
 import io.innofang.children.R2;
 import io.innofang.children.reminder.ReminderActivity;
 import io.innofang.children.settings.SettingsActivity;
+import io.innofang.medically.heat_beat.HeartBeatActivity;
 
 
 public class OptionActivity extends BaseActivity {
@@ -64,7 +63,8 @@ public class OptionActivity extends BaseActivity {
                                 new String[]{Manifest.permission.CAMERA}, new RequestPermissions.OnRequestPermissionsListener() {
                                     @Override
                                     public void onGranted() {
-                                        ARouter.getInstance().build("/heart_beat/1").navigation();
+//                                        ARouter.getInstance().build("/heart_beat/1").navigation();
+                                        startActivity(new Intent(OptionActivity.this, HeartBeatActivity.class));
                                     }
 
                                     @Override
