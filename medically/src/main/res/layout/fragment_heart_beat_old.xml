@@ -1,44 +1,76 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
-  <SurfaceView
-      android:id="@+id/preview"
-      android:layout_width="match_parent"
-      android:layout_height="300dp"/>
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:orientation="vertical">
 
-  <LinearLayout
-      android:id="@+id/linearLayout1"
-      android:layout_width="match_parent"
-      android:layout_height="200dp"
-      android:orientation="vertical" >
+    </LinearLayout>
 
-  </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-<TextView
-    android:id="@+id/text"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="50dip"
-    android:layout_weight="1"
-    android:text="显示" >
-</TextView>
-<TextView
-    android:id="@+id/text1"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="50dip"
-    android:layout_weight="1"
-    android:text="显示" >
-</TextView>
-<TextView
-    android:id="@+id/text2"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="50dip"
-    android:layout_weight="1"
-    android:text="显示" >
-</TextView>
+        <SurfaceView
+            android:id="@+id/preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+        <TextView
+            android:id="@+id/pulse_number_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:textColor="#ffffff"
+            tools:text="脉冲数：3.0"/>
+
+        <TextView
+            android:id="@+id/average_pixel_value_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pulse_number_text_view"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:textColor="#ffffff"
+            tools:text="平均像素值：210"/>
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="110dp"
+            android:layout_centerInParent="true">
+
+            <TextView
+                android:id="@+id/bps_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:textSize="100sp"
+                android:textStyle="bold"
+                tools:text="70"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_toEndOf="@id/bps_text_view"
+                android:text="@string/bps"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
 </LinearLayout>

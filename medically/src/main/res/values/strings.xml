@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">medically</string>
+    <string name="bps">bps</string>
 </resources>

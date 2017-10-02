@@ -1,6 +1,5 @@
 package io.innofang.medically;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -10,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -31,12 +29,10 @@ import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
-import java.util.List;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import io.innofang.base.util.common.RequestPermissions;
 
 /**
  * Author: Inno Fang
@@ -50,50 +46,59 @@ public class HeartBeatOldFragment extends Fragment {
 
     private static final String TAG = "HeartBeatOldFragment";
 
+    private static final int THRESHOLD = 200;
+
+
     public static HeartBeatOldFragment newInstance() {
         return new HeartBeatOldFragment();
     }
 
-    //	曲线
-    private Timer timer = new Timer();
-    private TimerTask task;
-    private static int gx;
-    private static int j;
+    /* 定时任务，绘制曲线 */
+    private Timer mTimer = new Timer();
+    private TimerTask mTimerTask;
 
-    private static double flag = 1;
-    private Handler handler;
-    private String title = "pulse";
-    private XYSeries series;
-    private XYMultipleSeriesDataset mDataset;
-    private GraphicalView chart;
-    private XYMultipleSeriesRenderer renderer;
-    private Context context;
-    private int addX = -1;
-    double addY;
-    int[] xv = new int[300];
-    int[] yv = new int[300];
-    int[] hua = new int[]{
+    /* 平均像素值 */
+    private int averagePixel;
+    private int flag = 1;
+    private Handler mHandler;
+    private String mTitle = "pulse";
+    private XYSeries mSeries;
+    private XYMultipleSeriesDataset mDataSet;
+    private GraphicalView mChart;
+    private XYMultipleSeriesRenderer mRenderer;
+    private int addX;
+    private int addY;
+    int[] mXAxisValue = new int[300];
+    int[] mYAxisValue = new int[300];
+
+    /* 模拟脉搏波波形 */
+    int[] pulse = new int[]{
             9, 10, 11, 12, 13,
             14, 13, 12, 11, 10,
             9, 8, 7, 6, 7,
             8, 9, 10, 11, 10,
             10};
+    /* 脉搏波波形数组下标 */
+    private int pulseIndex;
 
-    //	private static final String TAG = "HeartRateMonitor";
-    private static final AtomicBoolean processing = new AtomicBoolean(false);
-    private static SurfaceView preview = null;
-    private static SurfaceHolder previewHolder = null;
-    private static Camera camera = null;
-    //	private static View image = null;
-    private static TextView text = null;
-    private static TextView text1 = null;
-    private static TextView text2 = null;
-    private static PowerManager.WakeLock wakeLock = null;
-    private static int averageIndex = 0;
-    private static final int averageArraySize = 4;
-    private static final int[] averageArray = new int[averageArraySize];
+    private final AtomicBoolean processing = new AtomicBoolean(false);
+    private SurfaceView mSurfaceView;
+    private SurfaceHolder mSurfaceHolder;
+    private Camera mCamera;
+    private TextView mBpsTextView;
+    private TextView mAveragePixelValueTextView;
+    private TextView pulseNumberTextView;
+    private PowerManager.WakeLock wakeLock;
+    private int averageIndex = 0;
+    private final int averageArraySize = 4;
+    private final int[] averageArray = new int[averageArraySize];
+    private int beatsIndex = 0;
+    private final int beatsArraySize = 3;
+    private final int[] beatsArray = new int[beatsArraySize];
+    private double beats = 0;
+    private long startTime = 0;
 
-    public static enum TYPE {
+    private enum TYPE {
         GREEN, RED
     }
 
@@ -101,18 +106,6 @@ public class HeartBeatOldFragment extends Fragment {
 
     public static TYPE getCurrent() {
         return currentType;
-    }
-
-    private static int beatsIndex = 0;
-    private static final int beatsArraySize = 3;
-    private static final int[] beatsArray = new int[beatsArraySize];
-    private static double beats = 0;
-    private static long startTime = 0;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        context = getActivity();
     }
 
     @Nullable
@@ -129,37 +122,37 @@ public class HeartBeatOldFragment extends Fragment {
         LinearLayout layout = (LinearLayout) view.findViewById(R.id.linearLayout1);
 
         //这个类用来放置曲线上的所有点，是一个点的集合，根据这些点画出曲线
-        series = new XYSeries(title);
+        mSeries = new XYSeries(mTitle);
 
         //创建一个数据集的实例，这个数据集将被用来创建图表
-        mDataset = new XYMultipleSeriesDataset();
+        mDataSet = new XYMultipleSeriesDataset();
 
         //将点集添加到这个数据集中
-        mDataset.addSeries(series);
+        mDataSet.addSeries(mSeries);
 
         //以下都是曲线的样式和属性等等的设置，renderer相当于一个用来给图表做渲染的句柄
         int color = Color.GREEN;
         PointStyle style = PointStyle.CIRCLE;
-        renderer = buildRenderer(color, style, true);
+        mRenderer = buildRenderer(color, style, true);
 
         //设置好图表的样式
-        setChartSettings(renderer, "X", "Y", 0, 300, 4, 16, Color.WHITE, Color.WHITE);
+        setChartSettings(mRenderer, "X", "Y", 0, 300, 4, 16, Color.WHITE, Color.WHITE);
 
         //生成图表
-        chart = ChartFactory.getLineChartView(context, mDataset, renderer);
+        mChart = ChartFactory.getLineChartView(getActivity(), mDataSet, mRenderer);
 
         //将图表添加到布局中去
-        layout.addView(chart, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        layout.addView(mChart, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
 
 		/*	       thread = new Thread(){
                public void arrayList(int u) {
 	    		   ArrayList arrayList = new ArrayList();
-	    		   arrayList.add(HardwareControler.readADC());   			
+	    		   arrayList.add(HardwareControler.readADC());
 	   		}
 	       };*/
         //这里的Handler实例将配合下面的Timer实例，完成定时更新图表的功能
-        handler = new Handler() {
+        mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 //        		刷新图表
@@ -168,24 +161,24 @@ public class HeartBeatOldFragment extends Fragment {
             }
         };
 
-        task = new TimerTask() {
+        mTimerTask = new TimerTask() {
             @Override
             public void run() {
                 Message message = new Message();
                 message.what = 1;
-                handler.sendMessage(message);
+                mHandler.sendMessage(message);
             }
         };
 
-        timer.schedule(task, 1, 20);          //曲线
-        preview = (SurfaceView) view.findViewById(R.id.preview);
-        previewHolder = preview.getHolder();
-        previewHolder.addCallback(surfaceCallback);
-        previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        mTimer.schedule(mTimerTask, 1, 20);          //曲线
+        mSurfaceView = (SurfaceView) view.findViewById(R.id.preview);
+        mSurfaceHolder = mSurfaceView.getHolder();
+        mSurfaceHolder.addCallback(surfaceCallback);
+        mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         //		image = view.findViewById(R.id.image);
-        text = (TextView) view.findViewById(R.id.text);
-        text1 = (TextView) view.findViewById(R.id.text1);
-        text2 = (TextView) view.findViewById(R.id.text2);
+        mBpsTextView = (TextView) view.findViewById(R.id.bps_text_view);
+        mAveragePixelValueTextView = (TextView) view.findViewById(R.id.average_pixel_value_text_view);
+        pulseNumberTextView = (TextView) view.findViewById(R.id.pulse_number_text_view);
         PowerManager pm = (PowerManager) getActivity().getSystemService(Context.POWER_SERVICE);
         wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "DoNotDimScreen");
     }
@@ -194,7 +187,7 @@ public class HeartBeatOldFragment extends Fragment {
     @Override
     public void onDestroy() {
         //当结束程序时关掉Timer
-        timer.cancel();
+        mTimer.cancel();
         super.onDestroy();
     }
 
@@ -215,7 +208,7 @@ public class HeartBeatOldFragment extends Fragment {
     protected void setChartSettings(XYMultipleSeriesRenderer renderer, String xTitle, String yTitle,
                                     double xMin, double xMax, double yMin, double yMax, int axesColor, int labelsColor) {
         //有关对图表的渲染可参看api文档
-        renderer.setChartTitle(title);
+        renderer.setChartTitle(mTitle);
         renderer.setXTitle(xTitle);
         renderer.setYTitle(yTitle);
         renderer.setXAxisMin(xMin);
@@ -240,28 +233,28 @@ public class HeartBeatOldFragment extends Fragment {
             addY = 10;
         else {
             flag = 1;
-            if (gx < 200) {
-                if (hua[20] > 1) {
-                    Toast.makeText(context, "请用您的指尖盖住摄像头镜头！", Toast.LENGTH_SHORT).show();
-                    hua[20] = 0;
+            /* 阈值：200，平均像素值大于该值时，视为手指在摄像头上 */
+            if (averagePixel < THRESHOLD) {
+                if (pulse[20] > 1) {
+                    Toast.makeText(getActivity(), "请用您的指尖盖住摄像头镜头！", Toast.LENGTH_SHORT).show();
+                    pulse[20] = 0;
                 }
-                hua[20]++;
+                pulse[20]++;
                 return;
             } else
-                hua[20] = 10;
-            j = 0;
-
+                pulse[20] = 10;
+            pulseIndex = 0;
         }
-        if (j < 20) {
-            addY = hua[j];
-            j++;
+        if (pulseIndex < 20) {
+            addY = pulse[pulseIndex];
+            pulseIndex++;
         }
 
         //移除数据集中旧的点集
-        mDataset.removeSeries(series);
+        mDataSet.removeSeries(mSeries);
 
         //判断当前点集中到底有多少点，因为屏幕总共只能容纳100个，所以当点数超过100时，长度永远是100
-        int length = series.getItemCount();
+        int length = mSeries.getItemCount();
         int bz = 0;
         //		addX = length;
         if (length > 300) {
@@ -271,27 +264,27 @@ public class HeartBeatOldFragment extends Fragment {
         addX = length;
         //将旧的点集中x和y的数值取出来放入backup中，并且将x的值加1，造成曲线向右平移的效果
         for (int i = 0; i < length; i++) {
-            xv[i] = (int) series.getX(i) - bz;
-            yv[i] = (int) series.getY(i);
+            mXAxisValue[i] = (int) mSeries.getX(i) - bz;
+            mYAxisValue[i] = (int) mSeries.getY(i);
         }
 
         //点集先清空，为了做成新的点集而准备
-        series.clear();
-        mDataset.addSeries(series);
+        mSeries.clear();
+        mDataSet.addSeries(mSeries);
         //将新产生的点首先加入到点集中，然后在循环体中将坐标变换后的一系列点都重新加入到点集中
         //这里可以试验一下把顺序颠倒过来是什么效果，即先运行循环体，再添加新产生的点
 
-        series.add(addX, addY);
+        mSeries.add(addX, addY);
         for (int k = 0; k < length; k++) {
-            series.add(xv[k], yv[k]);
+            mSeries.add(mXAxisValue[k], mYAxisValue[k]);
         }
 
         //在数据集中添加新的点集
-        //		mDataset.addSeries(series);
+        //		mDataSet.addSeries(mSeries);
 
         //视图更新，没有这一步，曲线不会呈现动态
         //如果在非UI主线程中，需要调用postInvalidate()，具体参考api
-        chart.invalidate();
+        mChart.invalidate();
     }
 
 
@@ -305,37 +298,22 @@ public class HeartBeatOldFragment extends Fragment {
     public void onResume() {
         super.onResume();
         wakeLock.acquire();
+        mCamera = Camera.open();
+        mCamera.setDisplayOrientation(90);
         startTime = System.currentTimeMillis();
-        RequestPermissions.requestRuntimePermission(
-                new String[]{Manifest.permission.CAMERA}, new RequestPermissions.OnRequestPermissionsListener() {
-                    @Override
-                    public void onGranted() {
-                        camera = Camera.open();
-                        camera.setDisplayOrientation(90);
-                    }
-
-                    @Override
-                    public void onDenied(List<String> deniedPermission) {
-
-                    }
-                }
-        );
-
     }
 
     @Override
     public void onPause() {
         super.onPause();
         wakeLock.release();
-        if (null != camera) {
-            camera.setPreviewCallback(null);
-            camera.stopPreview();
-            camera.release();
-            camera = null;
-        }
+        mCamera.setPreviewCallback(null);
+        mCamera.stopPreview();
+        mCamera.release();
+        mCamera = null;
     }
 
-    private static Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
+    private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
 
         public void onPreviewFrame(byte[] data, Camera cam) {
             if (data == null)
@@ -350,10 +328,8 @@ public class HeartBeatOldFragment extends Fragment {
 //            Log.i(TAG, "onPreviewFrame: width = " + width + " height = " + height + " data.length = " + data.length);
             //图像处理
             int imgAvg = ImageProcessing.decodeYUV420SPtoRedAvg(data.clone(), width, height);
-            gx = imgAvg;
-            text1.setText("平均像素值是" + String.valueOf(imgAvg));
-            //像素平均值imgAvg,日志
-            //			Log.i(TAG, "imgAvg=" + imgAvg);
+            averagePixel = imgAvg;
+            mAveragePixelValueTextView.setText(String.format("平均像素值：%s", String.valueOf(imgAvg)));
             if (imgAvg == 0 || imgAvg == 255) {
                 processing.set(false);
                 return;
@@ -370,18 +346,20 @@ public class HeartBeatOldFragment extends Fragment {
 
             int rollingAverage = (averageArrayCnt > 0) ? (averageArrayAvg / averageArrayCnt) : 0;
             TYPE newType = currentType;
+            Log.i(TAG, "onPreviewFrame: imgAvg = " + imgAvg + " rollingAverage = " + rollingAverage);
             if (imgAvg < rollingAverage) {
                 newType = TYPE.RED;
                 if (newType != currentType) {
                     beats++;
                     flag = 0;
-                    text2.setText("脉冲数是               " + String.valueOf(beats));
-                    Log.e(TAG, "BEAT!! beats=" + beats);
+                    pulseNumberTextView.setText(String.format("脉冲数是：%s", String.valueOf(beats)));
+                    Log.i(TAG, "BEAT!! beats=" + beats);
                 }
             } else if (imgAvg > rollingAverage) {
                 newType = TYPE.GREEN;
             }
 
+            /* 防止越界 */
             if (averageIndex == averageArraySize)
                 averageIndex = 0;
             averageArray[averageIndex] = imgAvg;
@@ -407,22 +385,23 @@ public class HeartBeatOldFragment extends Fragment {
                     processing.set(false);
                     return;
                 }
-                Log.e(TAG, "totalTimeInSecs=" + totalTimeInSecs + " beats=" + beats);
+                Log.i(TAG, "totalTimeInSecs=" + totalTimeInSecs + " beats=" + beats);
                 if (beatsIndex == beatsArraySize)
                     beatsIndex = 0;
                 beatsArray[beatsIndex] = dpm;
                 beatsIndex++;
-                int beatsArrayAvg = 0;
+                int beatsArraySum = 0;
                 int beatsArrayCnt = 0;
                 for (int i = 0; i < beatsArray.length; i++) {
                     if (beatsArray[i] > 0) {
-                        beatsArrayAvg += beatsArray[i];
+                        beatsArraySum += beatsArray[i];
                         beatsArrayCnt++;
                     }
                 }
-                int beatsAvg = (beatsArrayAvg / beatsArrayCnt);
-                text.setText("小毛同志的心率是" + String.valueOf(beatsAvg) + "  zhi:" + String.valueOf(beatsArray.length)
-                        + "    " + String.valueOf(beatsIndex) + "    " + String.valueOf(beatsArrayAvg) + "    " + String.valueOf(beatsArrayCnt));
+                int beatsAvg = (beatsArraySum / beatsArrayCnt);
+                mBpsTextView.setText(String.valueOf(beatsAvg));
+//                mBpsTextView.setText("小毛同志的心率是" + String.valueOf(beatsAvg) + "  zhi:" + String.valueOf(beatsArray.length)
+//                        + "    " + String.valueOf(beatsIndex) + "    " + String.valueOf(beatsArraySum) + "    " + String.valueOf(beatsArrayCnt));
                 //获取系统时间（ms）
                 startTime = System.currentTimeMillis();
                 beats = 0;
@@ -431,47 +410,41 @@ public class HeartBeatOldFragment extends Fragment {
         }
     };
 
-    private static SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
+    private SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
 
         public void surfaceCreated(SurfaceHolder holder) {
-            RequestPermissions.requestRuntimePermission(
-                    new String[]{Manifest.permission.CAMERA}, new RequestPermissions.OnRequestPermissionsListener() {
-                        @Override
-                        public void onGranted() {
-                            try {
-                                camera.setPreviewDisplay(previewHolder);
-                                camera.setPreviewCallback(previewCallback);
-                            } catch (Throwable t) {
-                                Log.e(TAG, "Exception in setPreviewDisplay()", t);
-                            }
-                        }
-
-                        @Override
-                        public void onDenied(List<String> deniedPermission) {
-
-                        }
-                    }
-            );
+            try {
+                mCamera.setPreviewDisplay(mSurfaceHolder);
+                mCamera.setPreviewCallback(previewCallback);
+            } catch (IOException e) {
+                Log.e(TAG, "Exception in setPreviewDisplay() ", e);
+            }
         }
 
         public void surfaceChanged(SurfaceHolder holder, int format, int width,
                                    int height) {
-            Camera.Parameters parameters = camera.getParameters();
+            Camera.Parameters parameters = mCamera.getParameters();
             parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
             Camera.Size size = getSmallestPreviewSize(width, height, parameters);
             if (size != null) {
                 parameters.setPreviewSize(size.width, size.height);
                 Log.d(TAG, "Using width=" + size.width + " height=" + size.height);
             }
-            camera.setParameters(parameters);
-            camera.startPreview();
+            mCamera.setParameters(parameters);
+            mCamera.startPreview();
         }
 
         public void surfaceDestroyed(SurfaceHolder holder) {
-            // Ignore
         }
     };
 
+    /**
+     * 将预览 Surface 的宽高与相机参数中的宽高做比较，最终得出最小预览大小
+     * @param width      Surface 的宽（在 Surface 大小或格式改变后获得）
+     * @param height     Surface 的高
+     * @param parameters 相机参数，包含宽、高等信息
+     * @return 最小预览宽高
+     */
     private static Camera.Size getSmallestPreviewSize(int width, int height,
                                                       Camera.Parameters parameters) {
         Camera.Size result = null;
@@ -490,9 +463,4 @@ public class HeartBeatOldFragment extends Fragment {
         return result;
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        RequestPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
 }
