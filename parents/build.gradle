@@ -63,7 +63,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile project(':base')
+    compile project(':medically')
 
     annotationProcessor 'com.jakewharton:butterknife-compiler:' + rootProject.butter_knife      //
     annotationProcessor "com.alibaba:arouter-compiler:$rootProject.ext.arouter_comiler"         //

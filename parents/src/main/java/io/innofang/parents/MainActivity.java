@@ -37,9 +37,9 @@ import io.innofang.base.bean.User;
 import io.innofang.base.util.bmob.BmobEvent;
 import io.innofang.base.util.bmob.BmobUtil;
 import io.innofang.base.util.common.BottomNavigationViewHelper;
+import io.innofang.medically.heat_beat.HeartBeatOldFragment;
 import io.innofang.parents.communication.CommunicationFragment;
 import io.innofang.parents.home.HomeFragment;
-import io.innofang.parents.medically_exam.MedicallyExamFragment;
 import io.innofang.parents.settings.SettingsFragment;
 import io.innofang.parents.sms.SmsFragment;
 
@@ -103,7 +103,7 @@ public class MainActivity extends BaseActivity
         });
         List<Fragment> list = new ArrayList<>();
         list.add(SmsFragment.newInstance());
-        list.add(MedicallyExamFragment.newInstance());
+        list.add(HeartBeatOldFragment.newInstance());
         list.add(HomeFragment.newInstance());
         list.add(CommunicationFragment.newInstance());
         list.add(SettingsFragment.newInstance());
