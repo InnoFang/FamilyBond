@@ -1,1 +1,10 @@
-include ':app', ':children', ':parents', ':amap', ':bmob', ':xfyun', ':base', ':library', ':medically'
+include ':app',
+        ':children',
+        ':parents',
+        ':amap',
+        ':bmob',
+        ':base',
+        ':library',
+        ':medically',
+        ':xfyun'
+

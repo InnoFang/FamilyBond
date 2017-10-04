@@ -32,6 +32,6 @@ dependencies {
     compile project(':amap')
     compile project(':bmob')
     compile project(':library')
-    compile project(':xfyun')
+//    compile project(':xfyun')
 
 }
