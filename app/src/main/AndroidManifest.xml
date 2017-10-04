@@ -16,13 +16,18 @@
             android:value="2f6aad617c8a6c85e06300e7d03fb829"/>
 
         <activity
-            android:name=".login.LoginActivity"
-            android:windowSoftInputMode="adjustResize">
+            android:name=".SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".login.LoginActivity"
+            android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
             android:name=".register.RegisterActivity"

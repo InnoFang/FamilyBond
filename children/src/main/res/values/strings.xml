@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Children</string>
     <string name="reminder">消息提醒</string>
-    <string name="card_medically_exam">手机体检</string>
+    <string name="card_medically_exam">健康检查</string>
     <string name="card_communication">亲子交流</string>
     <string name="card_settings">常用设置</string>
 
