@@ -22,16 +22,20 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.greendao.query.Query;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
+import io.innofang.base.bean.greendao.Bpm;
+import io.innofang.base.bean.greendao.BpmDao;
+import io.innofang.base.bean.greendao.DaoSession;
+import io.innofang.base.configure.GreenDaoConfig;
+import io.innofang.base.util.common.L;
 import io.innofang.medically.R;
-import io.innofang.medically.dao.Bpm;
 import io.innofang.medically.utils.event.MedicallyEvent;
 
 /**
@@ -48,6 +52,7 @@ public class DataDisplayFragment extends Fragment {
 
     private List<Bpm> data = new ArrayList<>();
     private RecyclerView mDataDisplayRecyclerView;
+    private BpmDao mBpmDao;
 
     public static DataDisplayFragment newInstance() {
 
@@ -71,7 +76,7 @@ public class DataDisplayFragment extends Fragment {
         SimpleDateFormat mFormat = new SimpleDateFormat("dd MMM HH:mm", Locale.CHINA);
         bpm.setTime(mFormat.format(new Date()));
         data.add(bpm);
-        Log.i("tag", "onHandleMedicallyEvent: " + String.format("%sbpm ", event.bpm));
+        L.i("onHandleMedicallyEvent: " + String.format("%sbpm ", event.bpm));
         mBpsTextView.setText(String.format("%s bpm ", event.bpm));
     }
 
@@ -110,7 +115,7 @@ public class DataDisplayFragment extends Fragment {
         mChart.setHighlightPerDragEnabled(true);
         mChart.setBackground(getActivity().getDrawable(R.drawable.bg_chart));
         mChart.setViewPortOffsets(80f, 0f, 80f, 0f);
-        setData(5);
+        setData();
         mChart.invalidate();
         mChart.getLegend().setEnabled(false);
 
@@ -123,6 +128,7 @@ public class DataDisplayFragment extends Fragment {
         xAxis.setDrawGridLines(true);
         xAxis.setCenterAxisLabels(false);
         xAxis.setDrawGridLines(false);
+        xAxis.setEnabled(false);
         xAxis.setGranularityEnabled(true);
 
         YAxis yAxis = mChart.getAxisLeft();
@@ -141,23 +147,28 @@ public class DataDisplayFragment extends Fragment {
         mChart.getAxisRight().setEnabled(false);
     }
 
-    private void setData(int count) {
+    private void setData() {
 
-        Random random = new Random();
+        DaoSession daoSession = GreenDaoConfig.getInstance().getDaoSession();
+        mBpmDao = daoSession.getBpmDao();
+        Query<Bpm> bpmQuery= mBpmDao.queryBuilder().orderAsc(BpmDao.Properties.Id).build();
+        data.addAll(bpmQuery.list());
 
-        for (int i = 1; i <= 20; i++) {
-            Bpm bpm = new Bpm();
-            int value = (random.nextInt(55) + 50);
-            bpm.setBpm(value + "");
-            if (value >= 60 && value <= 90)
-                bpm.setDescription("继续保持");
-            else if (value < 60)
-                bpm.setDescription("勤加锻炼");
-            else if (value > 90)
-                bpm.setDescription("注意休息");
-            bpm.setTime("2017-10-4");
-            data.add(bpm);
-        }
+//        Random random = new Random();
+
+//        for (int i = 1; i <= 20; i++) {
+//            Bpm bpm = new Bpm();
+//            int value = (random.nextInt(55) + 50);
+//            bpm.setBpm(value + "");
+//            if (value >= 60 && value <= 90)
+//                bpm.setDescription("继续保持");
+//            else if (value < 60)
+//                bpm.setDescription("勤加锻炼");
+//            else if (value > 90)
+//                bpm.setDescription("注意休息");
+//            bpm.setTime("2017-10-4");
+//            data.add(bpm);
+//        }
 
         // 拿到最新测量数据
         EventBus.getDefault().register(this);
@@ -167,6 +178,7 @@ public class DataDisplayFragment extends Fragment {
             start = data.size() - 5;
         else
             start = 0;
+
         List<Entry> values = new ArrayList<>();
         for (int i = start; i < data.size(); i++) {
             Log.i("tag", "setData: " + i + " i-start" + (i - start));

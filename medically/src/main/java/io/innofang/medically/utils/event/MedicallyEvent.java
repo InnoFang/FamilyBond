@@ -11,6 +11,6 @@ import java.io.Serializable;
 
 public class MedicallyEvent implements Serializable{
 
-    public String bps;
+    public String bpm;
 
 }

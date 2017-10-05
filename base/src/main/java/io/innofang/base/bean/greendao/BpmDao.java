@@ -62,7 +62,7 @@ public class BpmDao extends AbstractDao<Bpm, Long> {
             stmt.bindLong(1, id);
         }
  
-        String mBpm = entity.getBpm();
+        String mBpm = entity.getMBpm();
         if (mBpm != null) {
             stmt.bindString(2, mBpm);
         }
@@ -87,7 +87,7 @@ public class BpmDao extends AbstractDao<Bpm, Long> {
             stmt.bindLong(1, id);
         }
  
-        String mBpm = entity.getBpm();
+        String mBpm = entity.getMBpm();
         if (mBpm != null) {
             stmt.bindString(2, mBpm);
         }

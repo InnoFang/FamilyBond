@@ -208,7 +208,7 @@ public class HeartBeatOldFragment extends Fragment {
                     public void countdownFinished() {
 //                        Toast.makeText(getContext(), "倒计时结束了--->该UI处理界面逻辑了", Toast.LENGTH_LONG).show();
                         MedicallyEvent event = new MedicallyEvent();
-                        event.bps = mBpsTextView.getText().toString();
+                        event.bpm = mBpsTextView.getText().toString();
                         EventBus.getDefault().postSticky(event);
                         startActivity(new Intent(getActivity(), DataDisplayActivity.class));
                     }
