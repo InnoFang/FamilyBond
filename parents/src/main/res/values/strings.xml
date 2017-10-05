@@ -9,5 +9,7 @@
     <string name="reminder">提醒</string>
     <string name="click_to_test_heart_beat">点击卡片测心率</string>
     <string name="last_heart_rate">上一次测量</string>
+    <string name="sms_protect">短信保护</string>
+    <string name="suspicious_sms">可疑短信</string>
 
 </resources>
