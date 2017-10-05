@@ -1,4 +1,4 @@
-package io.innofang.parents.home;
+package io.innofang.parents.reminder;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import io.innofang.base.base.BaseView;
  */
 
 
-public class HomeContract {
+public class ReminderContract {
 
     interface View extends BaseView<Presenter> {
 

@@ -1,4 +1,4 @@
-package io.innofang.parents.home;
+package io.innofang.parents.reminder;
 
 import java.util.List;
 
@@ -12,11 +12,11 @@ import cn.bmob.newim.bean.BmobIMConversation;
  */
 
 
-public class HomePresenter implements HomeContract.Presenter {
+public class ReminderPresenter implements ReminderContract.Presenter {
 
-    private HomeContract.View mView;
+    private ReminderContract.View mView;
 
-    public HomePresenter(HomeContract.View view) {
+    public ReminderPresenter(ReminderContract.View view) {
         mView = view;
         mView.setPresenter(this);
     }

@@ -9,6 +9,7 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="?attr/actionBarSize"
         android:layout_alignEnd="@+id/bottom_navigation_view"
         android:layout_alignParentTop="true"/>
 
@@ -29,7 +30,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:src="@drawable/ic_home"
+            app:srcCompat="@drawable/ic_medically_exam"
             app:fabSize="normal"/>
     </android.support.design.widget.BottomNavigationView>
 

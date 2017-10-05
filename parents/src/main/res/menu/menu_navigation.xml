@@ -12,17 +12,8 @@
         android:title="@string/medically_exam"/>
 
     <item
-        android:id="@+id/item_home"
-        android:icon="@drawable/ic_home"
-        android:title="@string/home"/>
+        android:id="@+id/item_reminder"
+        android:icon="@drawable/ic_reminder"
+        android:title="@string/reminder"/>
 
-    <item
-        android:id="@+id/item_communication"
-        android:icon="@drawable/ic_communication"
-        android:title="@string/communication"/>
-
-    <item
-        android:id="@+id/item_settings"
-        android:icon="@drawable/ic_settings"
-        android:title="@string/settings"/>
 </menu>

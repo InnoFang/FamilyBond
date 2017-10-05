@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,10 +36,8 @@ import io.innofang.base.bean.User;
 import io.innofang.base.util.bmob.BmobEvent;
 import io.innofang.base.util.bmob.BmobUtil;
 import io.innofang.base.util.common.BottomNavigationViewHelper;
-import io.innofang.parents.communication.CommunicationFragment;
-import io.innofang.parents.home.HomeFragment;
 import io.innofang.parents.medically_exam.MedicallyExamFragment;
-import io.innofang.parents.settings.SettingsFragment;
+import io.innofang.parents.reminder.ReminderFragment;
 import io.innofang.parents.sms.SmsFragment;
 import io.innofang.xfyun.XFYunUtil;
 
@@ -58,17 +55,13 @@ public class MainActivity extends BaseActivity
     private int[] stringIds = {
             R.string.sms,
             R.string.medically_exam,
-            R.string.home,
-            R.string.communication,
-            R.string.settings
+            R.string.reminder
     };
 
     private int[] drawableIds = {
             R.drawable.ic_sms,
             R.drawable.ic_medically_exam,
-            R.drawable.ic_home,
-            R.drawable.ic_communication,
-            R.drawable.ic_settings
+            R.drawable.ic_reminder,
     };
 
     @Override
@@ -105,12 +98,10 @@ public class MainActivity extends BaseActivity
         List<Fragment> list = new ArrayList<>();
         list.add(SmsFragment.newInstance());
         list.add(MedicallyExamFragment.newInstance());
-        list.add(HomeFragment.newInstance());
-        list.add(CommunicationFragment.newInstance());
-        list.add(SettingsFragment.newInstance());
+        list.add(ReminderFragment.newInstance());
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), list);
         mViewPager.setAdapter(adapter);
-        mViewPager.setCurrentItem(2);
+        mViewPager.setCurrentItem(1);
 
         checkConnect();
     }
@@ -155,14 +146,8 @@ public class MainActivity extends BaseActivity
             case R2.id.item_medically_exam:
                 mViewPager.setCurrentItem(1);
                 break;
-            case R2.id.item_home:
+            case R2.id.item_reminder:
                 mViewPager.setCurrentItem(2);
-                break;
-            case R2.id.item_communication:
-                mViewPager.setCurrentItem(3);
-                break;
-            case R2.id.item_settings:
-                mViewPager.setCurrentItem(4);
                 break;
             default:
                 break;
@@ -175,7 +160,7 @@ public class MainActivity extends BaseActivity
     TextView mToastTextView;
     ImageView mToastImageView;
 
-    private void showToast(@StringRes int strId, @DrawableRes int imgId) {
+    private void tips(@StringRes int strId, @DrawableRes int imgId) {
         if (null == mToast) {
             mToast = new Toast(this);
             mToastView = LayoutInflater.from(this).inflate(R.layout.layout_toast, null);
@@ -187,18 +172,6 @@ public class MainActivity extends BaseActivity
         mToastImageView.setImageResource(imgId);
         mToast.setGravity(Gravity.CENTER, 0, 0);
         mToast.setDuration(Toast.LENGTH_SHORT);
-        mToast.show();
-    }
-
-
-    private void tips(@StringRes int strId, @DrawableRes int imgId) {
-        if (null == mToast) {
-            mToast = Toast.makeText(this, strId, Toast.LENGTH_SHORT);
-            mToastImageView = new ImageView(this);
-            ((LinearLayout)mToast.getView()).addView(mToastImageView, 0);
-        }
-        mToast.setText(strId);
-        mToastImageView.setImageResource(imgId);
         mToast.show();
     }
 }

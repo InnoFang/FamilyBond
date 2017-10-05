@@ -1,4 +1,4 @@
-package io.innofang.parents.home;
+package io.innofang.parents.reminder;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -34,14 +34,14 @@ import io.innofang.parents.R2;
  */
 
 
-public class HomeFragment extends Fragment {
+public class ReminderFragment extends Fragment {
 
     @BindView(R2.id.message_text_view)
     TextView mMessageTextView;
     Unbinder unbinder;
 
-    public static HomeFragment newInstance() {
-        return new HomeFragment();
+    public static ReminderFragment newInstance() {
+        return new ReminderFragment();
     }
 
     @Override
@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_reminder, container, false);
         unbinder = ButterKnife.bind(this, view);
 
         return view;
