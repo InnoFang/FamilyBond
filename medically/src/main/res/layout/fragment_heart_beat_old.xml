@@ -22,7 +22,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-
         <TextView
             android:id="@+id/pulse_number_text_view"
             android:layout_width="match_parent"
@@ -72,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_toEndOf="@id/bps_text_view"
-                android:text="@string/bps"
+                android:text="@string/bpm"
                 android:textColor="#ffffff"
                 android:textSize="20sp"
                 android:textStyle="bold"/>

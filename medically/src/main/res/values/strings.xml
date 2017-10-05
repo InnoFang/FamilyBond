@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">medically</string>
-    <string name="bps">bps</string>
+    <string name="bpm">bpm</string>
     <string name="click_the_circle_to_start">点击圆圈开始测量</string>
 </resources>

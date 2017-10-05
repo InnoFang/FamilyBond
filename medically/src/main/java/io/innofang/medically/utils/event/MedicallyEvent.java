@@ -1,4 +1,4 @@
-package io.innofang.medically.dao;
+package io.innofang.medically.utils.event;
 
 import java.io.Serializable;
 

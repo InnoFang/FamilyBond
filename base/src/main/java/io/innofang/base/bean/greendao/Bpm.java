@@ -35,22 +35,22 @@ public class Bpm {
     public void setId(Long id) {
         this.id = id;
     }
-    public String getMBpm() {
+    public String getBpm() {
         return this.mBpm;
     }
-    public void setMBpm(String mBpm) {
+    public void setBpm(String mBpm) {
         this.mBpm = mBpm;
     }
-    public String getMTime() {
+    public String getTime() {
         return this.mTime;
     }
-    public void setMTime(String mTime) {
+    public void setTime(String mTime) {
         this.mTime = mTime;
     }
-    public String getMDescription() {
+    public String getDescription() {
         return this.mDescription;
     }
-    public void setMDescription(String mDescription) {
+    public void setDescription(String mDescription) {
         this.mDescription = mDescription;
     }
 

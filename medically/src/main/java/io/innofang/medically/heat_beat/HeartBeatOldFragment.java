@@ -37,7 +37,7 @@ import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.innofang.medically.R;
-import io.innofang.medically.dao.MedicallyEvent;
+import io.innofang.medically.utils.event.MedicallyEvent;
 import io.innofang.medically.data_display.DataDisplayActivity;
 import io.innofang.medically.utils.ImageProcessing;
 import io.innofang.medically.widget.CountDownProgress;
