@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.jakewharton.butterknife'
+apply plugin: 'org.greenrobot.greendao' 
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -49,7 +50,10 @@ dependencies {
     compile "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxjava2"                                //
     compile "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxandroid"                           //
     /* EventBus */
-    compile "org.greenrobot:eventbus:$rootProject.ext.eventbus"                                   //
+    compile "org.greenrobot:eventbus:$rootProject.ext.eventbus"
+    /* GreenDao */
+    compile 'org.greenrobot:greendao:' + rootProject.greendao                                     //
+    compile 'org.greenrobot:greendao-generator:' + rootProject.greendao                           //
     /* MPAndroidChart */
     compile 'com.github.PhilJay:MPAndroidChart:' + rootProject.mp_android_chart                   //
     /* ARouter */

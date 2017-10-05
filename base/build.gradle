@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -25,6 +26,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    greendao {
+        schemaVersion 1
+        daoPackage 'io.innofang.base.bean.greendao' //这个是生成代码保存的包名
+        targetGenDir 'src/main/java' //保存到java代码路径
+    }
 }
 
 dependencies {
@@ -33,5 +40,5 @@ dependencies {
     compile project(':bmob')
     compile project(':library')
     compile project(':xfyun')
-
+    testCompile 'junit:junit:4.12'
 }
