@@ -6,6 +6,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 
 import io.innofang.base.util.common.L;
 import io.innofang.bmob.BmobAPI;
+import io.innofang.xfyun.XFYun;
 
 /**
  * Author: Inno Fang
@@ -32,5 +33,8 @@ public class App extends Application {
 
         /* initialize Log */
         L.Debug = true;
+
+        /* initialize XFYun */
+        XFYun.init(this);
     }
 }
