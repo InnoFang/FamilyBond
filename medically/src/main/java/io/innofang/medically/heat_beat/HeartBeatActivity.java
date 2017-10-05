@@ -23,7 +23,7 @@ public class HeartBeatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_heart_beat);
         if (null == savedInstanceState) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, HeartBeatOldFragment.newInstance())
+                    .replace(R.id.container, HeartBeatFragment.newInstance())
                     .commit();
         }
     }

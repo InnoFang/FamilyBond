@@ -12,7 +12,6 @@ import android.os.Message;
 import android.os.PowerManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -36,10 +35,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import io.innofang.base.util.common.L;
 import io.innofang.medically.R;
-import io.innofang.medically.utils.event.MedicallyEvent;
 import io.innofang.medically.data_display.DataDisplayActivity;
 import io.innofang.medically.utils.ImageProcessing;
+import io.innofang.medically.utils.event.MedicallyEvent;
 import io.innofang.medically.widget.CountDownProgress;
 
 /**
@@ -50,15 +50,15 @@ import io.innofang.medically.widget.CountDownProgress;
 
 
 @SuppressWarnings("deprecation")
-public class HeartBeatOldFragment extends Fragment {
+public class HeartBeatFragment extends Fragment {
 
-    private static final String TAG = "HeartBeatOldFragment";
+    private static final String TAG = "HeartBeatFragment";
 
-    private static final int THRESHOLD = 200;
+    private static final int THRESHOLD = 190;
 
 
-    public static HeartBeatOldFragment newInstance() {
-        return new HeartBeatOldFragment();
+    public static HeartBeatFragment newInstance() {
+        return new HeartBeatFragment();
     }
 
     /* 定时任务，绘制曲线 */
@@ -120,7 +120,7 @@ public class HeartBeatOldFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_heart_beat_old, container, false);
+        return inflater.inflate(R.layout.fragment_heart_beat, container, false);
     }
 
     @Override
@@ -256,7 +256,7 @@ public class HeartBeatOldFragment extends Fragment {
         renderer.setXLabels(20);
         renderer.setYLabels(10);
         renderer.setXTitle("Time");
-        renderer.setYTitle("mmHg");
+        renderer.setYTitle("  ");
         renderer.setYLabelsAlign(Paint.Align.RIGHT);
         renderer.setPointSize((float) 3);
         renderer.setShowLegend(false);
@@ -381,14 +381,14 @@ public class HeartBeatOldFragment extends Fragment {
 
             int rollingAverage = (averageArrayCnt > 0) ? (averageArrayAvg / averageArrayCnt) : 0;
             TYPE newType = currentType;
-            Log.i(TAG, "onPreviewFrame: imgAvg = " + imgAvg + " rollingAverage = " + rollingAverage);
+            L.i("onPreviewFrame: imgAvg = " + imgAvg + " rollingAverage = " + rollingAverage);
             if (imgAvg < rollingAverage) {
                 newType = TYPE.RED;
                 if (newType != currentType) {
                     beats++;
                     flag = 0;
                     pulseNumberTextView.setText(String.format("脉冲数：%s", String.valueOf(beats)));
-                    Log.i(TAG, "BEAT!! beats=" + beats);
+                    L.i("BEAT!! beats=" + beats);
                 }
             } else if (imgAvg > rollingAverage) {
                 newType = TYPE.GREEN;
@@ -420,7 +420,7 @@ public class HeartBeatOldFragment extends Fragment {
                     processing.set(false);
                     return;
                 }
-                Log.e(TAG, "totalTimeInSecs=" + totalTimeInSecs + " beats=" + beats);
+                L.i("totalTimeInSecs=" + totalTimeInSecs + " beats=" + beats);
                 if (beatsIndex == beatsArraySize)
                     beatsIndex = 0;
                 beatsArray[beatsIndex] = dpm;
@@ -452,7 +452,7 @@ public class HeartBeatOldFragment extends Fragment {
                 mCamera.setPreviewDisplay(mSurfaceHolder);
                 mCamera.setPreviewCallback(previewCallback);
             } catch (IOException e) {
-                Log.e(TAG, "Exception in setPreviewDisplay() ", e);
+                L.e("Exception in setPreviewDisplay() ", e);
             }
         }
 
@@ -463,7 +463,7 @@ public class HeartBeatOldFragment extends Fragment {
             Camera.Size size = getSmallestPreviewSize(width, height, parameters);
             if (size != null) {
                 parameters.setPreviewSize(size.width, size.height);
-                Log.d(TAG, "Using width=" + size.width + " height=" + size.height);
+                L.d("Using width=" + size.width + " height=" + size.height);
             }
             mCamera.setParameters(parameters);
             mCamera.startPreview();

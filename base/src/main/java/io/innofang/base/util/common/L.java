@@ -38,6 +38,12 @@ public class L {
             Log.e(TAG, msg);
     }
 
+    public static void e(String msg, Throwable tr) {
+        if (Debug)
+            Log.e(TAG, msg, tr);
+    }
+
+
     public static void w(String msg) {
         if (Debug)
             Log.w(TAG, msg);
@@ -66,6 +72,11 @@ public class L {
 
     public static void e(String tag, String msg) {
         if (Debug)
-            Log.i(tag, msg);
+            Log.e(tag, msg);
+    }
+
+    public static void e(String tag, String msg, Throwable tr) {
+        if (Debug)
+            Log.e(tag, msg, tr);
     }
 }

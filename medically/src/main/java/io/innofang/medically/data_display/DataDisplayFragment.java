@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,11 +72,13 @@ public class DataDisplayFragment extends Fragment {
             bpm.setDescription("勤加锻炼");
         else if (value > 90)
             bpm.setDescription("注意休息");
-        SimpleDateFormat mFormat = new SimpleDateFormat("dd MMM HH:mm", Locale.CHINA);
+        SimpleDateFormat mFormat = new SimpleDateFormat("MM-dd HH:mm", Locale.CHINA);
         bpm.setTime(mFormat.format(new Date()));
         data.add(bpm);
         L.i("onHandleMedicallyEvent: " + String.format("%sbpm ", event.bpm));
-        mBpsTextView.setText(String.format("%s bpm ", event.bpm));
+        mBpsTextView.setText(/*String.format("%s bpm ", */event.bpm);
+
+        mBpmDao.insert(bpm);
     }
 
     @Nullable
@@ -94,7 +95,10 @@ public class DataDisplayFragment extends Fragment {
         mDataDisplayRecyclerView = (RecyclerView) view.findViewById(R.id.data_display_recycler_view);
 
         initChart();
-        mDataDisplayRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setReverseLayout(true); /*让RecyclerView的元素倒序显示*/
+        layoutManager.setStackFromEnd(true);/*初始元素不默认从底部开始显示*/
+        mDataDisplayRecyclerView.setLayoutManager(layoutManager);
         mDataDisplayRecyclerView.setAdapter(new DataDisplayAdapter(getActivity(), data));
     }
 
@@ -151,7 +155,7 @@ public class DataDisplayFragment extends Fragment {
 
         DaoSession daoSession = GreenDaoConfig.getInstance().getDaoSession();
         mBpmDao = daoSession.getBpmDao();
-        Query<Bpm> bpmQuery= mBpmDao.queryBuilder().orderAsc(BpmDao.Properties.Id).build();
+        Query<Bpm> bpmQuery = mBpmDao.queryBuilder().orderAsc(BpmDao.Properties.Id).build();
         data.addAll(bpmQuery.list());
 
 //        Random random = new Random();
@@ -181,7 +185,6 @@ public class DataDisplayFragment extends Fragment {
 
         List<Entry> values = new ArrayList<>();
         for (int i = start; i < data.size(); i++) {
-            Log.i("tag", "setData: " + i + " i-start" + (i - start));
             values.add(new Entry(i - start, Float.parseFloat(data.get(i).getBpm())));
         }
         // create a dataset and give it a type
