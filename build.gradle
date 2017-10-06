@@ -76,4 +76,7 @@ ext {
 
     /* MPAndroidChart */
     mp_android_chart = 'v3.0.2'
+
+    /* FloatingActionButton */
+    fab = '1.10.1'
 }

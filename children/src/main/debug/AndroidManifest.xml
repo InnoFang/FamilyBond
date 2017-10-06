@@ -18,7 +18,7 @@
             android:theme="@style/Transparent">
 
         </activity>
-        <activity android:name=".MapActivity">
+        <activity android:name=".ChildrenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

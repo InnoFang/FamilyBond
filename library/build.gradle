@@ -64,4 +64,6 @@ dependencies {
     /* ButterKnife */
     compile 'com.jakewharton:butterknife:' + rootProject.butter_knife                        //
     annotationProcessor 'com.jakewharton:butterknife-compiler:' + rootProject.butter_knife   //
+    /* FloatingActionButton */
+    compile 'com.getbase:floatingactionbutton:' + rootProject.fab
 }

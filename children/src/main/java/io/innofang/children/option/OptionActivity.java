@@ -46,7 +46,7 @@ public class OptionActivity extends BaseActivity {
         mCardAdapter.addCardItem(new CardItem(R.string.card_medically_exam, R.drawable.medically_exam));
         mCardAdapter.addCardItem(new CardItem(R.string.reminder, R.drawable.voice_reminder));
         mCardAdapter.addCardItem(new CardItem(R.string.card_communication, R.drawable.communication));
-        mCardAdapter.addCardItem(new CardItem(R.string.card_settings, R.drawable.settings));
+        mCardAdapter.addCardItem(new CardItem(R.string.settings, R.drawable.settings));
 
         mCardShadowTransformer = new ShadowTransformer(mCardViewPager, mCardAdapter);
         mCardShadowTransformer.enableScaling(true);

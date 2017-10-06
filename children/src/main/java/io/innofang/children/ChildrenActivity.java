@@ -1,18 +1,16 @@
 package io.innofang.children;
 
 import android.Manifest;
-import android.app.ActivityOptions;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatImageButton;
 import android.util.Log;
+import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.amap.api.location.AMapLocation;
@@ -29,6 +27,7 @@ import com.amap.api.maps2d.model.CircleOptions;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.util.List;
 
@@ -40,7 +39,7 @@ import io.innofang.base.base.BaseActivity;
 import io.innofang.base.bean.User;
 import io.innofang.base.util.amap.SensorEventHelper;
 import io.innofang.base.util.common.RequestPermissions;
-import io.innofang.children.option.OptionActivity;
+import io.innofang.children.reminder.ReminderActivity;
 import io.innofang.children.settings.SettingsActivity;
 
 /**
@@ -50,14 +49,20 @@ import io.innofang.children.settings.SettingsActivity;
  */
 
 @Route(path = "/children/1")
-public class MapActivity extends BaseActivity implements AMapLocationListener, LocationSource {
+public class ChildrenActivity extends BaseActivity implements AMapLocationListener, LocationSource {
 
     @BindView(R2.id.map)
     MapView mMapView;
     @BindView(R2.id.locbtn)
     AppCompatImageButton mLocbtn;
-    @BindView(R2.id.option_fab)
-    FloatingActionButton mOptionFab;
+    @BindView(R2.id.action_locate)
+    com.getbase.floatingactionbutton.FloatingActionButton mActionLocate;
+    @BindView(R2.id.action_settings)
+    com.getbase.floatingactionbutton.FloatingActionButton mActionSettings;
+    @BindView(R2.id.action_reminder)
+    com.getbase.floatingactionbutton.FloatingActionButton mActionReminder;
+    @BindView(R2.id.floating_actions_menu)
+    FloatingActionsMenu mFloatingActionsMenu;
 
     private AMap mAMap;
     private AMapLocationClient mLocationClient;
@@ -88,7 +93,7 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
     }
 
     private void showAddContactTip() {
-        User user =  BmobUser.getCurrentUser(User.class);
+        User user = BmobUser.getCurrentUser(User.class);
         if (user.getContact().isEmpty()) {
             new AlertDialog.Builder(this)
                     .setTitle(R.string.add_contact)
@@ -96,7 +101,7 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
                     .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            startActivity(new Intent(MapActivity.this, SettingsActivity.class));
+                            startActivity(new Intent(ChildrenActivity.this, SettingsActivity.class));
                         }
                     })
                     .setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
@@ -118,6 +123,7 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
         if (null != mSensorHelper) {
             mSensorHelper.registerSensorListener();
         }
+
     }
 
     private void setUpMap() {
@@ -171,7 +177,7 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
         } else {
             String errText = "定位失败," + aMapLocation.getErrorCode() + ": " + aMapLocation.getErrorInfo();
             Log.e("AmapErr", errText);
-            Toast.makeText(MapActivity.this, errText, Toast.LENGTH_LONG).show();
+            Toast.makeText(ChildrenActivity.this, errText, Toast.LENGTH_LONG).show();
         }*/
         if (mListener != null && aMapLocation != null) {
             if (aMapLocation != null
@@ -223,17 +229,6 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
     @OnClick(R2.id.locbtn)
     public void onLocBtnClick() {
         checkLocationPermission();
-    }
-
-    @OnClick(R2.id.option_fab)
-    public void onOptionFabClick() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ActivityOptions options =
-                    ActivityOptions.makeSceneTransitionAnimation(this, mOptionFab, mOptionFab.getTransitionName());
-            startActivity(new Intent(this, OptionActivity.class), options.toBundle());
-        } else {
-            startActivity(new Intent(this, OptionActivity.class));
-        }
     }
 
     private void startLocation() {
@@ -339,5 +334,18 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
             mLocationClient.onDestroy();
         }
         mLocationClient = null;
+    }
+
+    @OnClick({R2.id.action_locate, R2.id.action_settings, R2.id.action_reminder})
+    public void onViewClicked(View view) {
+        int id = view.getId();
+        if (id == R.id.action_locate) {
+            toast("locate");
+        } else if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+        } else if (id == R.id.action_reminder) {
+            startActivity(new Intent(this, ReminderActivity.class));
+        }
+        mFloatingActionsMenu.toggle();
     }
 }

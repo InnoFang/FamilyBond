@@ -16,6 +16,12 @@
     </style>
 
 
+    <!--FAB style-->
+    <style name="menu_labels_style">
+        <item name="android:background">@drawable/fab_label_background</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
     <!--Bmob Voice-->
     <style name="style_smile">
         <item name="android:layout_width">wrap_content</item>
