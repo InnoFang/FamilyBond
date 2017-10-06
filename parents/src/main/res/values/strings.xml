@@ -11,5 +11,7 @@
     <string name="last_heart_rate">上一次测量</string>
     <string name="sms_protect">短信保护</string>
     <string name="suspicious_sms">可疑短信</string>
+    <string name="heart_rate_detection">心率检测</string>
+    <string name="start_to_test">开始测量</string>
 
 </resources>

@@ -7,62 +7,28 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center_vertical">
-
-        <View
-            android:layout_width="10dp"
-            android:layout_height="40dp"
-            android:background="@android:color/darker_gray"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:text="@string/last_heart_rate"
-            android:textSize="25sp"
-            android:textStyle="bold"/>
-
-    </LinearLayout>
-
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="110dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="15dp"
-        android:gravity="center">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/bpm_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:textSize="100sp"
-            android:textStyle="bold"
-            tools:text="70"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:scaleType="fitStart"
+            android:src="@drawable/medically_header"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_toEndOf="@id/bpm_text_view"
-            android:text="@string/bpm"
-            android:textSize="30sp"
-            android:textStyle="bold"/>
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="@string/heart_rate_detection"
+            android:textColor="#000000"
+            android:textSize="30sp"/>
+
+
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/tips_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:textSize="20sp"
-        tools:text="心率比上月增加1%，相对稳定，注意休息"/>
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
@@ -70,36 +36,83 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
         app:cardCornerRadius="6dp"
         app:cardElevation="5dp"
         app:cardUseCompatPadding="true">
 
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/option_image_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/medically_exam"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/option_text_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:gravity="center"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_text_title"
+                android:gravity="center_vertical"
+                android:paddingStart="15dp"
+                android:text="@string/last_heart_rate"
                 android:textColor="#ffffff"
-                android:textSize="30sp"
-                android:textStyle="bold"
-                tools:text="@string/medically_exam"/>
-        </RelativeLayout>
+                android:textSize="20sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="110dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/bpm_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:textSize="100sp"
+                        android:textStyle="bold"
+                        tools:text="70"/>
+
+                    <TextView
+                        android:id="@+id/bpm_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_toEndOf="@id/bpm_text_view"
+                        android:text="@string/bpm"
+                        android:textSize="30sp"
+                        android:textStyle="bold"/>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tips_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:textSize="22sp"
+                    tools:text="心率比上月增加1%，相对稳定，注意休息"/>
+
+
+                <Button
+                    android:id="@+id/start_button"
+                    android:layout_width="150dp"
+                    android:layout_height="90dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/start_to_test"
+                    android:textSize="25sp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
     </android.support.v7.widget.CardView>
 
 </LinearLayout>

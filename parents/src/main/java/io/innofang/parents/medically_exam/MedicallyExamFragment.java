@@ -8,6 +8,7 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -38,6 +39,10 @@ public class MedicallyExamFragment extends Fragment {
     @BindView(R2.id.card_view)
     CardView mCardView;
     Unbinder unbinder;
+    @BindView(R2.id.bpm_label)
+    TextView mBpmLabel;
+    @BindView(R2.id.start_button)
+    Button mStartButton;
 
     public static MedicallyExamFragment newInstance() {
         return new MedicallyExamFragment();
@@ -49,10 +54,10 @@ public class MedicallyExamFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R2.id.bpm_text_view, R2.id.tips_text_view, R2.id.card_view})
+    @OnClick({R2.id.bpm_text_view, R2.id.tips_text_view, R2.id.card_view, R2.id.start_button})
     public void onViewClicked(View view) {
         int id = view.getId();
-        if (id == R.id.card_view) {
+        if (id == R.id.card_view || id == R.id.start_button) {
             RequestPermissions.requestRuntimePermission(new String[]{
                     Manifest.permission.CAMERA
             }, new RequestPermissions.OnRequestPermissionsListener() {
