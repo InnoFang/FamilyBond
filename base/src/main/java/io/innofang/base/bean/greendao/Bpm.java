@@ -53,5 +53,23 @@ public class Bpm {
     public void setDescription(String mDescription) {
         this.mDescription = mDescription;
     }
+    public String getMBpm() {
+        return this.mBpm;
+    }
+    public void setMBpm(String mBpm) {
+        this.mBpm = mBpm;
+    }
+    public String getMTime() {
+        return this.mTime;
+    }
+    public void setMTime(String mTime) {
+        this.mTime = mTime;
+    }
+    public String getMDescription() {
+        return this.mDescription;
+    }
+    public void setMDescription(String mDescription) {
+        this.mDescription = mDescription;
+    }
 
 }

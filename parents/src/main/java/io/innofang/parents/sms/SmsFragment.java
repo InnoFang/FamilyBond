@@ -32,16 +32,18 @@ public class SmsFragment extends Fragment {
     private TextView mSmsTextView;
 
     public static SmsFragment newInstance() {
-        return Holder.sInstance;
+        return new SmsFragment();
     }
 
-    private static class Holder {
-        private static final SmsFragment sInstance = new SmsFragment();
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.fragment_sms, container, false);
     }
 
@@ -60,7 +62,9 @@ public class SmsFragment extends Fragment {
 
             }
         });
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Subscribe
@@ -73,5 +77,19 @@ public class SmsFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("sms", mSmsTextView.getText().toString());
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (null != savedInstanceState) {
+            mSmsTextView.setText(savedInstanceState.getString("sms"));
+        }
     }
 }

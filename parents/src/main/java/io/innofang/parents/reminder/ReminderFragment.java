@@ -110,4 +110,17 @@ public class ReminderFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("message", mMessageTextView.getText().toString());
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (null != savedInstanceState) {
+            mMessageTextView.setText(savedInstanceState.getString("message"));
+        }
+    }
 }
