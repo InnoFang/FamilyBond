@@ -59,6 +59,17 @@
         app:fab_addButtonPlusIconColor="@color/white_pressed"
         app:fab_labelStyle="@style/menu_labels_style">
 
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_addButtonSize="mini"
+            app:fab_colorNormal="@color/colorAccent"
+            app:fab_colorPressed="@color/colorAccent"
+            app:fab_icon="@drawable/ic_settings"
+            app:fab_size="mini"
+            app:fab_title="@string/common_settings"
+            />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/action_locate"
@@ -75,18 +86,6 @@
             />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/action_settings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_addButtonSize="mini"
-            app:fab_colorNormal="@color/colorAccent"
-            app:fab_colorPressed="@color/colorAccent"
-            app:fab_icon="@drawable/ic_settings"
-            app:fab_size="mini"
-            app:fab_title="@string/settings"
-            />
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/action_reminder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -95,7 +94,7 @@
             app:fab_colorPressed="@color/colorAccent"
             app:fab_icon="@drawable/ic_reminder"
             app:fab_size="mini"
-            app:fab_title="@string/reminder"
+            app:fab_title="@string/message_reminder"
             />
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 

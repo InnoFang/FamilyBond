@@ -11,6 +11,7 @@
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/medically/medically.iml" filepath="$PROJECT_DIR$/medically/medically.iml" />
       <module fileurl="file://$PROJECT_DIR$/parents/parents.iml" filepath="$PROJECT_DIR$/parents/parents.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sms_intercept/sms_intercept.iml" filepath="$PROJECT_DIR$/sms_intercept/sms_intercept.iml" />
       <module fileurl="file://$PROJECT_DIR$/xfyun/xfyun.iml" filepath="$PROJECT_DIR$/xfyun/xfyun.iml" />
     </modules>
   </component>

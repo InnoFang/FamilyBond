@@ -13,12 +13,18 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 
+import org.greenrobot.greendao.query.Query;
+
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.innofang.base.bean.greendao.Bpm;
+import io.innofang.base.bean.greendao.BpmDao;
+import io.innofang.base.bean.greendao.DaoSession;
+import io.innofang.base.configure.GreenDaoConfig;
 import io.innofang.base.util.common.RequestPermissions;
 import io.innofang.parents.R;
 import io.innofang.parents.R2;
@@ -82,6 +88,34 @@ public class MedicallyExamFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_medically_exam, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+        DaoSession daoSession = GreenDaoConfig.getInstance().getDaoSession();
+        BpmDao bpmDao = daoSession.getBpmDao();
+        Query<Bpm> bpmQuery = bpmDao.queryBuilder().orderAsc(BpmDao.Properties.Id).build();
+        List<Bpm> list = bpmQuery.list();
+        if (!list.isEmpty()) {
+            mBpmLabel.setVisibility(View.VISIBLE);
+            mBpmTextView.setText(list.get(list.size() - 1).getBpm());
+            if (list.size() > 2) {
+                // 最后一次测量
+                int lastOne = Integer.parseInt(list.get(list.size() - 1).getBpm());
+                // 倒数第二次测量
+                int lastTwo = Integer.parseInt(list.get(list.size() - 2).getBpm());
+                String text = "";
+                if (lastOne > lastTwo) {
+                    double increase = (lastOne - lastTwo) / lastTwo * 1.0;
+                    text = String.format("心率同比增长%$d%，注意适当休息，保持良好心情。", ((int) increase * 100));
+                } else if (lastOne < lastTwo) {
+                    double increase = (lastTwo - lastOne) / lastTwo * 1.0;
+                    text = String.format("心率同比降低%$d%，可以外出保持活力，保持良好心情。", ((int) increase * 100));
+                } else {
+                    text = "最近心率变化不大，可以适当休息或外出活动，保持良好心情";
+                }
+                mTipsTextView.setText(text);
+            }
+        } else {
+            mBpmLabel.setVisibility(View.INVISIBLE);
+            mTipsTextView.setText("还没有测试记录，点击卡片进行测试");
+        }
 
         return view;
     }

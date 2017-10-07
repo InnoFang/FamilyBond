@@ -13,5 +13,6 @@
     <string name="suspicious_sms">可疑短信</string>
     <string name="heart_rate_detection">心率检测</string>
     <string name="start_to_test">开始测量</string>
+    <string name="tips_hear_rate_increase">心率同比增长%$d%，注意适当休息，保持良好心情。</string>
 
 </resources>

@@ -79,7 +79,7 @@ public class ChildrenActivity extends BaseActivity implements AMapLocationListen
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
+        setContentView(R.layout.activity_children);
         ButterKnife.bind(this);
 
         //初始化定位参数

@@ -6,5 +6,5 @@ include ':app',
         ':base',
         ':library',
         ':medically',
-        ':xfyun'
+        ':xfyun', ':sms_intercept'
 
