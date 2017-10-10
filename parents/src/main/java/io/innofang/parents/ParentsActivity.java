@@ -1,5 +1,6 @@
 package io.innofang.parents;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,19 +32,27 @@ import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMUserInfo;
 import cn.bmob.newim.core.ConnectionStatus;
 import cn.bmob.newim.listener.ConnectStatusChangeListener;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.DownloadFileListener;
+import cn.bmob.v3.listener.FindListener;
 import io.innofang.base.base.BaseActivity;
+import io.innofang.base.bean.SMSModel;
 import io.innofang.base.bean.User;
 import io.innofang.base.util.bmob.BmobEvent;
 import io.innofang.base.util.bmob.BmobUtil;
 import io.innofang.base.util.common.BottomNavigationViewHelper;
+import io.innofang.base.util.common.L;
+import io.innofang.base.util.common.RequestPermissions;
 import io.innofang.parents.medically_exam.MedicallyExamFragment;
 import io.innofang.parents.reminder.ReminderFragment;
 import io.innofang.parents.sms.SmsFragment;
+import io.innofang.sms_intercept.SMSModelUtil;
 import io.innofang.xfyun.XFYunUtil;
 
 @Route(path = "/parents/1")
-public class MainActivity extends BaseActivity
+public class ParentsActivity extends BaseActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R2.id.view_pager)
@@ -135,6 +145,56 @@ public class MainActivity extends BaseActivity
 
 
         XFYunUtil.build(this).setSpeed("20").speak("欢迎使用家宝，祝您使用愉快");
+
+        RequestPermissions.requestRuntimePermission(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, new RequestPermissions.OnRequestPermissionsListener() {
+            @Override
+            public void onGranted() {
+                if (!SMSModelUtil.isModelFilesExit()) {
+                    BmobQuery<SMSModel> query = new BmobQuery<>();
+                    query.findObjects(new FindListener<SMSModel>() {
+                        @Override
+                        public void done(List<SMSModel> list, BmobException e) {
+                            for (SMSModel smsModel : list) {
+                                download(smsModel);
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onDenied(List<String> deniedPermission) {
+
+            }
+        });
+    }
+
+    private void download(SMSModel smsModel) {
+        File dir = new File(SMSModelUtil.DIRECTORY);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        final String fileName = SMSModelUtil.getFileName(smsModel.getFile().getFilename());
+        if ("".equals(fileName))
+            return;
+
+         File saveFile = new File(SMSModelUtil.DIRECTORY, fileName);
+        smsModel.getFile().download(saveFile, new DownloadFileListener() {
+            @Override
+            public void done(String s, BmobException e) {
+                if (null == e) {
+                    L.i("download", "success: " + fileName);
+                } else {
+                    L.i("download", "failed: " + e.getMessage());
+                }
+            }
+
+            @Override
+            public void onProgress(Integer integer, long l) {
+
+            }
+        });
+
     }
 
     @Override
