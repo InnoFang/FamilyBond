@@ -36,6 +36,7 @@ public class InterceptReceiver extends BroadcastReceiver {
             Bundle carryContent = intent.getExtras();
             if (carryContent != null) {
                 StringBuilder sb = new StringBuilder();
+                StringBuilder content = new StringBuilder();
 
                 // 通过pdus获取接收到的所有短信息，获取短信内容
                 Object[] pdus = (Object[]) carryContent.get("pdus");
@@ -53,15 +54,17 @@ public class InterceptReceiver extends BroadcastReceiver {
                     Date sendDate = new Date(mge.getTimestampMillis());
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     sb.append("短信发送时间：").append(format.format(sendDate));
+
+                    content.append(mge.getMessageBody());
                 }
-                boolean result = RegexUtil.isSuspiciousSMS(sb.toString());
-                Log.i(TAG, sb.toString()); // 打印日志记录
-//                Toast.makeText(context, sb.toString(), Toast.LENGTH_LONG).show();
-                SMSEvent event = new SMSEvent();
-                event.sms = sb.toString();
-                if (result) {
-                    Log.i(TAG, "It's suspicious sms");
+                SMSClassifyResult result = SMSIdentification.runLoadModelAndUse(content.toString());
+               if (result.isSuspiciousSMS()) {
+
+                    SMSEvent event = new SMSEvent();
+                    event.sms = sb.toString();
+                    Log.i(TAG, "It's suspicious sms， prob is " + result.getProbability());
                     EventBus.getDefault().post(event);
+                    Log.i(TAG, content.toString()); // 打印日志记录
                 }
                 this.abortBroadcast(); // 不再往下传播
             }

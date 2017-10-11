@@ -16,6 +16,7 @@ public class SMSModelUtil {
     public static final String LEXICON = "lexicon";
     public static final String MAX_FEATURES = "maxFeatures";
     public static final String MODEL = "model";
+    public static final String CATEGORY_FILE_PATH = DIRECTORY + CATEGORY;
 
     public static boolean isModelFilesExit() {
         File dir = new File(DIRECTORY);

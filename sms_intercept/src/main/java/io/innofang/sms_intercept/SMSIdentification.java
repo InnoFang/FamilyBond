@@ -6,8 +6,6 @@ package io.innofang.sms_intercept;
  * Description:
  */
 
-import android.util.Log;
-
 import org.thunlp.text.classifiers.BasicTextClassifier;
 import org.thunlp.text.classifiers.ClassifyResult;
 import org.thunlp.text.classifiers.LinearBigramChineseTextClassifier;
@@ -40,24 +38,22 @@ public class SMSIdentification {
 
     }
 
-    public static void runLoadModelAndUse(String sms) {
+    public static SMSClassifyResult runLoadModelAndUse(String sms) {
         // 新建分类器对象
         BasicTextClassifier classifier = new BasicTextClassifier();
 
         // 设置分类种类，并读取模型
-        classifier.loadCategoryListFromFile("/storage/emulated/0/SMSModel/category");
+        classifier.loadCategoryListFromFile(SMSModelUtil.CATEGORY_FILE_PATH);
         classifier.setTextClassifier(new LinearBigramChineseTextClassifier(classifier.getCategorySize()));
-        classifier.getTextClassifier().loadModel("/storage/emulated/0/SMSModel");
+        classifier.getTextClassifier().loadModel(SMSModelUtil.DIRECTORY);
 
         // 之后就可以使用分类器进行分类
-        int topN = 1;  // 保留最有可能的3个结果
+        int topN = 1;  // 保留最有可能的1个结果
         ClassifyResult[] result = classifier.classifyText(sms, topN);
-        for (int i = 0; i < topN; ++i) {
-
-            Log.i("tag", result[i].label + "\t" +
-                    classifier.getCategoryName(result[i].label) + "\t" +
-                    result[i].prob);
-        }
+        SMSClassifyResult scr = new SMSClassifyResult();
+        scr.setClassifyLabel(result[0].label);
+        scr.setProbability(result[0].prob);
+        return scr;
     }
 
 }
