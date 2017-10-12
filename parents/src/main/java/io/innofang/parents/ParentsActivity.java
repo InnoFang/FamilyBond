@@ -1,6 +1,7 @@
 package io.innofang.parents;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -8,7 +9,6 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -113,6 +113,10 @@ public class ParentsActivity extends BaseActivity
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(1);
 
+
+        if (BmobUser.getCurrentUser(User.class).getContact().isEmpty()) {
+            startActivity(new Intent(this, AddContactActivity.class));
+        }
         checkConnect();
     }
 
@@ -139,7 +143,7 @@ public class ParentsActivity extends BaseActivity
             @Override
             public void onChange(ConnectionStatus status) {
                 toast(status.getMsg());
-                Log.i("tag", BmobIM.getInstance().getCurrentStatus().getMsg());
+                L.i(BmobIM.getInstance().getCurrentStatus().getMsg());
             }
         });
 
@@ -178,7 +182,7 @@ public class ParentsActivity extends BaseActivity
         if ("".equals(fileName))
             return;
 
-         File saveFile = new File(SMSModelUtil.DIRECTORY, fileName);
+        File saveFile = new File(SMSModelUtil.DIRECTORY, fileName);
         smsModel.getFile().download(saveFile, new DownloadFileListener() {
             @Override
             public void done(String s, BmobException e) {

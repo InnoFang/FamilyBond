@@ -172,7 +172,6 @@ public class TextReminderPresenter implements TextReminderContract.Presenter {
                             BmobIMConversation conversationEntrance = BmobIM.getInstance().startPrivateConversation(info, null);
                             mIMConversations.add(conversationEntrance);
                             mConversationManager = BmobIMConversation.obtain(BmobIMClient.getInstance(), conversationEntrance);
-                            sendReminder();
                         }
 
                         @Override

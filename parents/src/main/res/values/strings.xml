@@ -13,5 +13,8 @@
     <string name="suspicious_sms">可疑短信</string>
     <string name="heart_rate_detection">心率检测</string>
     <string name="start_to_test">开始测量</string>
+    <string name="add_contact">添加联系人</string>
+    <string name="input_contact">输入联系人</string>
+    <string name="send_to_children_sms_tips">为您的亲人拦截到一条可以短信，请为您家人甄别可靠性</string>
 
 </resources>

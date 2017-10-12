@@ -11,6 +11,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Author: Inno Fang
@@ -52,16 +53,29 @@ public class InterceptReceiver extends BroadcastReceiver {
                             .append("短信内容：").append(mge.getMessageBody()).append("\n");
 
                     Date sendDate = new Date(mge.getTimestampMillis());
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
                     sb.append("短信发送时间：").append(format.format(sendDate));
 
                     content.append(mge.getMessageBody());
                 }
                 SMSClassifyResult result = SMSIdentification.runLoadModelAndUse(content.toString());
-               if (result.isSuspiciousSMS()) {
+                if (result.isSuspiciousSMS()) {
 
                     SMSEvent event = new SMSEvent();
+
+                    SmsMessage mge = mges[0];
+
+                    // time
+                    Date sendDate = new Date(mge.getTimestampMillis());
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+                    event.time = format.format(sendDate);
+                    // address
+                    event.address = mge.getDisplayOriginatingAddress();
+                    // sms
                     event.sms = sb.toString();
+                    // probability
+                    event.probability = result.getProbability();
+
                     Log.i(TAG, "It's suspicious sms， prob is " + result.getProbability());
                     EventBus.getDefault().post(event);
                     Log.i(TAG, content.toString()); // 打印日志记录

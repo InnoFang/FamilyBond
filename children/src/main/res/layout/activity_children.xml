@@ -1,102 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/card_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_alignParentBottom="true"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingBottom="@dimen/card_padding"
+        android:paddingEnd="@dimen/card_padding"
+        android:paddingStart="@dimen/card_padding"
+        android:paddingTop="@dimen/card_padding"/>
 
     <LinearLayout
-        android:id="@+id/info_layout"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical"
-        android:padding="10dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/information_of_parents"
-            android:textColor="#000000"
-            android:textSize="25sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/info_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:gravity="start"
-            android:text="暂无"/>
-    </LinearLayout>
-
-
-    <com.amap.api.maps2d.MapView
-        android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/info_layout"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
 
-    <android.support.v7.widget.AppCompatImageButton
-        android:id="@+id/locbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="13dp"
-        android:src="@drawable/ic_location"/>
-
-    <com.getbase.floatingactionbutton.FloatingActionsMenu
-        android:id="@+id/floating_actions_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/info_layout"
-        android:layout_marginBottom="-40dp"
-        android:layout_marginEnd="16dp"
-        android:layout_alignParentEnd="true"
-        app:fab_addButtonColorNormal="@color/colorAccent"
-        app:fab_addButtonColorPressed="@color/colorAccent"
-        app:fab_addButtonPlusIconColor="@color/white_pressed"
-        app:fab_labelStyle="@style/menu_labels_style">
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/action_settings"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:fab_addButtonSize="mini"
-            app:fab_colorNormal="@color/colorAccent"
-            app:fab_colorPressed="@color/colorAccent"
-            app:fab_icon="@drawable/ic_settings"
-            app:fab_size="mini"
-            app:fab_title="@string/common_settings"
-            />
+            android:orientation="horizontal">
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/action_locate"
-            android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="110dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="15dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/bpm_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:textColor="#000000"
+                    android:textSize="100sp"
+                    android:textStyle="bold"
+                    tools:text="70"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toEndOf="@id/bpm_text_view"
+                    android:text="@string/bpm"
+                    android:textColor="#000000"
+                    android:textSize="30sp"
+                    android:textStyle="bold"/>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    tools:text="测量时间：2017-10-10"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    tools:text="心率正常，继续保持"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tips_text_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:fab_addButtonColorNormal="@color/colorAccent"
-            app:fab_addButtonColorPressed="@color/colorAccent"
-            app:fab_addButtonSize="mini"
-            app:fab_colorNormal="@color/colorAccent"
-            app:fab_colorPressed="@color/colorAccent"
-            app:fab_icon="@drawable/ic_location"
-            app:fab_size="mini"
-            app:fab_title="@string/parents_location"
-            />
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:textSize="20sp"
+            tools:text="心率同比增加1%，相对稳定，注意休息"/>
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/action_reminder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_addButtonSize="mini"
-            app:fab_colorNormal="@color/colorAccent"
-            app:fab_colorPressed="@color/colorAccent"
-            app:fab_icon="@drawable/ic_reminder"
-            app:fab_size="mini"
-            app:fab_title="@string/message_reminder"
-            />
-    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+        <ViewStub
+            android:id="@+id/view_stub"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
+    </LinearLayout>
 
 </RelativeLayout>

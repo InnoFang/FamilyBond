@@ -1,4 +1,4 @@
-package io.innofang.children.option;
+package io.innofang.children;
 
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.innofang.base.widget.card_view_pager.CardAdapter;
-import io.innofang.children.R;
 
 /**
  * Author: Inno Fang

@@ -15,6 +15,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
+import io.innofang.base.bean.SMS;
 import io.innofang.base.util.common.RequestPermissions;
 import io.innofang.parents.R;
 import io.innofang.sms_intercept.SMSEvent;
@@ -26,10 +27,12 @@ import io.innofang.sms_intercept.SMSEvent;
  */
 
 
-public class SmsFragment extends Fragment {
+public class SmsFragment extends Fragment implements SmsContract.View {
 
 
     private TextView mSmsTextView;
+    private String mSms;
+    private SmsContract.Presenter mPresenter;
 
     public static SmsFragment newInstance() {
         return new SmsFragment();
@@ -38,6 +41,7 @@ public class SmsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mPresenter = new SmsPresenter(this);
     }
 
     @Nullable
@@ -51,6 +55,7 @@ public class SmsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mSmsTextView = (TextView) view.findViewById(R.id.sms_text_view);
+        mSmsTextView.setText(mSms);
         RequestPermissions.requestRuntimePermission(getActivity(), new String[]{Manifest.permission.RECEIVE_SMS}, new RequestPermissions.OnRequestPermissionsListener() {
             @Override
             public void onGranted() {
@@ -69,8 +74,17 @@ public class SmsFragment extends Fragment {
 
     @Subscribe
     public void onHandleSmsEvent(SMSEvent event) {
+        mSms = event.sms;
         mSmsTextView.setText(event.sms);
-        Toast.makeText(getActivity(), "拦截到可疑短信", Toast.LENGTH_SHORT).show();
+        showInfo("拦截到可疑短信");
+
+        SMS sms = new SMS();
+        sms.setTime(event.time);
+        sms.setAddress(event.address);
+        sms.setContent(event.sms);
+        sms.setProbability(event.probability);
+
+        mPresenter.sendToChildren(sms);
     }
 
     @Override
@@ -82,14 +96,24 @@ public class SmsFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("sms", mSmsTextView.getText().toString());
+        outState.putSerializable("sms", mSms);
     }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         if (null != savedInstanceState) {
-            mSmsTextView.setText(savedInstanceState.getString("sms"));
+            mSms = savedInstanceState.getString("sms");
         }
+    }
+
+    @Override
+    public void setPresenter(SmsContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+    @Override
+    public void showInfo(String text) {
+        Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
     }
 }

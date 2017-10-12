@@ -9,5 +9,8 @@ package io.innofang.sms_intercept;
 
 public class SMSEvent {
 
+   public String time;
+   public String address;
    public String sms;
+   public double probability;
 }

@@ -98,7 +98,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="6dp"
                     android:textSize="20sp"
-                    tools:text="心率比上月增加1%，相对稳定，注意休息"/>
+                    tools:text="心率同比增加1%，相对稳定，注意休息"/>
 
 
                 <Button
