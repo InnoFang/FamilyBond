@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import cn.bmob.newim.bean.BmobIMExtraMessage;
 import cn.bmob.newim.bean.BmobIMMessage;
 import io.innofang.base.bean.greendao.Bpm;
-import io.innofang.base.util.common.L;
+import io.innofang.base.utils.common.L;
 
 /**
  * Author: Inno Fang

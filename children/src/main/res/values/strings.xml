@@ -1,12 +1,10 @@
 <resources>
     <string name="app_name">Children</string>
+    <string name="sms_interception">可疑短信拦截</string>
     <string name="message_reminder">消息提醒</string>
-    <string name="card_medically_exam">健康检查</string>
-    <string name="card_communication">亲子交流</string>
+    <string name="medically_exam">老人心率报告</string>
+    <string name="location">老人位置显示</string>
     <string name="common_settings">常用设置</string>
-
-    <string name="text_1">这是一个功能，只是还没完成</string>
-
 
     <string name="alert_dialog_ok">确定</string>
     <string name="alert_dialog_cancel">取消</string>
@@ -35,5 +33,12 @@
     <string name="repeat">重复</string>
     <string name="parents_location">亲人位置</string>
     <string name="information_of_parents">家人信息</string>
+
+    <!--sms interception-->
+    <string name="sms_time">发送时间：%s</string>
+    <string name="sms_address">短信来自：%s</string>
+    <string name="sms_content">短信内容：\n        %s</string>
+    <string name="sms_probability">可疑概率：%s</string>
+    <string name="sure_to_delete_suspcious_sms">是否删除该可疑短信</string>
 
 </resources>

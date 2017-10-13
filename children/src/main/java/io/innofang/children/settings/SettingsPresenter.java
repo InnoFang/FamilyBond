@@ -16,8 +16,8 @@ import java.util.List;
 
 import cn.bmob.v3.exception.BmobException;
 import io.innofang.base.bean.User;
-import io.innofang.base.util.bmob.BmobEvent;
-import io.innofang.base.util.bmob.BmobUtil;
+import io.innofang.base.utils.bmob.BmobEvent;
+import io.innofang.base.utils.bmob.BmobUtil;
 import io.innofang.base.widget.custom_popup_window.CustomPopupWindow;
 import io.innofang.children.R;
 

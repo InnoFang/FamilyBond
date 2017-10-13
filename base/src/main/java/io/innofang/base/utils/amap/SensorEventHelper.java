@@ -1,4 +1,4 @@
-package io.innofang.base.util.amap;
+package io.innofang.base.utils.amap;
 
 import android.content.Context;
 import android.hardware.Sensor;

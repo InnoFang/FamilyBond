@@ -15,8 +15,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
-import io.innofang.base.bean.SMS;
-import io.innofang.base.util.common.RequestPermissions;
+import io.innofang.base.bean.greendao.SMS;
+import io.innofang.base.utils.common.RequestPermissions;
 import io.innofang.parents.R;
 import io.innofang.sms_intercept.SMSEvent;
 

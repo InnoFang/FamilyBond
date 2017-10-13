@@ -25,6 +25,7 @@ public class BaseSimpleViewHolder extends RecyclerView.ViewHolder {
 
     private SparseArray<View> mViews;
     private View mItemView;
+    private Object mModel;
 
     public BaseSimpleViewHolder(View itemView) {
         super(itemView);
@@ -35,6 +36,14 @@ public class BaseSimpleViewHolder extends RecyclerView.ViewHolder {
     @SuppressWarnings("unchecked")
     public static <T extends BaseSimpleViewHolder> T getViewHolder(Context context, ViewGroup parent, @LayoutRes int layoutId) {
         return (T) new BaseSimpleViewHolder(LayoutInflater.from(context).inflate(layoutId, parent, false));
+    }
+
+    public Object getModel() {
+        return mModel;
+    }
+
+    public void setModel(Object model) {
+        mModel = model;
     }
 
     @SuppressWarnings("unchecked")

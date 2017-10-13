@@ -35,7 +35,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import io.innofang.base.util.common.L;
+import io.innofang.base.utils.common.L;
 import io.innofang.medically.R;
 import io.innofang.medically.data_display.DataDisplayActivity;
 import io.innofang.medically.utils.ImageProcessing;

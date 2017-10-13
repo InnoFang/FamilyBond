@@ -58,6 +58,7 @@ public abstract class BaseSimpleAdapter<T> extends RecyclerView.Adapter<BaseSimp
 
     @Override
     public void onBindViewHolder(BaseSimpleViewHolder holder, int position) {
+        holder.setModel(getList().get(position));
         bindViewHolder(holder, getList().get(position), position);
     }
 

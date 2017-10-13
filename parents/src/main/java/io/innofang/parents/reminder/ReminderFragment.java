@@ -24,7 +24,7 @@ import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMMessageType;
 import cn.bmob.newim.event.MessageEvent;
 import cn.bmob.newim.event.OfflineMessageEvent;
-import io.innofang.base.util.common.L;
+import io.innofang.base.utils.common.L;
 import io.innofang.parents.R;
 import io.innofang.parents.R2;
 

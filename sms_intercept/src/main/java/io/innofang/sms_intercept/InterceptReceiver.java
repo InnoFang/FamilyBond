@@ -49,6 +49,7 @@ public class InterceptReceiver extends BroadcastReceiver {
                 }
 
                 for (SmsMessage mge : mges) {
+                    // build sms content
                     sb.append("短信来自：").append(mge.getDisplayOriginatingAddress()).append("\n")
                             .append("短信内容：").append(mge.getMessageBody()).append("\n");
 

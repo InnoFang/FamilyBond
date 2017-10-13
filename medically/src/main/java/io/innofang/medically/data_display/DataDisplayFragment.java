@@ -33,7 +33,7 @@ import io.innofang.base.bean.greendao.Bpm;
 import io.innofang.base.bean.greendao.BpmDao;
 import io.innofang.base.bean.greendao.DaoSession;
 import io.innofang.base.configure.GreenDaoConfig;
-import io.innofang.base.util.common.L;
+import io.innofang.base.utils.common.L;
 import io.innofang.medically.R;
 import io.innofang.medically.utils.event.MedicallyEvent;
 

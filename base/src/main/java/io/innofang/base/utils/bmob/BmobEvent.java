@@ -1,4 +1,4 @@
-package io.innofang.base.util.bmob;
+package io.innofang.base.utils.bmob;
 
 import java.util.List;
 

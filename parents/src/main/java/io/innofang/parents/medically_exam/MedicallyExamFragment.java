@@ -25,7 +25,7 @@ import io.innofang.base.bean.greendao.Bpm;
 import io.innofang.base.bean.greendao.BpmDao;
 import io.innofang.base.bean.greendao.DaoSession;
 import io.innofang.base.configure.GreenDaoConfig;
-import io.innofang.base.util.common.RequestPermissions;
+import io.innofang.base.utils.common.RequestPermissions;
 import io.innofang.parents.R;
 import io.innofang.parents.R2;
 

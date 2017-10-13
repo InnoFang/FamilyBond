@@ -7,8 +7,8 @@ import org.json.JSONObject;
 
 import cn.bmob.newim.bean.BmobIMExtraMessage;
 import cn.bmob.newim.bean.BmobIMMessage;
-import io.innofang.base.bean.SMS;
-import io.innofang.base.util.common.L;
+import io.innofang.base.bean.greendao.SMS;
+import io.innofang.base.utils.common.L;
 
 /**
  * Author: Inno Fang
@@ -33,8 +33,8 @@ public class SMSMessage extends BmobIMExtraMessage {
         return true;
     }
 
-    public static io.innofang.base.bean.SMS convert(BmobIMMessage message) {
-        io.innofang.base.bean.SMS sms = new SMS();
+    public static io.innofang.base.bean.greendao.SMS convert(BmobIMMessage message) {
+        io.innofang.base.bean.greendao.SMS sms = new SMS();
         String extra = message.getExtra();
 
         try {

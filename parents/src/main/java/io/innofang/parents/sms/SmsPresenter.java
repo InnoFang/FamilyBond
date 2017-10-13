@@ -15,12 +15,12 @@ import cn.bmob.newim.core.BmobIMClient;
 import cn.bmob.newim.listener.MessageSendListener;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
-import io.innofang.base.bean.SMS;
+import io.innofang.base.bean.greendao.SMS;
 import io.innofang.base.bean.User;
 import io.innofang.base.bean.bmob.SMSMessage;
-import io.innofang.base.util.bmob.BmobEvent;
-import io.innofang.base.util.bmob.BmobUtil;
-import io.innofang.base.util.common.L;
+import io.innofang.base.utils.bmob.BmobEvent;
+import io.innofang.base.utils.bmob.BmobUtil;
+import io.innofang.base.utils.common.L;
 import io.innofang.parents.R;
 
 /**

@@ -1,4 +1,4 @@
-package io.innofang.base.util.common;
+package io.innofang.base.utils.common;
 
 /**
  * Author: Inno Fang

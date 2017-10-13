@@ -4,7 +4,7 @@ import android.content.Context;
 
 import io.innofang.base.base.BasePresenter;
 import io.innofang.base.base.BaseView;
-import io.innofang.base.bean.SMS;
+import io.innofang.base.bean.greendao.SMS;
 
 /**
  * Author: Inno Fang

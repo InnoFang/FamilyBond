@@ -1,4 +1,4 @@
-package io.innofang.base.util.common;
+package io.innofang.base.utils.common;
 
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;

@@ -5,7 +5,7 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
-import io.innofang.base.util.common.RequestPermissions;
+import io.innofang.base.utils.common.RequestPermissions;
 
 /**
  * Author: Inno Fang

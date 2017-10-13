@@ -1,19 +1,15 @@
 package io.innofang.children;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,17 +21,21 @@ import cn.bmob.newim.event.MessageEvent;
 import cn.bmob.newim.listener.ConnectStatusChangeListener;
 import cn.bmob.v3.BmobUser;
 import io.innofang.base.base.BaseActivity;
-import io.innofang.base.bean.SMS;
 import io.innofang.base.bean.User;
 import io.innofang.base.bean.bmob.SMSMessage;
-import io.innofang.base.util.bmob.BmobEvent;
-import io.innofang.base.util.bmob.BmobUtil;
-import io.innofang.base.util.common.L;
-import io.innofang.base.util.common.RequestPermissions;
+import io.innofang.base.bean.greendao.DaoSession;
+import io.innofang.base.bean.greendao.SMS;
+import io.innofang.base.bean.greendao.SMSDao;
+import io.innofang.base.configure.GreenDaoConfig;
+import io.innofang.base.utils.bmob.BmobEvent;
+import io.innofang.base.utils.bmob.BmobUtil;
+import io.innofang.base.utils.common.L;
 import io.innofang.base.widget.card_view_pager.ShadowTransformer;
+import io.innofang.children.map.MapActivity;
+import io.innofang.children.medically_exam.MedicallyExamActivity;
 import io.innofang.children.reminder.ReminderActivity;
 import io.innofang.children.settings.SettingsActivity;
-import io.innofang.medically.heat_beat.HeartBeatActivity;
+import io.innofang.children.sms_intercept.SMSInterceptionActivity;
 
 @Route(path = "/children/1")
 public class ChildrenActivity extends BaseActivity {
@@ -67,9 +67,10 @@ public class ChildrenActivity extends BaseActivity {
 
     private void init() {
         mCardAdapter = new CardPagerAdapter();
-        mCardAdapter.addCardItem(new CardItem(R.string.card_medically_exam, R.drawable.medically_exam));
+        mCardAdapter.addCardItem(new CardItem(R.string.sms_interception, R.drawable.sms_interception));
         mCardAdapter.addCardItem(new CardItem(R.string.message_reminder, R.drawable.voice_reminder));
-        mCardAdapter.addCardItem(new CardItem(R.string.card_communication, R.drawable.communication));
+        mCardAdapter.addCardItem(new CardItem(R.string.medically_exam, R.drawable.medically_exam));
+        mCardAdapter.addCardItem(new CardItem(R.string.location, R.drawable.map));
         mCardAdapter.addCardItem(new CardItem(R.string.common_settings, R.drawable.settings));
 
         mCardShadowTransformer = new ShadowTransformer(mCardViewPager, mCardAdapter);
@@ -83,28 +84,18 @@ public class ChildrenActivity extends BaseActivity {
             public void onClick(int position) {
                 switch (position) {
                     case 0:
-                        RequestPermissions.requestRuntimePermission(
-                                new String[]{Manifest.permission.CAMERA}, new RequestPermissions.OnRequestPermissionsListener() {
-                                    @Override
-                                    public void onGranted() {
-//                                        ARouter.getInstance().build("/heart_beat/1").navigation();
-                                        startActivity(new Intent(ChildrenActivity.this, HeartBeatActivity.class));
-                                    }
-
-                                    @Override
-                                    public void onDenied(List<String> deniedPermission) {
-
-                                    }
-                                }
-                        );
+                        startActivity(new Intent(ChildrenActivity.this, SMSInterceptionActivity.class));
                         break;
                     case 1:
                         startActivity(new Intent(ChildrenActivity.this, ReminderActivity.class));
                         break;
                     case 2:
-                        toast("与父母交流");
+                        startActivity(new Intent(ChildrenActivity.this, MedicallyExamActivity.class));
                         break;
                     case 3:
+                        startActivity(new Intent(ChildrenActivity.this, MapActivity.class));
+                        break;
+                    case 4:
                         startActivity(new Intent(ChildrenActivity.this, SettingsActivity.class));
                         break;
                 }
@@ -133,30 +124,25 @@ public class ChildrenActivity extends BaseActivity {
 //        L.i("onHandleMessageEvent: is called");
 //        handleMessage(event);
 //    }
-
-
     private void handleMessage(MessageEvent event) {
         L.i("handle message");
-//        List<BmobIMConversation> list = BmobIM.getInstance().loadAllConversation();
-//        BmobIMMessage message = list.get(0).getMessages().get(0);
         BmobIMMessage message = event.getMessage();
-//        if (null != list) {
-            if (message.getMsgType().equals(SMSMessage.SMS)) {
-                toast(message.getContent());
-                L.i(event.getConversation().getConversationTitle() + "发来可以短信拦截提示");
+        if (message.getMsgType().equals(SMSMessage.SMS)) {
+            toast(message.getContent());
+            L.i(event.getConversation().getConversationTitle() + "发来可疑短信拦截提示");
 
-                SMS sms = SMSMessage.convert(message);
-                StringBuilder sb = new StringBuilder();
-                String s = sb.append("时间：").append(sms.getTime()).append("\n")
-                        .append("地址：").append(sms.getAddress()).append("\n")
-                        .append("内容：").append(sms.getContent()).append("\n")
-                        .append("概率：").append(sms.getProbability() + "").append("\n")
-                        .toString();
-                Log.i("sms", message.getContent());
-                Log.i("sms", s);
+            SMS sms = SMSMessage.convert(message);
+            DaoSession session = GreenDaoConfig.getInstance().getDaoSession();
+            SMSDao smsDao = session.getSMSDao();
+            smsDao.insert(sms);
 
-            }
-//        }
+
+            String s = "时间：" + sms.getTime() + "\n" +
+                    "地址：" + sms.getAddress() + "\n" +
+                    "内容：" + sms.getContent() + "\n" +
+                    "概率：" + sms.getProbability() + "\n";
+            L.i(s);
+        }
     }
 
     private void showAddContactTip() {
@@ -209,7 +195,6 @@ public class ChildrenActivity extends BaseActivity {
         });
 
     }
-
 
 
 }

@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.innofang.base.base.BaseActivity;
 import io.innofang.base.bean.User;
-import io.innofang.base.util.common.CircularAnimUtils;
+import io.innofang.base.utils.common.CircularAnimUtils;
 import io.innofang.protectplus.R;
 
 /**
