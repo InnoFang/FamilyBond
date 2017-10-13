@@ -3,7 +3,6 @@ package io.innofang.parents.reminder;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +24,7 @@ import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMMessageType;
 import cn.bmob.newim.event.MessageEvent;
 import cn.bmob.newim.event.OfflineMessageEvent;
+import io.innofang.base.util.common.L;
 import io.innofang.parents.R;
 import io.innofang.parents.R2;
 
@@ -40,6 +40,7 @@ public class ReminderFragment extends Fragment {
     @BindView(R2.id.message_text_view)
     TextView mMessageTextView;
     Unbinder unbinder;
+    private String mMessage;
 
     public static ReminderFragment newInstance() {
         return new ReminderFragment();
@@ -69,7 +70,7 @@ public class ReminderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reminder, container, false);
         unbinder = ButterKnife.bind(this, view);
-
+        mMessageTextView.setText(mMessage);
         return view;
     }
 
@@ -80,7 +81,7 @@ public class ReminderFragment extends Fragment {
      */
     @Subscribe
     public void onHandleMessageEvent(MessageEvent event) {
-        Log.i("tag", "onHandleMessageEvent: iscalled");
+        L.i("onHandleMessageEvent: is called");
         handleMessage();
     }
 
@@ -91,13 +92,13 @@ public class ReminderFragment extends Fragment {
      */
     @Subscribe
     public void onHandleMessageEvent(OfflineMessageEvent event) {
-        Log.i("tag", "onHandleMessageEvent: is called");
+        L.i("onHandleMessageEvent: is called");
         handleMessage();
     }
 
 
     private void handleMessage() {
-        Log.i("tag", "handle message");
+        L.i("handle message");
         List<BmobIMConversation> list = BmobIM.getInstance().loadAllConversation();
         BmobIMMessage message = list.get(0).getMessages().get(0);
         if (null != list) {
@@ -115,14 +116,14 @@ public class ReminderFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("message", mMessageTextView.getText().toString());
+        outState.putString("message", mMessage);
     }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         if (null != savedInstanceState) {
-            mMessageTextView.setText(savedInstanceState.getString("message"));
+            mMessage = savedInstanceState.getString("message");
         }
     }
 }

@@ -72,7 +72,7 @@ public class InterceptReceiver extends BroadcastReceiver {
                     // address
                     event.address = mge.getDisplayOriginatingAddress();
                     // sms
-                    event.sms = sb.toString();
+                    event.sms = content.toString();
                     // probability
                     event.probability = result.getProbability();
 

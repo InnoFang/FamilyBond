@@ -1,18 +1,15 @@
 package io.innofang.children.map;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatImageButton;
 import android.util.Log;
 import android.view.View;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -29,25 +26,13 @@ import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.bmob.newim.BmobIM;
-import cn.bmob.newim.bean.BmobIMMessage;
-import cn.bmob.newim.bean.BmobIMUserInfo;
-import cn.bmob.newim.core.ConnectionStatus;
-import cn.bmob.newim.listener.ConnectStatusChangeListener;
-import cn.bmob.v3.BmobUser;
 import io.innofang.base.base.BaseActivity;
-import io.innofang.base.bean.User;
 import io.innofang.base.util.amap.SensorEventHelper;
-import io.innofang.base.util.bmob.BmobEvent;
-import io.innofang.base.util.bmob.BmobUtil;
-import io.innofang.base.util.common.L;
 import io.innofang.base.util.common.RequestPermissions;
 import io.innofang.children.R;
 import io.innofang.children.R2;
@@ -60,7 +45,6 @@ import io.innofang.children.settings.SettingsActivity;
  * Description:
  */
 
-@Route(path = "/children/1")
 public class MapActivity extends BaseActivity implements AMapLocationListener, LocationSource {
 
     @BindView(R2.id.map)
@@ -101,63 +85,8 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
         init();
         checkLocationPermission();
 
-        showAddContactTip();
-
-        checkConnect();
     }
 
-    private void checkConnect() {
-
-        BmobUtil.connect(BmobUser.getCurrentUser(User.class), new BmobEvent.onConnectListener() {
-            @Override
-            public void connectSuccessful(User user) {
-                //服务器连接成功就发送一个更新事件，同步更新会话及主页的小红点
-                EventBus.getDefault().post(new BmobIMMessage());
-                //会话： 更新用户资料，用于在会话页面、聊天页面以及个人信息页面显示
-                BmobIM.getInstance().
-                        updateUserInfo(new BmobIMUserInfo(user.getObjectId(),
-                                user.getUsername(), null));
-            }
-
-            @Override
-            public void connectFailed(String error) {
-                toast(error);
-            }
-        });
-        // 连接： 监听连接状态，可通过BmobIM.getInstance().getCurrentStatus()来获取当前的长连接状态
-        BmobIM.getInstance().setOnConnectStatusChangeListener(new ConnectStatusChangeListener() {
-            @Override
-            public void onChange(ConnectionStatus status) {
-                toast(status.getMsg());
-                L.i( BmobIM.getInstance().getCurrentStatus().getMsg());
-            }
-        });
-
-
-    }
-
-
-    private void showAddContactTip() {
-        User user = BmobUser.getCurrentUser(User.class);
-        if (user.getContact().isEmpty()) {
-            new AlertDialog.Builder(this)
-                    .setTitle(R.string.add_contact)
-                    .setMessage(R.string.tip_of_add_contact)
-                    .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            startActivity(new Intent(MapActivity.this, SettingsActivity.class));
-                        }
-                    })
-                    .setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    })
-                    .show();
-        }
-    }
 
     private void init() {
         if (null == mAMap) {

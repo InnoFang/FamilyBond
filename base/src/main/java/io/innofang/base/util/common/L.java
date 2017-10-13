@@ -9,7 +9,7 @@ import android.util.Log;
 
 
 public class L {
-    private static final String TAG = "Log";
+    private static final String TAG = "FamilyBond";
 
     private L() {
     }
