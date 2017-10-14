@@ -8,29 +8,11 @@ import android.support.v7.app.AlertDialog;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.bmob.newim.BmobIM;
-import cn.bmob.newim.bean.BmobIMMessage;
-import cn.bmob.newim.bean.BmobIMUserInfo;
-import cn.bmob.newim.core.ConnectionStatus;
-import cn.bmob.newim.event.MessageEvent;
-import cn.bmob.newim.listener.ConnectStatusChangeListener;
 import cn.bmob.v3.BmobUser;
 import io.innofang.base.base.BaseActivity;
 import io.innofang.base.bean.User;
-import io.innofang.base.bean.bmob.SMSMessage;
-import io.innofang.base.bean.greendao.DaoSession;
-import io.innofang.base.bean.greendao.SMS;
-import io.innofang.base.bean.greendao.SMSDao;
-import io.innofang.base.configure.GreenDaoConfig;
-import io.innofang.base.utils.bmob.BmobEvent;
-import io.innofang.base.utils.bmob.BmobUtil;
-import io.innofang.base.utils.common.L;
-import io.innofang.base.utils.common.NotificationUtil;
 import io.innofang.base.widget.card_view_pager.ShadowTransformer;
 import io.innofang.children.map.MapActivity;
 import io.innofang.children.medically_exam.MedicallyExamActivity;
@@ -47,8 +29,8 @@ public class ChildrenActivity extends BaseActivity {
 
     private CardPagerAdapter mCardAdapter;
     private ShadowTransformer mCardShadowTransformer;
-    private DaoSession mSession;
-    private SMSDao mSmsDao;
+//    private DaoSession mSession;
+//    private SMSDao mSmsDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,18 +38,23 @@ public class ChildrenActivity extends BaseActivity {
         setContentView(R.layout.activity_children);
         ButterKnife.bind(this);
 
+        Intent startIntent = new Intent(this, HandleMessageService.class);
+        startService(startIntent);
+
         init();
         showAddContactTip();
-        checkConnect();
-        mSession = GreenDaoConfig.getInstance().getDaoSession();
-        mSmsDao = mSession.getSMSDao();
-        EventBus.getDefault().register(this);
+//        checkConnect();
+//        mSession = GreenDaoConfig.getInstance().getDaoSession();
+//        mSmsDao = mSession.getSMSDao();
+//        EventBus.getDefault().register(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+//        EventBus.getDefault().unregister(this);
+        Intent stopIntent = new Intent(this, HandleMessageService.class);
+        stopService(stopIntent);
     }
 
     private void init() {
@@ -111,25 +98,23 @@ public class ChildrenActivity extends BaseActivity {
     /**
      * 注册消息接收时间
      *
-     * @param event
      */
-    @Subscribe
+   /* @Subscribe
     public void onHandleMessageEvent(MessageEvent event) {
         L.i("onHandleMessageEvent: is called");
         handleMessage(event);
-    }
+    }*/
 
     /**
      * 注册消息接收时间
      *
-     * @param event
      */
 //    @Subscribe
 //    public void onHandleMessageEvent(OfflineMessageEvent event) {
 //        L.i("onHandleMessageEvent: is called");
 //        handleMessage(event);
 //    }
-    private void handleMessage(MessageEvent event) {
+  /*  private void handleMessage(MessageEvent event) {
         L.i("handle message");
         BmobIMMessage message = event.getMessage();
         if (message.getMsgType().equals(SMSMessage.SMS)) {
@@ -155,7 +140,7 @@ public class ChildrenActivity extends BaseActivity {
                     sms.getContent()
             );
         }
-    }
+    }*/
 
     private void showAddContactTip() {
         User user = BmobUser.getCurrentUser(User.class);
@@ -179,7 +164,7 @@ public class ChildrenActivity extends BaseActivity {
         }
     }
 
-    private void checkConnect() {
+    /*private void checkConnect() {
 
         BmobUtil.connect(BmobUser.getCurrentUser(User.class), new BmobEvent.onConnectListener() {
             @Override
@@ -206,7 +191,7 @@ public class ChildrenActivity extends BaseActivity {
             }
         });
 
-    }
+    }*/
 
 
 }

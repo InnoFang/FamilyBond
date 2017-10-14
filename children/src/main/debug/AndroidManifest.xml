@@ -27,6 +27,13 @@
         <activity android:name=".reminder.ReminderActivity"/>
         <activity android:name=".settings.SettingsActivity"
                   android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".sms_intercept.SMSInterceptionActivity">
+
+        </activity>
+        <activity android:name=".medically_exam.MedicallyExamActivity">
+
+        </activity>
+        <service android:name=".HandleMessageService"/>
     </application>
 
 </manifest>
