@@ -8,8 +8,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,6 +20,7 @@ import io.innofang.base.bean.greendao.DaoSession;
 import io.innofang.base.bean.greendao.SMS;
 import io.innofang.base.bean.greendao.SMSDao;
 import io.innofang.base.configure.GreenDaoConfig;
+import io.innofang.base.utils.common.L;
 import io.innofang.base.utils.event.OnRecyclerItemClickListener;
 import io.innofang.base.widget.base_simple_adapter.BaseSimpleAdapter;
 import io.innofang.base.widget.base_simple_adapter.BaseSimpleViewHolder;
@@ -39,7 +38,7 @@ public class SMSInterceptionFragment extends Fragment {
     private List<SMS> mSMSList;
     private DaoSession mDaoSession;
     private SMSDao mSMSDao;
-    private DecimalFormat mDecimalFormat = new DecimalFormat("#.#%");
+    private DecimalFormat mDecimalFormat = new DecimalFormat("#.##%");
     private BaseSimpleAdapter<SMS> mAdapter;
 
     public static SMSInterceptionFragment newInstance() {
@@ -47,12 +46,13 @@ public class SMSInterceptionFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         mDaoSession = GreenDaoConfig.getInstance().getDaoSession();
         mSMSDao = mDaoSession.getSMSDao();
         Query<SMS> query = mSMSDao.queryBuilder().orderAsc(SMSDao.Properties.Id).build();
         mSMSList = query.list();
+        L.i("SMS Fragment list size: " + mSMSList.size());
     }
 
     @Nullable
@@ -67,7 +67,7 @@ public class SMSInterceptionFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.sms_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(false);
+        linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
         mAdapter = new BaseSimpleAdapter<SMS>(getActivity(), R.layout.item_sms_interception, mSMSList) {

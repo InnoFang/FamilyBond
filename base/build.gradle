@@ -28,7 +28,7 @@ android {
     }
 
     greendao {
-        schemaVersion 1
+        schemaVersion 2
         daoPackage 'io.innofang.base.bean.greendao' //这个是生成代码保存的包名
         targetGenDir 'src/main/java' //保存到java代码路径
     }

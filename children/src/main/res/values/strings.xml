@@ -2,7 +2,7 @@
     <string name="app_name">Children</string>
     <string name="sms_interception">可疑短信拦截</string>
     <string name="message_reminder">消息提醒</string>
-    <string name="medically_exam">老人心率报告</string>
+    <string name="medically_exam_report">老人心率报告</string>
     <string name="location">老人位置显示</string>
     <string name="common_settings">常用设置</string>
 

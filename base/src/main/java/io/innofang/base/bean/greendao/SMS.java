@@ -75,4 +75,15 @@ public class SMS {
     public void setProbability(double probability) {
         this.probability = probability;
     }
+
+    @Override
+    public String toString() {
+        return "SMS{" +
+                "id=" + id +
+                ", time='" + time + '\'' +
+                ", address='" + address + '\'' +
+                ", content='" + content + '\'' +
+                ", probability=" + probability +
+                '}';
+    }
 }

@@ -36,7 +36,6 @@ public class SMSMessage extends BmobIMExtraMessage {
     public static io.innofang.base.bean.greendao.SMS convert(BmobIMMessage message) {
         io.innofang.base.bean.greendao.SMS sms = new SMS();
         String extra = message.getExtra();
-
         try {
             if (!TextUtils.isEmpty(extra)) {
                 JSONObject json = new JSONObject(extra);
@@ -52,7 +51,7 @@ public class SMSMessage extends BmobIMExtraMessage {
                 L.i("SMSMessage's extra is null.");
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            L.e("SMS json build failed", e);
         }
         return sms;
     }

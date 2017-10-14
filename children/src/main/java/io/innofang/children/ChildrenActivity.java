@@ -46,6 +46,8 @@ public class ChildrenActivity extends BaseActivity {
 
     private CardPagerAdapter mCardAdapter;
     private ShadowTransformer mCardShadowTransformer;
+    private DaoSession mSession;
+    private SMSDao mSmsDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,8 @@ public class ChildrenActivity extends BaseActivity {
         init();
         showAddContactTip();
         checkConnect();
+        mSession = GreenDaoConfig.getInstance().getDaoSession();
+        mSmsDao = mSession.getSMSDao();
         EventBus.getDefault().register(this);
     }
 
@@ -69,7 +73,7 @@ public class ChildrenActivity extends BaseActivity {
         mCardAdapter = new CardPagerAdapter();
         mCardAdapter.addCardItem(new CardItem(R.string.sms_interception, R.drawable.sms_interception));
         mCardAdapter.addCardItem(new CardItem(R.string.message_reminder, R.drawable.voice_reminder));
-        mCardAdapter.addCardItem(new CardItem(R.string.medically_exam, R.drawable.medically_exam));
+        mCardAdapter.addCardItem(new CardItem(R.string.medically_exam_report, R.drawable.medically_exam));
         mCardAdapter.addCardItem(new CardItem(R.string.location, R.drawable.map));
         mCardAdapter.addCardItem(new CardItem(R.string.common_settings, R.drawable.settings));
 
@@ -78,7 +82,7 @@ public class ChildrenActivity extends BaseActivity {
         mCardViewPager.setAdapter(mCardAdapter);
         mCardViewPager.setPageTransformer(false, mCardShadowTransformer);
         mCardViewPager.setOffscreenPageLimit(3);
-        mCardViewPager.setCurrentItem(1);
+        mCardViewPager.setCurrentItem(2);
         mCardAdapter.setOnItemClickListener(new CardPagerAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
@@ -132,16 +136,14 @@ public class ChildrenActivity extends BaseActivity {
             L.i(event.getConversation().getConversationTitle() + "发来可疑短信拦截提示");
 
             SMS sms = SMSMessage.convert(message);
-            DaoSession session = GreenDaoConfig.getInstance().getDaoSession();
-            SMSDao smsDao = session.getSMSDao();
-            smsDao.insert(sms);
-
+            mSmsDao.insert(sms);
 
             String s = "时间：" + sms.getTime() + "\n" +
                     "地址：" + sms.getAddress() + "\n" +
                     "内容：" + sms.getContent() + "\n" +
                     "概率：" + sms.getProbability() + "\n";
             L.i(s);
+            L.i("sms list size: " + mSmsDao.queryBuilder().build().list().size());
         }
     }
 
