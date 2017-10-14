@@ -17,7 +17,10 @@ import cn.bmob.newim.event.MessageEvent;
 import cn.bmob.newim.listener.ConnectStatusChangeListener;
 import cn.bmob.v3.BmobUser;
 import io.innofang.base.bean.User;
+import io.innofang.base.bean.bmob.BpmMessage;
 import io.innofang.base.bean.bmob.SMSMessage;
+import io.innofang.base.bean.greendao.Bpm;
+import io.innofang.base.bean.greendao.BpmDao;
 import io.innofang.base.bean.greendao.DaoSession;
 import io.innofang.base.bean.greendao.SMS;
 import io.innofang.base.bean.greendao.SMSDao;
@@ -26,6 +29,7 @@ import io.innofang.base.utils.bmob.BmobEvent;
 import io.innofang.base.utils.bmob.BmobUtil;
 import io.innofang.base.utils.common.L;
 import io.innofang.base.utils.common.NotificationUtil;
+import io.innofang.children.medically_exam_report.MedicallyExamReportActivity;
 import io.innofang.children.sms_intercept.SMSInterceptionActivity;
 
 /**
@@ -35,16 +39,18 @@ import io.innofang.children.sms_intercept.SMSInterceptionActivity;
  */
 
 
-public class HandleMessageService extends Service{
+public class HandleMessageService extends Service {
 
     private DaoSession mSession;
     private SMSDao mSmsDao;
+    private BpmDao mBpmDao;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mSession = GreenDaoConfig.getInstance().getDaoSession();
         mSmsDao = mSession.getSMSDao();
+        mBpmDao = mSession.getBpmDao();
         checkConnect();
         EventBus.getDefault().register(this);
     }
@@ -120,6 +126,28 @@ public class HandleMessageService extends Service{
                     event.getMessage().getContent(),
                     sms.getContent()
             );
+        } else if (message.getMsgType().equals(BpmMessage.BPM)) {
+            Toast.makeText(this, message.getContent(), Toast.LENGTH_SHORT).show();
+            L.i(event.getConversation().getConversationTitle() + "发来心率报告提示");
+
+            Bpm bpm = BpmMessage.convert(message);
+            mBpmDao.insert(bpm);
+
+            String s = "时间：" + bpm.getTime() + "\n" +
+                    "心率：" + bpm.getBpm() + "\n" +
+                    "描述：" + bpm.getDescription() + "\n";
+            L.i(s);
+            L.i("sms list size: " + mSmsDao.queryBuilder().build().list().size());
+
+            NotificationUtil.create(
+                    this,
+                    2,
+                    new Intent(this, MedicallyExamReportActivity.class),
+                    R.mipmap.ic_launcher,
+                    event.getMessage().getContent(),
+                    "心率检测报告：" + bpm.getBpm() + "bpm，" + bpm.getDescription()
+            );
+
         }
     }
 
