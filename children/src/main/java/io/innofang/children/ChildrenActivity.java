@@ -30,6 +30,7 @@ import io.innofang.base.configure.GreenDaoConfig;
 import io.innofang.base.utils.bmob.BmobEvent;
 import io.innofang.base.utils.bmob.BmobUtil;
 import io.innofang.base.utils.common.L;
+import io.innofang.base.utils.common.NotificationUtil;
 import io.innofang.base.widget.card_view_pager.ShadowTransformer;
 import io.innofang.children.map.MapActivity;
 import io.innofang.children.medically_exam.MedicallyExamActivity;
@@ -144,6 +145,15 @@ public class ChildrenActivity extends BaseActivity {
                     "概率：" + sms.getProbability() + "\n";
             L.i(s);
             L.i("sms list size: " + mSmsDao.queryBuilder().build().list().size());
+
+            NotificationUtil.create(
+                    this,
+                    1,
+                    new Intent(this, SMSInterceptionActivity.class),
+                    R.mipmap.ic_launcher,
+                    event.getMessage().getContent(),
+                    sms.getContent()
+            );
         }
     }
 
