@@ -17,4 +17,7 @@
     <string name="input_contact">输入联系人</string>
     <string name="send_to_children_sms_tips">为您的亲人拦截到一条可以短信，请为您家人甄别可靠性</string>
 
+    <string name="bpm_increase_tips">心率同比增长%s，注意适当休息，保持良好心情。</string>
+    <string name="bpm_decrease_tips">心率同比降低%s，可以外出保持活力，保持良好心情。</string>
+    <string name="bpm_no_change_tips">最近心率变化不大，可以适当休息或外出活动，保持良好心情</string>
 </resources>

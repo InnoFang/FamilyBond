@@ -1,4 +1,4 @@
-package io.innofang.children.medically_exam;
+package io.innofang.children.medically_exam_report;
 
 import android.support.v4.app.Fragment;
 
@@ -12,10 +12,10 @@ import io.innofang.children.R;
  */
 
 
-public class MedicallyExamActivity extends FragmentContainerActivity {
+public class MedicallyExamReportActivity extends FragmentContainerActivity {
     @Override
     protected Fragment createFragment() {
-        return MedicallyExamFragment.newInstance();
+        return MedicallyExamReportFragment.newInstance();
     }
 
     @Override

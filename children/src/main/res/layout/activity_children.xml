@@ -22,8 +22,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="9dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -66,6 +68,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/time_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -73,6 +76,7 @@
                     tools:text="测量时间：2017-10-10"/>
 
                 <TextView
+                    android:id="@+id/description_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -87,9 +91,11 @@
             android:id="@+id/tips_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="40dp"
             android:gravity="center"
             android:textSize="20sp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
             tools:text="心率同比增加1%，相对稳定，注意休息"/>
 
         <ViewStub

@@ -40,5 +40,10 @@
     <string name="sms_content">短信内容：\n        %s</string>
     <string name="sms_probability">可疑概率：%s</string>
     <string name="sure_to_delete_suspcious_sms">是否删除该可疑短信</string>
+    <string name="bpm_time">测量时间：%s</string>
 
+    <string name="bpm_increase_tips">心率同比增长%s，注意适当休息，保持良好心情。</string>
+    <string name="bpm_decrease_tips">心率同比降低%s，可以外出保持活力，保持良好心情。</string>
+    <string name="bpm_no_change_tips">最近心率变化不大，可以适当休息或外出活动，保持良好心情</string>
+    <string name="remind_parents_tips">请提醒父母做心率测试，获得更多数据，让你更好的了解父母的健康</string>
 </resources>

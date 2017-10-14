@@ -5,17 +5,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.view.ViewStub;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.bmob.v3.BmobUser;
 import io.innofang.base.base.BaseActivity;
 import io.innofang.base.bean.User;
+import io.innofang.base.bean.greendao.Bpm;
+import io.innofang.base.bean.greendao.BpmDao;
+import io.innofang.base.bean.greendao.DaoSession;
+import io.innofang.base.configure.GreenDaoConfig;
 import io.innofang.base.widget.card_view_pager.ShadowTransformer;
 import io.innofang.children.map.MapActivity;
-import io.innofang.children.medically_exam.MedicallyExamActivity;
+import io.innofang.children.medically_exam_report.MedicallyExamReportActivity;
 import io.innofang.children.reminder.ReminderActivity;
 import io.innofang.children.settings.SettingsActivity;
 import io.innofang.children.sms_intercept.SMSInterceptionActivity;
@@ -26,11 +34,22 @@ public class ChildrenActivity extends BaseActivity {
 
     @BindView(R2.id.card_view_pager)
     ViewPager mCardViewPager;
+    @BindView(R2.id.bpm_text_view)
+    TextView mBpmTextView;
+    @BindView(R2.id.tips_text_view)
+    TextView mTipsTextView;
+    @BindView(R2.id.view_stub)
+    ViewStub mViewStub;
+    @BindView(R2.id.time_text_view)
+    TextView mTimeTextView;
+    @BindView(R2.id.description_text_view)
+    TextView mDescriptionTextView;
 
     private CardPagerAdapter mCardAdapter;
     private ShadowTransformer mCardShadowTransformer;
-//    private DaoSession mSession;
-//    private SMSDao mSmsDao;
+
+    private DaoSession mDaoSession;
+    private BpmDao mBpmDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,21 +57,55 @@ public class ChildrenActivity extends BaseActivity {
         setContentView(R.layout.activity_children);
         ButterKnife.bind(this);
 
+        // start handle message service
         Intent startIntent = new Intent(this, HandleMessageService.class);
         startService(startIntent);
 
+        mDaoSession = GreenDaoConfig.getInstance().getDaoSession();
+        mBpmDao = mDaoSession.getBpmDao();
+
         init();
         showAddContactTip();
-//        checkConnect();
-//        mSession = GreenDaoConfig.getInstance().getDaoSession();
-//        mSmsDao = mSession.getSMSDao();
-//        EventBus.getDefault().register(this);
+        // 展示主屏信息
+        showMainInfo();
+    }
+
+    private void showMainInfo() {
+        List<Bpm> list = mBpmDao.queryBuilder().orderAsc(BpmDao.Properties.Id).build().list();
+
+        if (!list.isEmpty()) {
+            Bpm bpm = list.get(list.size() - 1);
+            mBpmTextView.setText(bpm.getBpm());
+            mTimeTextView.setText(getString(R.string.bpm_time, bpm.getTime()));
+            mDescriptionTextView.setText(bpm.getDescription());
+            mTipsTextView.setText(R.string.remind_parents_tips);
+            if (list.size() > 2) {
+                // 最后一次测量
+                int lastOne = Integer.parseInt(list.get(list.size() - 1).getBpm());
+                // 倒数第二次测量
+                int lastTwo = Integer.parseInt(list.get(list.size() - 2).getBpm());
+                String text = "";
+                if (lastOne > lastTwo) {
+                    double increase = (lastOne - lastTwo) / lastTwo * 1.0;
+                    text = getString(R.string.bpm_increase_tips, ((int) increase * 100) + "%");
+                } else if (lastOne < lastTwo) {
+                    double increase = (lastTwo - lastOne) / lastTwo * 1.0;
+                    text = getString(R.string.bpm_decrease_tips, ((int) increase * 100) + "%");
+                } else {
+                    text = getString(R.string.bpm_no_change_tips);
+                }
+                mTipsTextView.setText(text);
+            }
+        } else {
+            mBpmTextView.setText("00");
+            mTipsTextView.setText(R.string.remind_parents_tips);
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        EventBus.getDefault().unregister(this);
+        // Stop handle message service
         Intent stopIntent = new Intent(this, HandleMessageService.class);
         stopService(stopIntent);
     }
@@ -82,7 +135,7 @@ public class ChildrenActivity extends BaseActivity {
                         startActivity(new Intent(ChildrenActivity.this, ReminderActivity.class));
                         break;
                     case 2:
-                        startActivity(new Intent(ChildrenActivity.this, MedicallyExamActivity.class));
+                        startActivity(new Intent(ChildrenActivity.this, MedicallyExamReportActivity.class));
                         break;
                     case 3:
                         startActivity(new Intent(ChildrenActivity.this, MapActivity.class));
@@ -94,53 +147,6 @@ public class ChildrenActivity extends BaseActivity {
             }
         });
     }
-
-    /**
-     * 注册消息接收时间
-     *
-     */
-   /* @Subscribe
-    public void onHandleMessageEvent(MessageEvent event) {
-        L.i("onHandleMessageEvent: is called");
-        handleMessage(event);
-    }*/
-
-    /**
-     * 注册消息接收时间
-     *
-     */
-//    @Subscribe
-//    public void onHandleMessageEvent(OfflineMessageEvent event) {
-//        L.i("onHandleMessageEvent: is called");
-//        handleMessage(event);
-//    }
-  /*  private void handleMessage(MessageEvent event) {
-        L.i("handle message");
-        BmobIMMessage message = event.getMessage();
-        if (message.getMsgType().equals(SMSMessage.SMS)) {
-            toast(message.getContent());
-            L.i(event.getConversation().getConversationTitle() + "发来可疑短信拦截提示");
-
-            SMS sms = SMSMessage.convert(message);
-            mSmsDao.insert(sms);
-
-            String s = "时间：" + sms.getTime() + "\n" +
-                    "地址：" + sms.getAddress() + "\n" +
-                    "内容：" + sms.getContent() + "\n" +
-                    "概率：" + sms.getProbability() + "\n";
-            L.i(s);
-            L.i("sms list size: " + mSmsDao.queryBuilder().build().list().size());
-
-            NotificationUtil.create(
-                    this,
-                    1,
-                    new Intent(this, SMSInterceptionActivity.class),
-                    R.mipmap.ic_launcher,
-                    event.getMessage().getContent(),
-                    sms.getContent()
-            );
-        }
-    }*/
 
     private void showAddContactTip() {
         User user = BmobUser.getCurrentUser(User.class);
@@ -163,35 +169,4 @@ public class ChildrenActivity extends BaseActivity {
                     .show();
         }
     }
-
-    /*private void checkConnect() {
-
-        BmobUtil.connect(BmobUser.getCurrentUser(User.class), new BmobEvent.onConnectListener() {
-            @Override
-            public void connectSuccessful(User user) {
-                //服务器连接成功就发送一个更新事件，同步更新会话及主页的小红点
-                EventBus.getDefault().post(new BmobIMMessage());
-                //会话： 更新用户资料，用于在会话页面、聊天页面以及个人信息页面显示
-                BmobIM.getInstance().
-                        updateUserInfo(new BmobIMUserInfo(user.getObjectId(),
-                                user.getUsername(), null));
-            }
-
-            @Override
-            public void connectFailed(String error) {
-                toast(error);
-            }
-        });
-        // 连接： 监听连接状态，可通过BmobIM.getInstance().getCurrentStatus()来获取当前的长连接状态
-        BmobIM.getInstance().setOnConnectStatusChangeListener(new ConnectStatusChangeListener() {
-            @Override
-            public void onChange(ConnectionStatus status) {
-                toast(status.getMsg());
-                L.i(BmobIM.getInstance().getCurrentStatus().getMsg());
-            }
-        });
-
-    }*/
-
-
 }

@@ -127,7 +127,7 @@ public class ParentsActivity extends BaseActivity
             public void connectSuccessful(User user) {
                 //服务器连接成功就发送一个更新事件，同步更新会话及主页的小红点
                 EventBus.getDefault().post(new BmobIMMessage());
-                //TODO 会话：2.7、更新用户资料，用于在会话页面、聊天页面以及个人信息页面显示
+                //会话：更新用户资料，用于在会话页面、聊天页面以及个人信息页面显示
                 BmobIM.getInstance().
                         updateUserInfo(new BmobIMUserInfo(user.getObjectId(),
                                 user.getUsername(), null));
@@ -138,7 +138,7 @@ public class ParentsActivity extends BaseActivity
                 toast(error);
             }
         });
-        //TODO 连接：3.3、监听连接状态，可通过BmobIM.getInstance().getCurrentStatus()来获取当前的长连接状态
+        //连接：监听连接状态，可通过BmobIM.getInstance().getCurrentStatus()来获取当前的长连接状态
         BmobIM.getInstance().setOnConnectStatusChangeListener(new ConnectStatusChangeListener() {
             @Override
             public void onChange(ConnectionStatus status) {

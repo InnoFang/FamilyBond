@@ -103,12 +103,15 @@ public class MedicallyExamFragment extends Fragment {
                 String text = "";
                 if (lastOne > lastTwo) {
                     double increase = (lastOne - lastTwo) / lastTwo * 1.0;
-                    text = String.format("心率同比增长%$d%，注意适当休息，保持良好心情。", ((int) increase * 100));
+                    text = getString(R.string.bpm_increase_tips, ((int) increase * 100) + "%");
+//                    text = String.format("心率同比增长%d%，注意适当休息，保持良好心情。", ((int) increase * 100));
                 } else if (lastOne < lastTwo) {
                     double increase = (lastTwo - lastOne) / lastTwo * 1.0;
-                    text = String.format("心率同比降低%$d%，可以外出保持活力，保持良好心情。", ((int) increase * 100));
+                    text = getString(R.string.bpm_decrease_tips, ((int) increase * 100) + "%");
+//                    text = String.format("心率同比降低%d%，可以外出保持活力，保持良好心情。", ((int) increase * 100));
                 } else {
-                    text = "最近心率变化不大，可以适当休息或外出活动，保持良好心情";
+                    text = getString(R.string.bpm_no_change_tips);
+//                    text = "最近心率变化不大，可以适当休息或外出活动，保持良好心情";
                 }
                 mTipsTextView.setText(text);
             }
