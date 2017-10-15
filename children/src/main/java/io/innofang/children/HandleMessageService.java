@@ -137,7 +137,7 @@ public class HandleMessageService extends Service {
                     "心率：" + bpm.getBpm() + "\n" +
                     "描述：" + bpm.getDescription() + "\n";
             L.i(s);
-            L.i("sms list size: " + mSmsDao.queryBuilder().build().list().size());
+            L.i("bpm list size: " + mBpmDao.queryBuilder().build().list().size());
 
             NotificationUtil.create(
                     this,

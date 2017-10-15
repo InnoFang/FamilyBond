@@ -1,14 +1,21 @@
 package io.innofang.parents;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -18,6 +25,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.geocoder.GeocodeResult;
+import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeAddress;
+import com.amap.api.services.geocoder.RegeocodeQuery;
+import com.amap.api.services.geocoder.RegeocodeResult;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -62,6 +76,10 @@ public class ParentsActivity extends BaseActivity
 
     private MenuItem mMenuItem;
 
+    private LocationManager mLocationManager;
+    private String provider;
+
+
     private int[] stringIds = {
             R.string.sms,
             R.string.medically_exam,
@@ -73,6 +91,7 @@ public class ParentsActivity extends BaseActivity
             R.drawable.ic_medically_exam,
             R.drawable.ic_reminder,
     };
+    private GeocodeSearch geocodeSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +137,238 @@ public class ParentsActivity extends BaseActivity
             startActivity(new Intent(this, AddContactActivity.class));
         }
         checkConnect();
+
+//        initAMapLocation();
+        geocodeSearch = new GeocodeSearch(this);
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        List<String> providerList = mLocationManager.getProviders(true);
+        if (providerList.contains(LocationManager.GPS_PROVIDER))
+            provider = LocationManager.GPS_PROVIDER;
+        else if (providerList.contains(LocationManager.NETWORK_PROVIDER))
+            provider = LocationManager.NETWORK_PROVIDER;
+        else {
+            Toast.makeText(this, "No location provider to use", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        RequestPermissions.requestRuntimePermission(new String[]{
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION}, new RequestPermissions.OnRequestPermissionsListener() {
+            @Override
+            public void onGranted() {
+//                locationTest2();
+                if (ActivityCompat.checkSelfPermission(ParentsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ParentsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                    return;
+                }
+                Log.i("location", "called");
+                Location location = mLocationManager.getLastKnownLocation(provider);
+                if (null != location) {
+                    showLocation(location);
+                }
+                mLocationManager.requestLocationUpdates(provider, 5000, 1, new LocationListener() {
+                    @Override
+                    public void onLocationChanged(Location location) {
+                        showLocation(location);
+                    }
+
+                    @Override
+                    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                    }
+
+                    @Override
+                    public void onProviderEnabled(String provider) {
+
+                    }
+
+                    @Override
+                    public void onProviderDisabled(String provider) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onDenied(List<String> deniedPermission) {
+
+            }
+        });
+
     }
+
+    private void showLocation(Location location) {
+        String position = "latitude:" + location.getLatitude() + " longitude:" + location.getLongitude();
+        Log.i("location", position);
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+        getAddressByLatlng(latLng);
+    }
+
+    private void getAddressByLatlng(LatLng latLng) {
+        Log.i("location", "getAddressByLatlng is called");
+        //逆地理编码查询条件：逆地理编码查询的地理坐标点、查询范围、坐标类型。
+        LatLonPoint latLonPoint = new LatLonPoint(latLng.latitude, latLng.longitude);
+        RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 500f, GeocodeSearch.AMAP);
+        geocodeSearch.setOnGeocodeSearchListener(new GeocodeSearch.OnGeocodeSearchListener() {
+            @Override
+            public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
+                RegeocodeAddress regeocodeAddress = regeocodeResult.getRegeocodeAddress();
+                String formatAddress = regeocodeAddress.getFormatAddress();
+                Log.i("location", "查询经纬度对应详细地址：\n" + formatAddress.substring(9));
+            }
+
+            @Override
+            public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
+
+            }
+        });
+        //异步查询
+        geocodeSearch.getFromLocationAsyn(query);
+    }
+
+//    public AMapLocationClientOption mLocationOption = null;
+//
+//    //声明AMapLocationClient类对象
+//    public AMapLocationClient mLocationClient = null;
+//    //声明定位回调监听器
+//    public AMapLocationListener mLocationListener = new AMapLocationListener() {
+//
+//        @Override
+//        public void onLocationChanged(AMapLocation amapLocation) {
+//            // TODO Auto-generated method stub
+//            if (amapLocation != null) {
+//                if (amapLocation.getErrorCode() == 0) {
+//                    //可在其中解析amapLocation获取相应内容。
+//                    double locationType = amapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
+//                    double latitude = amapLocation.getLatitude();//获取纬度
+//                    double longitude = amapLocation.getLongitude();//获取经度
+//                    Log.i("location", "locationType:"+locationType+",latitude:"+latitude+"longitude:"+longitude);
+//                    LatLng latLng = new LatLng(latitude, longitude);
+//                    getAddressByLatlng(latLng);
+//                }else {
+//                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+//                    Log.i("location","location Error, ErrCode:"
+//                            + amapLocation.getErrorCode() + ", errInfo:"
+//                            + amapLocation.getErrorInfo());
+//                }
+//            }
+//        }
+//    };
+//
+//    public void initAMapLocation() {
+//        //初始化定位
+//        mLocationClient = new AMapLocationClient(getApplicationContext());
+//        //设置定位回调监听
+//        mLocationClient.setLocationListener(mLocationListener);
+//
+//        //初始化AMapLocationClientOption对象
+//        mLocationOption = new AMapLocationClientOption();
+//        //设置定位模式为AMapLocationMode.Battery_Saving，低功耗模式。
+//        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
+//
+//
+//        //给定位客户端对象设置定位参数
+//        mLocationClient.setLocationOption(mLocationOption);
+//
+//        //该方法默认为false，true表示只定位一次
+//        mLocationOption.setOnceLocation(true);
+//        geocodeSearch = new GeocodeSearch(this);
+//    }
+//    private void locationTest2() {
+//        //启动定位
+//        mLocationClient.startLocation();
+//    }
+
+
+    public void onClick(View view) {
+//        locationTest2();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        Location location = mLocationManager.getLastKnownLocation(provider);
+        if (null != location) {
+            showLocation(location);
+        }
+    }
+
+//    private GeocodeSearch geocodeSearch;
+
+//    private void locationTest() {
+//        geocodeSearch = new GeocodeSearch(this);
+//        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            return;
+//        }
+//
+//        List<String> providerList = locationManager.getProviders(true);
+//        String provider = "";
+//        if (providerList.contains(LocationManager.GPS_PROVIDER)) {
+//            provider = LocationManager.GPS_PROVIDER;
+//        } else if (providerList.contains(LocationManager.NETWORK_PROVIDER)) {
+//            provider = LocationManager.NETWORK_PROVIDER;
+//        } else {
+//            toast("No location provider to use");
+//            Log.i("location", "No location provider to use");
+//            return;
+//        }
+//        Log.i("location", "locationTest is called");
+//        Location location = locationManager.getLastKnownLocation(provider);
+//        if (null != location) {
+//            showLocation(location);
+//        }
+//        locationManager.requestLocationUpdates(provider, 5000, 1, new LocationListener() {
+//            @Override
+//            public void onLocationChanged(Location location) {
+//                showLocation(location);
+//            }
+//
+//            @Override
+//            public void onStatusChanged(String provider, int status, Bundle extras) {
+//
+//            }
+//
+//            @Override
+//            public void onProviderEnabled(String provider) {
+//
+//            }
+//
+//            @Override
+//            public void onProviderDisabled(String provider) {
+//
+//            }
+//        });
+//    }
+//
+//    private void showLocation(Location location) {
+//        Log.i("location", "latitude: " + location.getLatitude() + ", longitude: " + location.getLongitude());
+//        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+//        getAddressByLatlng(latLng);
+//    }
+//
+//    private void getAddressByLatlng(LatLng latLng) {
+//        Log.i("location", "getAddressByLatlng is called");
+//        //逆地理编码查询条件：逆地理编码查询的地理坐标点、查询范围、坐标类型。
+//        LatLonPoint latLonPoint = new LatLonPoint(latLng.latitude, latLng.longitude);
+//        RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 500f, GeocodeSearch.AMAP);
+//        geocodeSearch.setOnGeocodeSearchListener(new GeocodeSearch.OnGeocodeSearchListener() {
+//            @Override
+//            public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
+//                RegeocodeAddress regeocodeAddress = regeocodeResult.getRegeocodeAddress();
+//                String formatAddress = regeocodeAddress.getFormatAddress();
+//                Log.i("location", "查询经纬度对应详细地址：\n" + formatAddress.substring(9));
+//            }
+//
+//            @Override
+//            public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
+//
+//            }
+//        });
+//        //异步查询
+//        geocodeSearch.getFromLocationAsyn(query);
+//    }
+
 
     private void checkConnect() {
 
@@ -238,4 +488,5 @@ public class ParentsActivity extends BaseActivity
         mToast.setDuration(Toast.LENGTH_SHORT);
         mToast.show();
     }
+
 }
