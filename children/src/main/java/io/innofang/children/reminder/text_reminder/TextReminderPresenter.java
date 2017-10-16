@@ -121,7 +121,6 @@ public class TextReminderPresenter implements TextReminderContract.Presenter {
                     String username = usernames.get(position);
                     checkConversations(username);
                     popupWindow.dismiss();
-                    sendReminder();
                 }
             });
 
@@ -154,6 +153,7 @@ public class TextReminderPresenter implements TextReminderContract.Presenter {
                 if (conversationEntrance.getConversationTitle().equals(username)) {
                     mConversationManager = BmobIMConversation.obtain(
                             BmobIMClient.getInstance(), conversationEntrance);
+                    sendReminder();
                 }
             }
         } else {
@@ -172,6 +172,7 @@ public class TextReminderPresenter implements TextReminderContract.Presenter {
                             BmobIMConversation conversationEntrance = BmobIM.getInstance().startPrivateConversation(info, null);
                             mIMConversations.add(conversationEntrance);
                             mConversationManager = BmobIMConversation.obtain(BmobIMClient.getInstance(), conversationEntrance);
+                            sendReminder();
                         }
 
                         @Override

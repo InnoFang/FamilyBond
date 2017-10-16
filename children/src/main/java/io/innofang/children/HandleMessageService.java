@@ -9,11 +9,16 @@ import android.widget.Toast;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMUserInfo;
 import cn.bmob.newim.core.ConnectionStatus;
 import cn.bmob.newim.event.MessageEvent;
+import cn.bmob.newim.event.OfflineMessageEvent;
 import cn.bmob.newim.listener.ConnectStatusChangeListener;
 import cn.bmob.v3.BmobUser;
 import io.innofang.base.bean.User;
@@ -95,7 +100,7 @@ public class HandleMessageService extends Service {
      *
      * @param event
      */
-    @Subscribe
+    @Subscribe(sticky = true)
     public void onHandleMessageEvent(MessageEvent event) {
         L.i("onHandleMessageEvent: is called");
         handleMessage(event);
@@ -147,10 +152,47 @@ public class HandleMessageService extends Service {
                     event.getMessage().getContent(),
                     "心率检测报告：" + bpm.getBpm() + "bpm，" + bpm.getDescription()
             );
-
         }
     }
 
+    @Subscribe(sticky = true)
+    public void onHandleOfflineMessageEvent(OfflineMessageEvent offlineMessageEvent) {
+        Map<String, List<MessageEvent>> map = offlineMessageEvent.getEventMap();
+        Iterator iter = map.keySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry entry = (Map.Entry) iter.next();
+            String key = (String) entry.getKey();
+            List<MessageEvent> val = (List<MessageEvent>) entry.getValue();
+            for (MessageEvent messageEvent : val) {
+                L.i("key " + key + ", val :" + messageEvent.getMessage().getContent());
+                BmobIMMessage message = messageEvent.getMessage();
+                if (message.getMsgType().equals(BpmMessage.BPM)) {
+                    Toast.makeText(this, message.getContent(), Toast.LENGTH_SHORT).show();
+                    L.i(messageEvent.getConversation().getConversationTitle() + "发来心率报告提示");
+
+                    Bpm bpm = BpmMessage.convert(message);
+                    mBpmDao.insert(bpm);
+
+                    String s = "时间：" + bpm.getTime() + "\n" +
+                            "心率：" + bpm.getBpm() + "\n" +
+                            "描述：" + bpm.getDescription() + "\n";
+                    L.i(s);
+                    L.i("bpm list size: " + mBpmDao.queryBuilder().build().list().size());
+
+                    NotificationUtil.create(
+                            this,
+                            2,
+                            new Intent(this, MedicallyExamReportActivity.class),
+                            R.mipmap.ic_launcher,
+                            messageEvent.getMessage().getContent(),
+                            "心率检测报告：" + bpm.getBpm() + "bpm，" + bpm.getDescription()
+                    );
+
+                }
+            }
+
+        }
+    }
 
     @Override
     public void onDestroy() {

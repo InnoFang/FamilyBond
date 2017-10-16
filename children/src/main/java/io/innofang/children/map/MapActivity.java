@@ -26,21 +26,23 @@ import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
-import org.greenrobot.eventbus.EventBus;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bmob.newim.BmobIM;
+import cn.bmob.newim.bean.BmobIMConversation;
 import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMUserInfo;
-import cn.bmob.newim.core.ConnectionStatus;
-import cn.bmob.newim.listener.ConnectStatusChangeListener;
+import cn.bmob.newim.core.BmobIMClient;
+import cn.bmob.newim.listener.MessageSendListener;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
 import io.innofang.base.base.BaseActivity;
 import io.innofang.base.bean.User;
+import io.innofang.base.bean.bmob.ShareMapMessage;
 import io.innofang.base.utils.amap.SensorEventHelper;
 import io.innofang.base.utils.bmob.BmobEvent;
 import io.innofang.base.utils.bmob.BmobUtil;
@@ -84,54 +86,93 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
     private Circle mCircle;
     public static final String LOCATION_MARKER_FLAG = "你的位置";
 
+    private List<BmobIMConversation> mIMConversations = new ArrayList<>();
+    private BmobIMConversation mConversationManager;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         ButterKnife.bind(this);
 
+        // open share map
+        List<BmobIMConversation> list = BmobIM.getInstance().loadAllConversation();
+        if (null != list) {
+            mIMConversations.addAll(list);
+        }
+        User user = BmobUser.getCurrentUser(User.class);
+        String username = user.getContact().get(0).getUsername();
+        checkConversations(username);
+
         //初始化定位参数
         initLocation();
         //初始化请求权限，存储权限
         mMapView.onCreate(savedInstanceState);
         init();
+
         checkLocationPermission();
-        checkConnect();
-        sendToOpenSharedMap();
+
     }
+    private void checkConversations(String username) {
+        if (null != mIMConversations && !mIMConversations.isEmpty()) {
 
-    private void checkConnect() {
-
-        BmobUtil.connect(BmobUser.getCurrentUser(User.class), new BmobEvent.onConnectListener() {
-            @Override
-            public void connectSuccessful(User user) {
-                //服务器连接成功就发送一个更新事件，同步更新会话及主页的小红点
-                EventBus.getDefault().post(new BmobIMMessage());
-                //会话： 更新用户资料，用于在会话页面、聊天页面以及个人信息页面显示
-                BmobIM.getInstance().
-                        updateUserInfo(new BmobIMUserInfo(user.getObjectId(),
-                                user.getUsername(), null));
+            for (BmobIMConversation conversationEntrance : mIMConversations) {
+                if (conversationEntrance.getConversationTitle().equals(username)) {
+                    mConversationManager = BmobIMConversation.obtain(
+                            BmobIMClient.getInstance(), conversationEntrance);
+                    sendToOpenSharedMap();
+                }
             }
+        } else {
+            BmobUtil.query(username, new BmobEvent.onQueryListener() {
+                @Override
+                public boolean beforeQuery() {
+                    return true;
+                }
 
-            @Override
-            public void connectFailed(String error) {
-                toast(error);
-            }
-        });
-        // 连接： 监听连接状态，可通过BmobIM.getInstance().getCurrentStatus()来获取当前的长连接状态
-        BmobIM.getInstance().setOnConnectStatusChangeListener(new ConnectStatusChangeListener() {
-            @Override
-            public void onChange(ConnectionStatus status) {
-                toast(status.getMsg());
-                L.i(BmobIM.getInstance().getCurrentStatus().getMsg());
-            }
-        });
+                @Override
+                public void querySuccessful(final List<User> list) {
+                    BmobUtil.connect(list.get(0), new BmobEvent.onConnectListener() {
+                        @Override
+                        public void connectSuccessful(User user) {
+                            BmobIMUserInfo info = new BmobIMUserInfo(user.getObjectId(), user.getUsername(), null);
+                            BmobIMConversation conversationEntrance = BmobIM.getInstance().startPrivateConversation(info, null);
+                            mIMConversations.add(conversationEntrance);
+                            mConversationManager = BmobIMConversation.obtain(BmobIMClient.getInstance(), conversationEntrance);
+                            sendToOpenSharedMap();
+                        }
 
+                        @Override
+                        public void connectFailed(String error) {
+                            toast(error);
+                        }
+                    });
+                }
+
+                @Override
+                public void queryFailed(BmobException e) {
+                    toast(e.getMessage());
+                }
+            });
+
+        }
     }
 
 
     private void sendToOpenSharedMap() {
-
+        ShareMapMessage message = new ShareMapMessage();
+        message.setContent(ShareMapMessage.OPEN);
+        mConversationManager.sendMessage(message, new MessageSendListener() {
+            @Override
+            public void done(BmobIMMessage bmobIMMessage, BmobException e) {
+                if (null == e) {
+                    toast("开始地图共享");
+                } else {
+                    toast(e.getMessage());
+                    L.i("location", e.getMessage());
+                }
+            }
+        });
     }
 
 
@@ -317,7 +358,7 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+
         if (mLocMarker != null) {
             mLocMarker.destroy();
         }
@@ -325,6 +366,24 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
         if (mMapView != null) {
             mMapView.onDestroy();
         }
+        sendToCloseShareMap();
+        super.onDestroy();
+    }
+
+    private void sendToCloseShareMap() {
+        ShareMapMessage message = new ShareMapMessage();
+        message.setContent(ShareMapMessage.CLOSE);
+        mConversationManager.sendMessage(message, new MessageSendListener() {
+            @Override
+            public void done(BmobIMMessage bmobIMMessage, BmobException e) {
+                if (null == e) {
+                    toast("结束地图共享");
+                } else {
+                    toast(e.getMessage());
+                    L.i("location", e.getMessage());
+                }
+            }
+        });
     }
 
     @Override

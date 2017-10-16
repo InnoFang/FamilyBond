@@ -16,6 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddContactActivity"/>
+        <service android:name=".HandleMessageService"/>
     </application>
 
 </manifest>

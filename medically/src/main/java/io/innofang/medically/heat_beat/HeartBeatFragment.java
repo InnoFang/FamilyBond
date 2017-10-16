@@ -211,6 +211,7 @@ public class HeartBeatFragment extends Fragment {
                         event.bpm = mBpsTextView.getText().toString();
                         EventBus.getDefault().postSticky(event);
                         startActivity(new Intent(getActivity(), DataDisplayActivity.class));
+                        getActivity().finish();
                     }
                 });
             }
@@ -381,14 +382,14 @@ public class HeartBeatFragment extends Fragment {
 
             int rollingAverage = (averageArrayCnt > 0) ? (averageArrayAvg / averageArrayCnt) : 0;
             TYPE newType = currentType;
-            L.i("onPreviewFrame: imgAvg = " + imgAvg + " rollingAverage = " + rollingAverage);
+//            L.i("onPreviewFrame: imgAvg = " + imgAvg + " rollingAverage = " + rollingAverage);
             if (imgAvg < rollingAverage) {
                 newType = TYPE.RED;
                 if (newType != currentType) {
                     beats++;
                     flag = 0;
                     pulseNumberTextView.setText(String.format("脉冲数：%s", String.valueOf(beats)));
-                    L.i("BEAT!! beats=" + beats);
+//                    L.i("BEAT!! beats=" + beats);
                 }
             } else if (imgAvg > rollingAverage) {
                 newType = TYPE.GREEN;
@@ -420,7 +421,7 @@ public class HeartBeatFragment extends Fragment {
                     processing.set(false);
                     return;
                 }
-                L.i("totalTimeInSecs=" + totalTimeInSecs + " beats=" + beats);
+//                L.i("totalTimeInSecs=" + totalTimeInSecs + " beats=" + beats);
                 if (beatsIndex == beatsArraySize)
                     beatsIndex = 0;
                 beatsArray[beatsIndex] = dpm;

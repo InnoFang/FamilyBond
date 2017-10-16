@@ -1,12 +1,19 @@
 package io.innofang.base.utils.bmob;
 
+import android.content.Context;
 import android.text.TextUtils;
+import android.widget.Toast;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
 import cn.bmob.newim.BmobIM;
+import cn.bmob.newim.bean.BmobIMMessage;
+import cn.bmob.newim.bean.BmobIMUserInfo;
 import cn.bmob.newim.core.ConnectionStatus;
 import cn.bmob.newim.listener.ConnectListener;
+import cn.bmob.newim.listener.ConnectStatusChangeListener;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
@@ -15,6 +22,7 @@ import cn.bmob.v3.listener.LogInListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import io.innofang.base.bean.User;
+import io.innofang.base.utils.common.L;
 
 /**
  * Author: Inno Fang
@@ -118,6 +126,35 @@ public class BmobUtil {
                 }
             });
         }
+    }
+
+    public static void checkConnect(final Context context) {
+
+        BmobUtil.connect(BmobUser.getCurrentUser(User.class), new BmobEvent.onConnectListener() {
+            @Override
+            public void connectSuccessful(User user) {
+                //服务器连接成功就发送一个更新事件，同步更新会话及主页的小红点
+                EventBus.getDefault().post(new BmobIMMessage());
+                //会话： 更新用户资料，用于在会话页面、聊天页面以及个人信息页面显示
+                BmobIM.getInstance().
+                        updateUserInfo(new BmobIMUserInfo(user.getObjectId(),
+                                user.getUsername(), null));
+            }
+
+            @Override
+            public void connectFailed(String error) {
+                Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+            }
+        });
+        // 连接： 监听连接状态，可通过BmobIM.getInstance().getCurrentStatus()来获取当前的长连接状态
+        BmobIM.getInstance().setOnConnectStatusChangeListener(new ConnectStatusChangeListener() {
+            @Override
+            public void onChange(ConnectionStatus status) {
+                Toast.makeText(context, status.getMsg(), Toast.LENGTH_SHORT).show();
+                L.i(BmobIM.getInstance().getCurrentStatus().getMsg());
+            }
+        });
+
     }
 
 }

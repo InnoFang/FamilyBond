@@ -1,5 +1,6 @@
 package io.innofang.protectplus.login;
 
+import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
 
 import io.innofang.base.base.BasePresenter;
@@ -19,6 +20,7 @@ public class LoginContract {
         void beforeLogin();
         void loginSuccessful();
         void loginFailed(String text);
+        Context getContext();
     }
 
     interface Presenter extends BasePresenter {

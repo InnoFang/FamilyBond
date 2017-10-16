@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 
@@ -50,8 +51,18 @@ public class MedicallyExamFragment extends Fragment {
     @BindView(R2.id.start_button)
     Button mStartButton;
 
+    private DaoSession mDaoSession;
+    private BpmDao mBpmDao;
+
     public static MedicallyExamFragment newInstance() {
         return new MedicallyExamFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mDaoSession = GreenDaoConfig.getInstance().getDaoSession();
+        mBpmDao = mDaoSession.getBpmDao();
     }
 
     @Override
@@ -69,7 +80,11 @@ public class MedicallyExamFragment extends Fragment {
             }, new RequestPermissions.OnRequestPermissionsListener() {
                 @Override
                 public void onGranted() {
-                    ARouter.getInstance().build("/heart_beat/1").navigation();
+                    if (!mBpmDao.queryBuilder().build().list().isEmpty()) {
+                        ARouter.getInstance().build("/heart_beat/1").navigation();
+                    } else {
+                        Toast.makeText(getContext(), "还没有数据，通知你的家人进行测量吧", Toast.LENGTH_LONG).show();
+                    }
                 }
 
                 @Override
@@ -88,9 +103,21 @@ public class MedicallyExamFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_medically_exam, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        DaoSession daoSession = GreenDaoConfig.getInstance().getDaoSession();
-        BpmDao bpmDao = daoSession.getBpmDao();
-        Query<Bpm> bpmQuery = bpmDao.queryBuilder().orderAsc(BpmDao.Properties.Id).build();
+        mDaoSession = GreenDaoConfig.getInstance().getDaoSession();
+        mBpmDao = mDaoSession.getBpmDao();
+        updateInfo();
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateInfo();
+    }
+
+    private void updateInfo() {
+        Query<Bpm> bpmQuery = mBpmDao.queryBuilder().orderAsc(BpmDao.Properties.Id).build();
         List<Bpm> list = bpmQuery.list();
         if (!list.isEmpty()) {
             mBpmLabel.setVisibility(View.VISIBLE);
@@ -119,7 +146,5 @@ public class MedicallyExamFragment extends Fragment {
             mBpmLabel.setVisibility(View.INVISIBLE);
             mTipsTextView.setText("还没有测试记录，点击卡片进行测试");
         }
-
-        return view;
     }
 }

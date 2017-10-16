@@ -60,9 +60,8 @@ public class ReminderFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         EventBus.getDefault().unregister(this);
-        unbinder.unbind();
+        super.onDestroy();
     }
 
     @Nullable

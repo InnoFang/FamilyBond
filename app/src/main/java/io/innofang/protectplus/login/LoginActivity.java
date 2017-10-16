@@ -1,5 +1,6 @@
 package io.innofang.protectplus.login;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -98,6 +99,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         showInfo(text);
         mLoginInProgressBar.setVisibility(View.GONE);
         CircularAnimUtils.show(mLoginButton);
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 
     @Override

@@ -101,19 +101,22 @@ public class DataDisplayFragment extends Fragment {
         // send bpm to children
         User user = BmobUser.getCurrentUser(User.class);
         String username = user.getContact().get(0).getUsername();
-        checkConversations(username);
+        L.i("send " + username);
+        checkConversations(username, bpm);
         send(bpm);
-
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         List<BmobIMConversation> list = BmobIM.getInstance().loadAllConversation();
         if (null != list) {
             mIMConversations.addAll(list);
         }
     }
+
+
 
     @Nullable
     @Override
@@ -240,22 +243,23 @@ public class DataDisplayFragment extends Fragment {
         mConversationManager.sendMessage(message, new MessageSendListener() {
             @Override
             public void done(BmobIMMessage bmobIMMessage, BmobException e) {
-                if (e != null) {
-                    showInfo("send bpm to children error " + e.getMessage());
-                } else {
+                if (e == null) {
                     L.i("send bpm to children successfully.");
+                } else {
+                    showInfo("send bpm to children error " + e.getMessage());
                 }
             }
         });
     }
 
-    private void checkConversations(String username) {
+    private void checkConversations(String username, final Bpm bpm) {
         if (null != mIMConversations && !mIMConversations.isEmpty()) {
 
             for (BmobIMConversation conversationEntrance : mIMConversations) {
                 if (conversationEntrance.getConversationTitle().equals(username)) {
                     mConversationManager = BmobIMConversation.obtain(
                             BmobIMClient.getInstance(), conversationEntrance);
+
                 }
             }
         } else {
@@ -274,6 +278,7 @@ public class DataDisplayFragment extends Fragment {
                             BmobIMConversation conversationEntrance = BmobIM.getInstance().startPrivateConversation(info, null);
                             mIMConversations.add(conversationEntrance);
                             mConversationManager = BmobIMConversation.obtain(BmobIMClient.getInstance(), conversationEntrance);
+                            send(bpm);
                         }
 
                         @Override

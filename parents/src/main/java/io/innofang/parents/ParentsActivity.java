@@ -1,21 +1,14 @@
 package io.innofang.parents;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -25,13 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.amap.api.maps2d.model.LatLng;
-import com.amap.api.services.core.LatLonPoint;
-import com.amap.api.services.geocoder.GeocodeResult;
-import com.amap.api.services.geocoder.GeocodeSearch;
-import com.amap.api.services.geocoder.RegeocodeAddress;
-import com.amap.api.services.geocoder.RegeocodeQuery;
-import com.amap.api.services.geocoder.RegeocodeResult;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -76,9 +62,9 @@ public class ParentsActivity extends BaseActivity
 
     private MenuItem mMenuItem;
 
-    private LocationManager mLocationManager;
-    private String provider;
-
+//    private LocationManager mLocationManager;
+//    private String provider;
+//
 
     private int[] stringIds = {
             R.string.sms,
@@ -91,7 +77,7 @@ public class ParentsActivity extends BaseActivity
             R.drawable.ic_medically_exam,
             R.drawable.ic_reminder,
     };
-    private GeocodeSearch geocodeSearch;
+//    private GeocodeSearch geocodeSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,63 +117,18 @@ public class ParentsActivity extends BaseActivity
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), list);
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(1);
+        mBottomNavigationView.setOnNavigationItemSelectedListener(this);
 
 
         if (BmobUser.getCurrentUser(User.class).getContact().isEmpty()) {
             startActivity(new Intent(this, AddContactActivity.class));
         }
-        checkConnect();
+//        checkConnect();
 
-//        initAMapLocation();
-        geocodeSearch = new GeocodeSearch(this);
-        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        List<String> providerList = mLocationManager.getProviders(true);
-        if (providerList.contains(LocationManager.GPS_PROVIDER))
-            provider = LocationManager.GPS_PROVIDER;
-        else if (providerList.contains(LocationManager.NETWORK_PROVIDER))
-            provider = LocationManager.NETWORK_PROVIDER;
-        else {
-            Toast.makeText(this, "No location provider to use", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-
-        RequestPermissions.requestRuntimePermission(new String[]{
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION}, new RequestPermissions.OnRequestPermissionsListener() {
+        RequestPermissions.requestRuntimePermission(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, new RequestPermissions.OnRequestPermissionsListener() {
             @Override
             public void onGranted() {
-//                locationTest2();
-                if (ActivityCompat.checkSelfPermission(ParentsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ParentsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                    return;
-                }
-                Log.i("location", "called");
-                Location location = mLocationManager.getLastKnownLocation(provider);
-                if (null != location) {
-                    showLocation(location);
-                }
-                mLocationManager.requestLocationUpdates(provider, 5000, 1, new LocationListener() {
-                    @Override
-                    public void onLocationChanged(Location location) {
-                        showLocation(location);
-                    }
-
-                    @Override
-                    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                    }
-
-                    @Override
-                    public void onProviderEnabled(String provider) {
-
-                    }
-
-                    @Override
-                    public void onProviderDisabled(String provider) {
-
-                    }
-                });
             }
 
             @Override
@@ -196,37 +137,105 @@ public class ParentsActivity extends BaseActivity
             }
         });
 
+        Intent intent = new Intent(this, HandleMessageService.class);
+        startService(intent);
+
+//        initAMapLocation();
+//        geocodeSearch = new GeocodeSearch(this);
+//        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//        List<String> providerList = mLocationManager.getProviders(true);
+//        if (providerList.contains(LocationManager.GPS_PROVIDER))
+//            provider = LocationManager.GPS_PROVIDER;
+//        else if (providerList.contains(LocationManager.NETWORK_PROVIDER))
+//            provider = LocationManager.NETWORK_PROVIDER;
+//        else {
+//            Toast.makeText(this, "No location provider to use", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//
+//        RequestPermissions.requestRuntimePermission(new String[]{
+//                Manifest.permission.ACCESS_FINE_LOCATION,
+//                Manifest.permission.ACCESS_COARSE_LOCATION}, new RequestPermissions.OnRequestPermissionsListener() {
+//            @Override
+//            public void onGranted() {
+////                locationTest2();
+//                if (ActivityCompat.checkSelfPermission(ParentsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ParentsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//
+//                    return;
+//                }
+//                Log.i("location", "called");
+//                Location location = mLocationManager.getLastKnownLocation(provider);
+//                if (null != location) {
+//                    showLocation(location);
+//                }
+//                mLocationManager.requestLocationUpdates(provider, 5000, 1, new LocationListener() {
+//                    @Override
+//                    public void onLocationChanged(Location location) {
+//                        showLocation(location);
+//                    }
+//
+//                    @Override
+//                    public void onStatusChanged(String provider, int status, Bundle extras) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onProviderEnabled(String provider) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onProviderDisabled(String provider) {
+//
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onDenied(List<String> deniedPermission) {
+//
+//            }
+//        });
+
     }
 
-    private void showLocation(Location location) {
-        String position = "latitude:" + location.getLatitude() + " longitude:" + location.getLongitude();
-        Log.i("location", position);
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-
-        getAddressByLatlng(latLng);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Intent intent = new Intent(this, HandleMessageService.class);
+        stopService(intent);
     }
 
-    private void getAddressByLatlng(LatLng latLng) {
-        Log.i("location", "getAddressByLatlng is called");
-        //逆地理编码查询条件：逆地理编码查询的地理坐标点、查询范围、坐标类型。
-        LatLonPoint latLonPoint = new LatLonPoint(latLng.latitude, latLng.longitude);
-        RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 500f, GeocodeSearch.AMAP);
-        geocodeSearch.setOnGeocodeSearchListener(new GeocodeSearch.OnGeocodeSearchListener() {
-            @Override
-            public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
-                RegeocodeAddress regeocodeAddress = regeocodeResult.getRegeocodeAddress();
-                String formatAddress = regeocodeAddress.getFormatAddress();
-                Log.i("location", "查询经纬度对应详细地址：\n" + formatAddress.substring(9));
-            }
-
-            @Override
-            public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
-
-            }
-        });
-        //异步查询
-        geocodeSearch.getFromLocationAsyn(query);
-    }
+    //    private void showLocation(Location location) {
+//        String position = "latitude:" + location.getLatitude() + " longitude:" + location.getLongitude();
+//        Log.i("location", position);
+//        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+//
+//        getAddressByLatlng(latLng);
+//    }
+//
+//    private void getAddressByLatlng(LatLng latLng) {
+//        Log.i("location", "getAddressByLatlng is called");
+//        //逆地理编码查询条件：逆地理编码查询的地理坐标点、查询范围、坐标类型。
+//        LatLonPoint latLonPoint = new LatLonPoint(latLng.latitude, latLng.longitude);
+//        RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 500f, GeocodeSearch.AMAP);
+//        geocodeSearch.setOnGeocodeSearchListener(new GeocodeSearch.OnGeocodeSearchListener() {
+//            @Override
+//            public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
+//                RegeocodeAddress regeocodeAddress = regeocodeResult.getRegeocodeAddress();
+//                String formatAddress = regeocodeAddress.getFormatAddress();
+//                Log.i("location", "查询经纬度对应详细地址：\n" + formatAddress.substring(9));
+//            }
+//
+//            @Override
+//            public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
+//
+//            }
+//        });
+//        //异步查询
+//        geocodeSearch.getFromLocationAsyn(query);
+//    }
 
 //    public AMapLocationClientOption mLocationOption = null;
 //
@@ -237,7 +246,6 @@ public class ParentsActivity extends BaseActivity
 //
 //        @Override
 //        public void onLocationChanged(AMapLocation amapLocation) {
-//            // TODO Auto-generated method stub
 //            if (amapLocation != null) {
 //                if (amapLocation.getErrorCode() == 0) {
 //                    //可在其中解析amapLocation获取相应内容。
@@ -281,17 +289,6 @@ public class ParentsActivity extends BaseActivity
 //        mLocationClient.startLocation();
 //    }
 
-
-    public void onClick(View view) {
-//        locationTest2();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        Location location = mLocationManager.getLastKnownLocation(provider);
-        if (null != location) {
-            showLocation(location);
-        }
-    }
 
 //    private GeocodeSearch geocodeSearch;
 
@@ -453,20 +450,15 @@ public class ParentsActivity extends BaseActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R2.id.item_sms:
-                mViewPager.setCurrentItem(0);
-                break;
-            case R2.id.item_medically_exam:
-                mViewPager.setCurrentItem(1);
-                break;
-            case R2.id.item_reminder:
-                mViewPager.setCurrentItem(2);
-                break;
-            default:
-                break;
+        int id = item.getItemId();
+        if (id == R.id.item_sms) {
+            mViewPager.setCurrentItem(0);
+        } else  if (id == R.id.item_medically_exam) {
+            mViewPager.setCurrentItem(1);
+        } else  if (id == R.id.item_reminder) {
+            mViewPager.setCurrentItem(2);
         }
-        return false;
+        return true;
     }
 
     Toast mToast;

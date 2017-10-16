@@ -5,6 +5,10 @@ import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMMessageType;
 import cn.bmob.newim.event.MessageEvent;
@@ -31,14 +35,25 @@ public class IMMessageHandler extends BmobIMMessageHandler {
     public void onMessageReceive(MessageEvent messageEvent) {
         super.onMessageReceive(messageEvent);
         Log.i("tag", "onMessageReceive: is called");
-        executeMessage(messageEvent);
+//        executeMessage(messageEvent);
+        EventBus.getDefault().post(messageEvent);
     }
 
     @Override
     public void onOfflineReceive(OfflineMessageEvent offlineMessageEvent) {
         super.onOfflineReceive(offlineMessageEvent);
         Log.i("tag", "onOfflineReceive: is called");
-        EventBus.getDefault().post(offlineMessageEvent);
+        Map<String, List<MessageEvent>> map = offlineMessageEvent.getEventMap();
+        Iterator iter = map.keySet().iterator();
+        while (iter.hasNext()) {
+            String key = (String) iter.next();
+            List<MessageEvent> val = map.get(key);
+            for (MessageEvent messageEvent : val) {
+                Log.i("tag", "key " + key + ", val :" + messageEvent.getMessage().getContent());
+            }
+
+        }
+        EventBus.getDefault().postSticky(offlineMessageEvent);
     }
 
     private void executeMessage(final MessageEvent event) {

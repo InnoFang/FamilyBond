@@ -2,6 +2,7 @@ package io.innofang.protectplus.login;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
@@ -27,11 +28,13 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     private LoginContract.View mView;
     private Activity mActivity;
+    private Context mContext;
 
     public LoginPresenter(LoginContract.View view, Activity activity) {
         mView = view;
         mActivity = activity;
         mView.setPresenter(this);
+        mContext = mView.getContext();
     }
 
     @Override
@@ -67,6 +70,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                     ARouter.getInstance().build("/parents/1").navigation();
                     mView.showInfo("Parents");
                 }
+                ((LoginActivity) mContext).finish();
             }
 
             @Override
