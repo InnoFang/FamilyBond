@@ -103,7 +103,7 @@ public class DataDisplayFragment extends Fragment {
         String username = user.getContact().get(0).getUsername();
         L.i("send " + username);
         checkConversations(username, bpm);
-        send(bpm);
+
     }
 
     @Override
@@ -259,7 +259,7 @@ public class DataDisplayFragment extends Fragment {
                 if (conversationEntrance.getConversationTitle().equals(username)) {
                     mConversationManager = BmobIMConversation.obtain(
                             BmobIMClient.getInstance(), conversationEntrance);
-
+                    send(bpm);
                 }
             }
         } else {

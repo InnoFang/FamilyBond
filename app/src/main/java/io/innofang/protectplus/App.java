@@ -6,6 +6,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 
 import io.innofang.base.configure.GreenDaoConfig;
 import io.innofang.base.utils.common.L;
+import io.innofang.base.utils.common.TypefaceUtil;
 import io.innofang.bmob.BmobAPI;
 import io.innofang.xfyun.XFYun;
 
@@ -21,6 +22,9 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        /* change font to Youyuan */
+        TypefaceUtil.replaceSystemDefaultFont(this, "fonts/youyuan.ttf");
 
         /* initialize ARouter */
         if (BuildConfig.DEBUG) {

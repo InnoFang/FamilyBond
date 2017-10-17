@@ -15,9 +15,9 @@ import cn.bmob.newim.core.BmobIMClient;
 import cn.bmob.newim.listener.MessageSendListener;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
-import io.innofang.base.bean.greendao.SMS;
 import io.innofang.base.bean.User;
 import io.innofang.base.bean.bmob.SMSMessage;
+import io.innofang.base.bean.greendao.SMS;
 import io.innofang.base.utils.bmob.BmobEvent;
 import io.innofang.base.utils.bmob.BmobUtil;
 import io.innofang.base.utils.common.L;
@@ -63,8 +63,8 @@ public class SmsPresenter implements SmsContract.Presenter {
     public void sendToChildren(SMS sms) {
         User user = BmobUser.getCurrentUser(User.class);
         String username = user.getContact().get(0).getUsername();
-        checkConversations(username);
-        send(sms);
+        checkConversations(username, sms);
+
     }
 
     private void send(SMS sms) {
@@ -88,13 +88,14 @@ public class SmsPresenter implements SmsContract.Presenter {
         });
     }
 
-    private void checkConversations(String username) {
+    private void checkConversations(String username, final SMS sms) {
         if (null != mIMConversations && !mIMConversations.isEmpty()) {
 
             for (BmobIMConversation conversationEntrance : mIMConversations) {
                 if (conversationEntrance.getConversationTitle().equals(username)) {
                     mConversationManager = BmobIMConversation.obtain(
                             BmobIMClient.getInstance(), conversationEntrance);
+                    send(sms);
                 }
             }
         } else {
@@ -113,6 +114,7 @@ public class SmsPresenter implements SmsContract.Presenter {
                             BmobIMConversation conversationEntrance = BmobIM.getInstance().startPrivateConversation(info, null);
                             mIMConversations.add(conversationEntrance);
                             mConversationManager = BmobIMConversation.obtain(BmobIMClient.getInstance(), conversationEntrance);
+                            send(sms);
                         }
 
                         @Override
