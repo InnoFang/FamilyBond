@@ -19,6 +19,7 @@ import io.innofang.base.bean.greendao.SMS;
 import io.innofang.base.utils.common.RequestPermissions;
 import io.innofang.parents.R;
 import io.innofang.sms_intercept.SMSEvent;
+import io.innofang.xfyun.XFYunUtil;
 
 /**
  * Author: Inno Fang
@@ -77,7 +78,7 @@ public class SmsFragment extends Fragment implements SmsContract.View {
         mSms = event.sms;
         mSmsTextView.setText(event.sms);
         showInfo("拦截到可疑短信");
-
+        XFYunUtil.build(getContext()).speak("为您拦截到可疑短信");
         SMS sms = new SMS();
         sms.setTime(event.time);
         sms.setAddress(event.address);

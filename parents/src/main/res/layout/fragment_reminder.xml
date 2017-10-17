@@ -13,19 +13,19 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:scaleType="fitStart"
-            android:src="@drawable/reminder_header"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"/>
+            android:scaleType="fitStart"
+            android:src="@drawable/reminder_header"/>
 
         <TextView
-
-            android:text="@string/reminder"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:textColor="#000000"
+            android:background="@drawable/bg_text_title"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/reminder"
+            android:textColor="#ffffff"
             android:textSize="30sp"/>
     </RelativeLayout>
 
@@ -35,8 +35,8 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="15dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginTop="-15dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="-15dp"
         app:cardCornerRadius="6dp"
         app:cardElevation="4dp">
 
@@ -49,23 +49,31 @@
                 android:layout_height="40dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:background="@drawable/bg_text_title"
+                android:background="@drawable/bg_text_header"
                 android:gravity="center_vertical"
                 android:paddingStart="15dp"
                 android:text="@string/reminder"
                 android:textColor="#ffffff"
-                android:textSize="20sp"/>
+                android:textSize="25sp"
+                android:textStyle="bold"/>
 
-            <TextView
-                android:id="@+id/message_text_view"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="50dp"
-                android:gravity="start"
-                />
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/message_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="50dp"
+                    android:gravity="start"
+                    android:textSize="22sp"
+                    />
+            </ScrollView>
+
 
         </RelativeLayout>
 

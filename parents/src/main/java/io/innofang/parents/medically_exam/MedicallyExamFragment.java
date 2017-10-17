@@ -28,6 +28,7 @@ import io.innofang.base.configure.GreenDaoConfig;
 import io.innofang.base.utils.common.RequestPermissions;
 import io.innofang.parents.R;
 import io.innofang.parents.R2;
+import io.innofang.xfyun.XFYunUtil;
 
 /**
  * Author: Inno Fang
@@ -87,8 +88,10 @@ public class MedicallyExamFragment extends Fragment {
 
                 }
             });
-        } else {
-            // FIXME： 语音提示
+        } else if (id == R.id.bpm_text_view) {
+            XFYunUtil.build(getContext()).speak(mBpmTextView.getText().toString() + " bpm");
+        } else if (id == R.id.tips_text_view) {
+            XFYunUtil.build(getContext()).speak(mTipsTextView.getText().toString());
         }
     }
 
@@ -125,10 +128,10 @@ public class MedicallyExamFragment extends Fragment {
                 String text = "";
                 if (lastOne > lastTwo) {
                     int increase = lastOne - lastTwo;
-                    text = getString(R.string.bpm_increase_tips, increase + "bpm");
+                    text = getString(R.string.bpm_increase_tips, increase + " bpm");
                 } else if (lastOne < lastTwo) {
                     int decrease = lastTwo - lastOne;
-                    text = getString(R.string.bpm_decrease_tips, decrease + "bpm");
+                    text = getString(R.string.bpm_decrease_tips, decrease + " bpm");
                 } else {
                     text = getString(R.string.bpm_no_change_tips);
                 }

@@ -16,6 +16,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMAudioMessage;
@@ -23,10 +24,10 @@ import cn.bmob.newim.bean.BmobIMConversation;
 import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMMessageType;
 import cn.bmob.newim.event.MessageEvent;
-import cn.bmob.newim.event.OfflineMessageEvent;
 import io.innofang.base.utils.common.L;
 import io.innofang.parents.R;
 import io.innofang.parents.R2;
+import io.innofang.xfyun.XFYunUtil;
 
 /**
  * Author: Inno Fang
@@ -80,33 +81,23 @@ public class ReminderFragment extends Fragment {
      */
     @Subscribe
     public void onHandleMessageEvent(MessageEvent event) {
-        L.i("onHandleMessageEvent: is called");
+        L.i("Reminder onHandleMessageEvent: is called");
         handleMessage();
     }
-
-    /**
-     * 注册消息接收时间
-     *
-     * @param event
-     */
-    @Subscribe
-    public void onHandleMessageEvent(OfflineMessageEvent event) {
-        L.i("onHandleMessageEvent: is called");
-        handleMessage();
-    }
-
 
     private void handleMessage() {
-        L.i("handle message");
+        L.i("Reminder handle message");
         List<BmobIMConversation> list = BmobIM.getInstance().loadAllConversation();
         BmobIMMessage message = list.get(0).getMessages().get(0);
         if (null != list) {
             if (message.getMsgType().equals(BmobIMMessageType.TEXT.getType()) || message.getMsgType().equals("agree")) {
                 mMessageTextView.setText(message.getContent());
+                XFYunUtil.build(getContext()).speak("您的家人为您发来了消息提醒，注意查看");
                 Toast.makeText(getActivity(), list.get(0).getConversationTitle() + "发来消息提醒", Toast.LENGTH_LONG).show();
             } else if (message.getMsgType().equals(BmobIMMessageType.VOICE.getType())) {
                 //使用buildFromDB方法转化成指定类型的消息
                 BmobIMAudioMessage audio = BmobIMAudioMessage.buildFromDB(true, message);
+                XFYunUtil.build(getContext()).speak("您的家人为您发来了语音提醒，注意查看");
                 Toast.makeText(getActivity(), list.get(0).getConversationTitle() + "发来语音提醒", Toast.LENGTH_LONG).show();
             }
         }
@@ -124,5 +115,10 @@ public class ReminderFragment extends Fragment {
         if (null != savedInstanceState) {
             mMessage = savedInstanceState.getString("message");
         }
+    }
+
+    @OnClick(R2.id.message_text_view)
+    public void onViewClicked() {
+        XFYunUtil.build(getContext()).speak(mMessageTextView.getText().toString());
     }
 }
