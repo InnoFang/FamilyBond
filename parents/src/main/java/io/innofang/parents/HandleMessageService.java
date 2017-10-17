@@ -1,5 +1,6 @@
 package io.innofang.parents;
 
+import android.Manifest;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -22,6 +23,7 @@ import com.amap.api.services.geocoder.RegeocodeResult;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,13 +37,19 @@ import cn.bmob.newim.core.ConnectionStatus;
 import cn.bmob.newim.event.MessageEvent;
 import cn.bmob.newim.listener.ConnectStatusChangeListener;
 import cn.bmob.newim.listener.MessageSendListener;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.DownloadFileListener;
+import cn.bmob.v3.listener.FindListener;
+import io.innofang.base.bean.SMSModel;
 import io.innofang.base.bean.User;
 import io.innofang.base.bean.bmob.ShareMapMessage;
 import io.innofang.base.utils.bmob.BmobEvent;
 import io.innofang.base.utils.bmob.BmobUtil;
 import io.innofang.base.utils.common.L;
+import io.innofang.base.utils.common.RequestPermissions;
+import io.innofang.sms_intercept.SMSModelUtil;
 
 /**
  * Author: Inno Fang
@@ -128,7 +136,6 @@ public class HandleMessageService extends Service {
         });
     }
 
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -155,6 +162,30 @@ public class HandleMessageService extends Service {
          */
         //该方法默认为false，true表示只定位一次
         mLocationOption.setOnceLocation(true);
+
+        RequestPermissions.requestRuntimePermission(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, new RequestPermissions.OnRequestPermissionsListener() {
+            @Override
+            public void onGranted() {
+                L.i("download dir is " + SMSModelUtil.isModelFilesExit());
+                if (!SMSModelUtil.isModelFilesExit()) {
+                    BmobQuery<SMSModel> query = new BmobQuery<>();
+                    query.findObjects(new FindListener<SMSModel>() {
+                        @Override
+                        public void done(List<SMSModel> list, BmobException e) {
+                            for (SMSModel smsModel : list) {
+                                download(smsModel);
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onDenied(List<String> deniedPermission) {
+
+            }
+        });
+
 
         EventBus.getDefault().register(this);
     }
@@ -204,6 +235,36 @@ public class HandleMessageService extends Service {
         }
     }
 
+
+    private void download(SMSModel smsModel) {
+        File dir = new File(SMSModelUtil.DIRECTORY);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        final String fileName = SMSModelUtil.getFileName(smsModel.getFile().getFilename());
+        if ("".equals(fileName))
+            return;
+
+        File saveFile = new File(SMSModelUtil.DIRECTORY, fileName);
+        smsModel.getFile().download(saveFile, new DownloadFileListener() {
+            @Override
+            public void done(String s, BmobException e) {
+                if (null == e) {
+                    L.i("download", "success: " + fileName);
+                } else {
+                    L.i("download", "failed: " + e.getMessage());
+                }
+            }
+
+            @Override
+            public void onProgress(Integer integer, long l) {
+
+            }
+        });
+
+    }
+
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -250,10 +311,22 @@ public class HandleMessageService extends Service {
      *
      * @param event
      */
-    @Subscribe
+
     public void onHandleMessageEvent(MessageEvent event) {
         L.i("location", "onHandleMessageEvent: is called");
         handleMessage(event);
+    }
+
+    @Subscribe
+    public void onHandleShareMapMessageEvent(String status) {
+        if (status.equals(ShareMapMessage.OPEN)) {
+            //启动定位
+            mLocationClient.startLocation();
+        } else {
+            //关闭定位
+            mLocationClient.stopLocation();
+        }
+        L.i(status);
     }
 
 

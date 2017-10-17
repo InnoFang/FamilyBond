@@ -100,7 +100,7 @@ public class HandleMessageService extends Service {
      *
      * @param event
      */
-    @Subscribe(sticky = true)
+    @Subscribe
     public void onHandleMessageEvent(MessageEvent event) {
         L.i("onHandleMessageEvent: is called");
         handleMessage(event);

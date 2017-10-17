@@ -32,11 +32,9 @@ import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMUserInfo;
 import cn.bmob.newim.core.ConnectionStatus;
 import cn.bmob.newim.listener.ConnectStatusChangeListener;
-import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.DownloadFileListener;
-import cn.bmob.v3.listener.FindListener;
 import io.innofang.base.base.BaseActivity;
 import io.innofang.base.bean.SMSModel;
 import io.innofang.base.bean.User;
@@ -139,6 +137,10 @@ public class ParentsActivity extends BaseActivity
 
         Intent intent = new Intent(this, HandleMessageService.class);
         startService(intent);
+
+        XFYunUtil.build(this).setSpeed("20").speak("欢迎使用家宝，祝您使用愉快");
+
+
 
 //        initAMapLocation();
 //        geocodeSearch = new GeocodeSearch(this);
@@ -395,30 +397,7 @@ public class ParentsActivity extends BaseActivity
         });
 
 
-        XFYunUtil.build(this).setSpeed("20").speak("欢迎使用家宝，祝您使用愉快");
-
-        RequestPermissions.requestRuntimePermission(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, new RequestPermissions.OnRequestPermissionsListener() {
-            @Override
-            public void onGranted() {
-                if (!SMSModelUtil.isModelFilesExit()) {
-                    BmobQuery<SMSModel> query = new BmobQuery<>();
-                    query.findObjects(new FindListener<SMSModel>() {
-                        @Override
-                        public void done(List<SMSModel> list, BmobException e) {
-                            for (SMSModel smsModel : list) {
-                                download(smsModel);
-                            }
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onDenied(List<String> deniedPermission) {
-
-            }
-        });
-    }
+       }
 
     private void download(SMSModel smsModel) {
         File dir = new File(SMSModelUtil.DIRECTORY);
