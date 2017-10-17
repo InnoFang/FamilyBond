@@ -1,6 +1,7 @@
 package io.innofang.children.map;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -9,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageButton;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -24,7 +27,11 @@ import com.amap.api.maps2d.model.CircleOptions;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +41,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMConversation;
+import cn.bmob.newim.bean.BmobIMLocationMessage;
 import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMUserInfo;
 import cn.bmob.newim.core.BmobIMClient;
+import cn.bmob.newim.core.ConnectionStatus;
+import cn.bmob.newim.listener.ConnectStatusChangeListener;
 import cn.bmob.newim.listener.MessageSendListener;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
@@ -66,13 +76,15 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
     @BindView(R2.id.locbtn)
     AppCompatImageButton mLocbtn;
     @BindView(R2.id.action_locate)
-    com.getbase.floatingactionbutton.FloatingActionButton mActionLocate;
+    FloatingActionButton mActionLocate;
     @BindView(R2.id.action_settings)
-    com.getbase.floatingactionbutton.FloatingActionButton mActionSettings;
+    FloatingActionButton mActionSettings;
     @BindView(R2.id.action_reminder)
-    com.getbase.floatingactionbutton.FloatingActionButton mActionReminder;
+    FloatingActionButton mActionReminder;
     @BindView(R2.id.floating_actions_menu)
     FloatingActionsMenu mFloatingActionsMenu;
+    @BindView(R2.id.info_text_view)
+    TextView mInfoTextView;
 
     private AMap mAMap;
     private AMapLocationClient mLocationClient;
@@ -88,6 +100,7 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
 
     private List<BmobIMConversation> mIMConversations = new ArrayList<>();
     private BmobIMConversation mConversationManager;
+    private String mSendToUsername;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,14 +108,18 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
         setContentView(R.layout.activity_map);
         ButterKnife.bind(this);
 
+        checkConnect(this);
+
         // open share map
         List<BmobIMConversation> list = BmobIM.getInstance().loadAllConversation();
         if (null != list) {
             mIMConversations.addAll(list);
         }
+
         User user = BmobUser.getCurrentUser(User.class);
-        String username = user.getContact().get(0).getUsername();
-        checkConversations(username);
+        mSendToUsername = user.getContact().get(0).getUsername();
+        checkConversations(mSendToUsername, true);
+
 
         //初始化定位参数
         initLocation();
@@ -112,15 +129,49 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
 
         checkLocationPermission();
 
+        EventBus.getDefault().register(this);
     }
-    private void checkConversations(String username) {
+
+    public void checkConnect(final Context context) {
+
+        BmobUtil.connect(BmobUser.getCurrentUser(User.class), new BmobEvent.onConnectListener() {
+            @Override
+            public void connectSuccessful(User user) {
+                //服务器连接成功就发送一个更新事件，同步更新会话及主页的小红点
+                EventBus.getDefault().post(new BmobIMMessage());
+                //会话： 更新用户资料，用于在会话页面、聊天页面以及个人信息页面显示
+                BmobIM.getInstance().
+                        updateUserInfo(new BmobIMUserInfo(user.getObjectId(),
+                                user.getUsername(), null));
+            }
+
+            @Override
+            public void connectFailed(String error) {
+                Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+            }
+        });
+        // 连接： 监听连接状态，可通过BmobIM.getInstance().getCurrentStatus()来获取当前的长连接状态
+        BmobIM.getInstance().setOnConnectStatusChangeListener(new ConnectStatusChangeListener() {
+            @Override
+            public void onChange(ConnectionStatus status) {
+                Toast.makeText(context, status.getMsg(), Toast.LENGTH_SHORT).show();
+                L.i(BmobIM.getInstance().getCurrentStatus().getMsg());
+            }
+        });
+
+    }
+
+    private void checkConversations(String username, final boolean isStart) {
         if (null != mIMConversations && !mIMConversations.isEmpty()) {
 
             for (BmobIMConversation conversationEntrance : mIMConversations) {
                 if (conversationEntrance.getConversationTitle().equals(username)) {
                     mConversationManager = BmobIMConversation.obtain(
                             BmobIMClient.getInstance(), conversationEntrance);
-                    sendToOpenSharedMap();
+                    if (isStart)
+                        sendToOpenSharedMap();
+                    else
+                        sendToCloseShareMap();
                 }
             }
         } else {
@@ -139,7 +190,11 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
                             BmobIMConversation conversationEntrance = BmobIM.getInstance().startPrivateConversation(info, null);
                             mIMConversations.add(conversationEntrance);
                             mConversationManager = BmobIMConversation.obtain(BmobIMClient.getInstance(), conversationEntrance);
-                            sendToOpenSharedMap();
+
+                            if (isStart)
+                                sendToOpenSharedMap();
+                            else
+                                sendToCloseShareMap();
                         }
 
                         @Override
@@ -230,17 +285,6 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
-        /*if (aMapLocation != null
-                && aMapLocation.getErrorCode() == 0) {
-            double longitude = aMapLocation.getLongitude();
-            double latitude = aMapLocation.getLatitude();
-            LatLng location = new LatLng(latitude, longitude);
-            changeLocation(location);
-        } else {
-            String errText = "定位失败," + aMapLocation.getErrorCode() + ": " + aMapLocation.getErrorInfo();
-            Log.e("AmapErr", errText);
-            Toast.makeText(MapActivity.this, errText, Toast.LENGTH_LONG).show();
-        }*/
         if (mListener != null && aMapLocation != null) {
             if (aMapLocation != null
                     && aMapLocation.getErrorCode() == 0) {
@@ -356,6 +400,39 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
         }
     }
 
+    @Subscribe
+    public void onHandBmobIMLocationMessageEvent(BmobIMLocationMessage message) {
+        mAMap.clear();
+        L.i("show address" + message.getAddress());
+        L.i("show latitude : " + message.getLatitude());
+        L.i("show longitude : " + message.getLongitude());
+
+
+        LatLng latLng = new LatLng(message.getLatitude(), message.getLongitude());
+        Marker marker = mAMap.addMarker(new MarkerOptions()
+                .position(latLng)
+                .title(message.getAddress())
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_marker)))
+                .snippet("DefaultMarker"));
+
+        mAMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                toast(marker.getTitle());
+                return true;
+            }
+        });
+
+        String info = "家人ID：" + message.getBmobIMConversation().getConversationTitle() + "\n" +
+                "当前位置：" + message.getAddress() + "\n";
+
+        mAMap.moveCamera(CameraUpdateFactory.changeLatLng(latLng));
+        mAMap.moveCamera(CameraUpdateFactory.zoomTo(19f));
+        mInfoTextView.setText(info);
+
+
+    }
+
     @Override
     protected void onDestroy() {
 
@@ -366,7 +443,8 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
         if (mMapView != null) {
             mMapView.onDestroy();
         }
-        sendToCloseShareMap();
+        checkConversations(mSendToUsername, false);
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 

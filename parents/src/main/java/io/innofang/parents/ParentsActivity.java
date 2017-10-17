@@ -139,9 +139,6 @@ public class ParentsActivity extends BaseActivity
         startService(intent);
 
         XFYunUtil.build(this).setSpeed("20").speak("欢迎使用家宝，祝您使用愉快");
-
-
-
 //        initAMapLocation();
 //        geocodeSearch = new GeocodeSearch(this);
 //        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -439,9 +436,6 @@ public class ParentsActivity extends BaseActivity
         }
         return true;
     }
-
-
-
 
     Toast mToast;
     View mToastView;

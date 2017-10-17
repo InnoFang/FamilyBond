@@ -121,7 +121,7 @@ public class HandleMessageService extends Service {
         geocodeSearch.getFromLocationAsyn(query);
     }
 
-    private void sendToChildrenLocation(String address, LatLng latLng) {
+    private void sendToChildrenLocation(final String address, final LatLng latLng) {
         BmobIMLocationMessage message = new BmobIMLocationMessage();
         message.setAddress(address);
         message.setLatitude(latLng.latitude);
@@ -130,7 +130,11 @@ public class HandleMessageService extends Service {
             @Override
             public void done(BmobIMMessage bmobIMMessage, BmobException e) {
                 if (e != null) {
-                    L.i("location", e.getMessage());
+                    L.i(e.getMessage());
+                } else {
+                    L.i("address: " + address);
+                    L.i("latitude: " + latLng.latitude);
+                    L.i("longitude: " + latLng.longitude);
                 }
             }
         });

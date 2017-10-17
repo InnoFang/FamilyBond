@@ -10,12 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 
 import org.greenrobot.greendao.query.Query;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import butterknife.BindView;
@@ -80,11 +80,7 @@ public class MedicallyExamFragment extends Fragment {
             }, new RequestPermissions.OnRequestPermissionsListener() {
                 @Override
                 public void onGranted() {
-                    if (!mBpmDao.queryBuilder().build().list().isEmpty()) {
-                        ARouter.getInstance().build("/heart_beat/1").navigation();
-                    } else {
-                        Toast.makeText(getContext(), "还没有数据，通知你的家人进行测量吧", Toast.LENGTH_LONG).show();
-                    }
+                    ARouter.getInstance().build("/heart_beat/1").navigation();
                 }
 
                 @Override
@@ -122,19 +118,20 @@ public class MedicallyExamFragment extends Fragment {
         if (!list.isEmpty()) {
             mBpmLabel.setVisibility(View.VISIBLE);
             mBpmTextView.setText(list.get(list.size() - 1).getBpm());
-            if (list.size() > 2) {
+            if (list.size() >= 2) {
                 // 最后一次测量
                 int lastOne = Integer.parseInt(list.get(list.size() - 1).getBpm());
                 // 倒数第二次测量
                 int lastTwo = Integer.parseInt(list.get(list.size() - 2).getBpm());
                 String text = "";
+                DecimalFormat decimalFormat = new DecimalFormat("#.##%");
                 if (lastOne > lastTwo) {
                     double increase = (lastOne - lastTwo) / lastTwo * 1.0;
-                    text = getString(R.string.bpm_increase_tips, ((int) increase * 100) + "%");
+                    text = getString(R.string.bpm_increase_tips, decimalFormat.format(increase));
 //                    text = String.format("心率同比增长%d%，注意适当休息，保持良好心情。", ((int) increase * 100));
                 } else if (lastOne < lastTwo) {
                     double increase = (lastTwo - lastOne) / lastTwo * 1.0;
-                    text = getString(R.string.bpm_decrease_tips, ((int) increase * 100) + "%");
+                    text = getString(R.string.bpm_decrease_tips, decimalFormat.format(increase));
 //                    text = String.format("心率同比降低%d%，可以外出保持活力，保持良好心情。", ((int) increase * 100));
                 } else {
                     text = getString(R.string.bpm_no_change_tips);

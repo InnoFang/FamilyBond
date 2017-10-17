@@ -9,6 +9,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.List;
 import java.util.Map;
 
+import cn.bmob.newim.bean.BmobIMLocationMessage;
 import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMMessageType;
 import cn.bmob.newim.event.MessageEvent;
@@ -83,7 +84,6 @@ public class IMMessageHandler extends BmobIMMessageHandler {
                 executeMessage(list.get(i));
             }
         }
-//        EventBus.getDefault().post(offlineMessageEvent);
     }
 
     private void executeMessage(final MessageEvent event) {
@@ -173,21 +173,13 @@ public class IMMessageHandler extends BmobIMMessageHandler {
 
 
     private void processSDKMessage(BmobIMMessage msg, MessageEvent event) {
-//        if (BmobNotificationManager.getInstance(mContext).isShowNotification()) {
-        //如果需要显示通知栏，SDK提供以下两种显示方式：
-          /*  Intent pendingIntent = new Intent();
-            pendingIntent.setAction(Intent.ACTION_VIEW);
-            pendingIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            BmobIMUserInfo info = event.getFromUserInfo();
-            //这里可以是应用图标，也可以将聊天头像转成bitmap
-            Bitmap largeIcon = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_launcher);
-            BmobNotificationManager.getInstance(mContext).showSMSNotification(largeIcon,
-                    info.getName(), msg.getContent(), "您有一条新消息", pendingIntent);*/
-//        } else {
-        EventBus.getDefault().post(event);
-//        }
-
-
+        L.i("processSDKMessage: is called");
+        if (msg.getMsgType().equals(BmobIMMessageType.LOCATION.getType())) {
+            L.i("location information");
+            BmobIMLocationMessage locationMessage = BmobIMLocationMessage.buildFromDB(msg);
+            EventBus.getDefault().post(locationMessage);
+        } else {
+            EventBus.getDefault().post(event);
+        }
     }
 }

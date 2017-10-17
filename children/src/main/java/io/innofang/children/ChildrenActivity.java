@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import butterknife.BindView;
@@ -66,6 +67,12 @@ public class ChildrenActivity extends BaseActivity {
 
         init();
         showAddContactTip();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         // 展示主屏信息
         showMainInfo();
     }
@@ -79,18 +86,19 @@ public class ChildrenActivity extends BaseActivity {
             mTimeTextView.setText(getString(R.string.bpm_time, bpm.getTime()));
             mDescriptionTextView.setText(bpm.getDescription());
             mTipsTextView.setText(R.string.remind_parents_tips);
-            if (list.size() > 2) {
+            if (list.size() >= 2) {
                 // 最后一次测量
                 int lastOne = Integer.parseInt(list.get(list.size() - 1).getBpm());
                 // 倒数第二次测量
                 int lastTwo = Integer.parseInt(list.get(list.size() - 2).getBpm());
                 String text = "";
+                DecimalFormat decimalFormat = new DecimalFormat("#.##%");
                 if (lastOne > lastTwo) {
                     double increase = (lastOne - lastTwo) / lastTwo * 1.0;
-                    text = getString(R.string.bpm_increase_tips, ((int) increase * 100) + "%");
+                    text = getString(R.string.bpm_increase_tips, decimalFormat.format(increase));
                 } else if (lastOne < lastTwo) {
                     double increase = (lastTwo - lastOne) / lastTwo * 1.0;
-                    text = getString(R.string.bpm_decrease_tips, ((int) increase * 100) + "%");
+                    text = getString(R.string.bpm_decrease_tips, decimalFormat.format(increase));
                 } else {
                     text = getString(R.string.bpm_no_change_tips);
                 }
@@ -135,7 +143,12 @@ public class ChildrenActivity extends BaseActivity {
                         startActivity(new Intent(ChildrenActivity.this, ReminderActivity.class));
                         break;
                     case 2:
-                        startActivity(new Intent(ChildrenActivity.this, MedicallyExamReportActivity.class));
+                        if (!mBpmDao.queryBuilder().build().list().isEmpty()) {
+                            startActivity(new Intent(ChildrenActivity.this, MedicallyExamReportActivity.class));
+                        } else {
+                            toast("还没有数据，通知你的家人进行测量吧");
+                        }
+
                         break;
                     case 3:
                         startActivity(new Intent(ChildrenActivity.this, MapActivity.class));
