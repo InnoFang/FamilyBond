@@ -1,4 +1,4 @@
-package io.innofang.bmob;
+package io.innofang.base.utils.bmob;
 
 import android.content.Context;
 import android.util.Log;
@@ -15,6 +15,10 @@ import cn.bmob.newim.event.MessageEvent;
 import cn.bmob.newim.event.OfflineMessageEvent;
 import cn.bmob.newim.listener.BmobIMMessageHandler;
 import cn.bmob.newim.notification.BmobNotificationManager;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import io.innofang.base.bean.User;
+import io.innofang.base.utils.common.L;
 
 /**
  * Author: Inno Fang
@@ -34,9 +38,9 @@ public class IMMessageHandler extends BmobIMMessageHandler {
     @Override
     public void onMessageReceive(MessageEvent messageEvent) {
         super.onMessageReceive(messageEvent);
-        Log.i("tag", "onMessageReceive: is called");
-//        executeMessage(messageEvent);
-        EventBus.getDefault().post(messageEvent);
+        L.i(BmobUser.getCurrentUser(User.class).getUsername() + " onMessageReceive: is called");
+        executeMessage(messageEvent);
+//        EventBus.getDefault().post(messageEvent);
     }
 
     @Override
@@ -57,12 +61,20 @@ public class IMMessageHandler extends BmobIMMessageHandler {
     }
 
     private void executeMessage(final MessageEvent event) {
-        BmobIMMessage msg = event.getMessage();
-        if (BmobIMMessageType.getMessageTypeValue(msg.getMsgType()) == 0) {
-            processCustomMessage(msg, event);
-        } else {
-            processSDKMessage(msg, event);
-        }
+        BmobUtil.updateUserInfo(event, new BmobEvent.UpdateCacheListener() {
+            @Override
+            public void done(BmobException e) {
+                BmobIMMessage msg = event.getMessage();
+                if (BmobIMMessageType.getMessageTypeValue(msg.getMsgType()) == 0) {
+                    //自定义消息类型：0
+                    processCustomMessage(msg, event);
+                } else {
+                    //SDK内部内部支持的消息类型
+                    processSDKMessage(msg, event);
+                }
+            }
+        });
+
 
     }
 

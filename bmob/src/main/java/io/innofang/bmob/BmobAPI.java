@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileReader;
 
 import cn.bmob.newim.BmobIM;
+import cn.bmob.newim.listener.BmobIMMessageHandler;
 import cn.bmob.v3.Bmob;
 
 /**
@@ -18,13 +19,13 @@ import cn.bmob.v3.Bmob;
 
 public class BmobAPI{
 
-    public static void init(Context context) {
+    public static void init(Context context, BmobIMMessageHandler messageHandler) {
         Bmob.initialize(context, "6e93f68a2c1522791bb39accfe44237d");
 
         /* 集成：初始化IM SDK，并注册消息接收器，只有主进程运行的时候才需要初始化 */
         if (context.getApplicationInfo().packageName.equals(getMyProcessName())) {
             BmobIM.init(context);
-            BmobIM.registerDefaultMessageHandler(new IMMessageHandler(context));
+            BmobIM.registerDefaultMessageHandler(messageHandler);
         }
 
     }

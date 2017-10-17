@@ -7,6 +7,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import io.innofang.base.configure.GreenDaoConfig;
 import io.innofang.base.utils.common.L;
 import io.innofang.bmob.BmobAPI;
+import io.innofang.base.utils.bmob.IMMessageHandler;
 import io.innofang.xfyun.XFYun;
 
 /**
@@ -23,7 +24,7 @@ public class App extends Application {
         super.onCreate();
 
         /* initialize Bmob */
-        BmobAPI.init(this);
+        BmobAPI.init(this, new IMMessageHandler(this));
 
         /* initialize ARouter */
         if (BuildConfig.DEBUG) {

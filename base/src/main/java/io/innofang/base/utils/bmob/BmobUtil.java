@@ -9,9 +9,11 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.List;
 
 import cn.bmob.newim.BmobIM;
+import cn.bmob.newim.bean.BmobIMConversation;
 import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMUserInfo;
 import cn.bmob.newim.core.ConnectionStatus;
+import cn.bmob.newim.event.MessageEvent;
 import cn.bmob.newim.listener.ConnectListener;
 import cn.bmob.newim.listener.ConnectStatusChangeListener;
 import cn.bmob.v3.BmobQuery;
@@ -155,6 +157,71 @@ public class BmobUtil {
             }
         });
 
+    }
+
+    /**
+     * 更新用户资料和会话资料
+     *
+     * @param event
+     * @param listener
+     */
+    public static void updateUserInfo(MessageEvent event, final BmobEvent.UpdateCacheListener listener) {
+        final BmobIMConversation conversation = event.getConversation();
+        final BmobIMUserInfo info = event.getFromUserInfo();
+        final BmobIMMessage msg = event.getMessage();
+        String username = info.getName();
+        String title = conversation.getConversationTitle();
+        //SDK内部将新会话的会话标题用objectId表示，因此需要比对用户名和私聊会话标题，后续会根据会话类型进行判断
+        if (!username.equals(title)) {
+            queryUserInfo(info.getUserId(), new BmobEvent.QueryUserListener() {
+                @Override
+                public void done(User s, BmobException e) {
+                    if (e == null) {
+                        String name = s.getUsername();
+                        conversation.setConversationTitle(name);
+                        info.setName(name);
+                        // 更新用户资料，用于在会话页面、聊天页面以及个人信息页面显示
+                        BmobIM.getInstance().updateUserInfo(info);
+                        // 更新会话资料-如果消息是暂态消息，则不更新会话资料
+                        if (!msg.isTransient()) {
+                            BmobIM.getInstance().updateConversation(conversation);
+                        }
+                    } else {
+                        L.e(e.getMessage());
+                    }
+                    listener.done(null);
+                }
+            });
+        } else {
+            listener.done(null);
+        }
+    }
+
+    /**
+     * 查询指定用户信息
+     *
+     * @param objectId
+     * @param listener
+     */
+    public static void queryUserInfo(String objectId, final BmobEvent.QueryUserListener listener) {
+        BmobQuery<User> query = new BmobQuery<>();
+        query.addWhereEqualTo("objectId", objectId);
+        query.findObjects(
+                new FindListener<User>() {
+                    @Override
+                    public void done(List<User> list, BmobException e) {
+                        if (e == null) {
+
+                            if (list != null && list.size() > 0) {
+                                listener.done(list.get(0), null);
+                            } else {
+                                listener.done(null, new BmobException(000, "查无此人"));
+                            }
+                        } else {
+                            listener.done(null, e);
+                        }
+                    }
+                });
     }
 
 }

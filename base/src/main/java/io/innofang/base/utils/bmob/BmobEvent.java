@@ -2,6 +2,7 @@ package io.innofang.base.utils.bmob;
 
 import java.util.List;
 
+import cn.bmob.newim.listener.BmobListener1;
 import cn.bmob.v3.exception.BmobException;
 import io.innofang.base.bean.User;
 
@@ -14,7 +15,7 @@ import io.innofang.base.bean.User;
 
 public class BmobEvent {
 
-     public interface onLoginListener {
+    public interface onLoginListener {
         boolean beforeLogin();
 
         void loginSuccessful(User user);
@@ -51,4 +52,25 @@ public class BmobEvent {
 
         void connectFailed(String error);
     }
+
+    public abstract static class UpdateCacheListener extends BmobListener1 {
+        public abstract void done(BmobException e);
+
+        @Override
+        protected void postDone(Object obj, BmobException e) {
+            done(e);
+        }
+    }
+
+    public abstract static class QueryUserListener extends BmobListener1<User> {
+
+        public abstract void done(User s, BmobException e);
+
+        @Override
+        protected void postDone(User o, BmobException e) {
+            done(o, e);
+        }
+    }
+
+
 }
