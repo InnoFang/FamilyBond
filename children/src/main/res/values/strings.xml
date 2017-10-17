@@ -40,7 +40,7 @@
     <string name="sms_content">短信内容：\n        %s</string>
     <string name="sms_probability">可疑概率：%s</string>
     <string name="sure_to_delete_suspcious_sms">是否删除该可疑短信</string>
-    <string name="bpm_time">测量时间：%s</string>
+    <string name="bpm_time">测量时间：\n%s</string>
 
     <string name="bpm">bpm</string>
 

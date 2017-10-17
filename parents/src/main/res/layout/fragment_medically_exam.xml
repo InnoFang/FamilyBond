@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_marginTop="-30dp"
+        android:layout_marginTop="-15dp"
         android:layout_marginBottom="15dp"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
@@ -96,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="10dp"
                     android:textSize="20sp"
                     tools:text="心率同比增加1%，相对稳定，注意休息"/>
 

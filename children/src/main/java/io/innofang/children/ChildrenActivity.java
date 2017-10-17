@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 import butterknife.BindView;
@@ -92,13 +91,12 @@ public class ChildrenActivity extends BaseActivity {
                 // 倒数第二次测量
                 int lastTwo = Integer.parseInt(list.get(list.size() - 2).getBpm());
                 String text = "";
-                DecimalFormat decimalFormat = new DecimalFormat("#.##%");
                 if (lastOne > lastTwo) {
-                    double increase = (lastOne - lastTwo) / lastTwo * 1.0;
-                    text = getString(R.string.bpm_increase_tips, decimalFormat.format(increase));
+                    int increase = lastOne - lastTwo;
+                    text = getString(R.string.bpm_increase_tips, increase + "bpm");
                 } else if (lastOne < lastTwo) {
-                    double increase = (lastTwo - lastOne) / lastTwo * 1.0;
-                    text = getString(R.string.bpm_decrease_tips, decimalFormat.format(increase));
+                    int decrease = lastTwo - lastOne;
+                    text = getString(R.string.bpm_decrease_tips, decrease + "bpm");
                 } else {
                     text = getString(R.string.bpm_no_change_tips);
                 }
