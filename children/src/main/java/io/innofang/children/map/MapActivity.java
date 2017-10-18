@@ -1,7 +1,6 @@
 package io.innofang.children.map;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -108,17 +107,26 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
         setContentView(R.layout.activity_map);
         ButterKnife.bind(this);
 
-        checkConnect(this);
+        // 连接： 监听连接状态，可通过BmobIM.getInstance().getCurrentStatus()来获取当前的长连接状态
+        BmobIM.getInstance().setOnConnectStatusChangeListener(new ConnectStatusChangeListener() {
+            @Override
+            public void onChange(ConnectionStatus status) {
+                Toast.makeText(MapActivity.this, status.getMsg(), Toast.LENGTH_SHORT).show();
+                L.i(BmobIM.getInstance().getCurrentStatus().getMsg());
+                if (status.equals(ConnectionStatus.DISCONNECT)) {
+                    checkConnect();
+                } else if (status.equals(ConnectionStatus.NETWORK_UNAVAILABLE)) {
+                    toast("网络连接不可用");
+                }
+            }
+        });
+
 
         // open share map
         List<BmobIMConversation> list = BmobIM.getInstance().loadAllConversation();
         if (null != list) {
             mIMConversations.addAll(list);
         }
-
-        User user = BmobUser.getCurrentUser(User.class);
-        mSendToUsername = user.getContact().get(0).getUsername();
-        checkConversations(mSendToUsername, true);
 
 
         //初始化定位参数
@@ -132,33 +140,26 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
         EventBus.getDefault().register(this);
     }
 
-    public void checkConnect(final Context context) {
+    public void checkConnect() {
+
+        mSendToUsername = BmobUser.getCurrentUser(User.class).getContact().get(0).getUsername();
 
         BmobUtil.connect(BmobUser.getCurrentUser(User.class), new BmobEvent.onConnectListener() {
             @Override
             public void connectSuccessful(User user) {
-                //服务器连接成功就发送一个更新事件，同步更新会话及主页的小红点
-                EventBus.getDefault().post(new BmobIMMessage());
                 //会话： 更新用户资料，用于在会话页面、聊天页面以及个人信息页面显示
                 BmobIM.getInstance().
                         updateUserInfo(new BmobIMUserInfo(user.getObjectId(),
                                 user.getUsername(), null));
+
+                checkConversations(mSendToUsername, true);
             }
 
             @Override
             public void connectFailed(String error) {
-                Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+                toast(error);
             }
         });
-        // 连接： 监听连接状态，可通过BmobIM.getInstance().getCurrentStatus()来获取当前的长连接状态
-        BmobIM.getInstance().setOnConnectStatusChangeListener(new ConnectStatusChangeListener() {
-            @Override
-            public void onChange(ConnectionStatus status) {
-                Toast.makeText(context, status.getMsg(), Toast.LENGTH_SHORT).show();
-                L.i(BmobIM.getInstance().getCurrentStatus().getMsg());
-            }
-        });
-
     }
 
     private void checkConversations(String username, final boolean isStart) {

@@ -132,6 +132,7 @@ public class HandleMessageService extends Service {
                 if (e != null) {
                     L.i(e.getMessage());
                 } else {
+                    L.i("send location successfully");
                     L.i("address: " + address);
                     L.i("latitude: " + latLng.latitude);
                     L.i("longitude: " + latLng.longitude);

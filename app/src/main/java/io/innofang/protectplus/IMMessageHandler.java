@@ -70,7 +70,7 @@ public class IMMessageHandler extends BmobIMMessageHandler {
     @Override
     public void onOfflineReceive(OfflineMessageEvent offlineMessageEvent) {
         super.onOfflineReceive(offlineMessageEvent);
-        L.i(getCurrentUser(User.class).getUsername() + "onOfflineReceive: is called");
+        L.i(getCurrentUser(User.class).getUsername() + " onOfflineReceive: is called");
 
         Map<String, List<MessageEvent>> map = offlineMessageEvent.getEventMap();
 
@@ -135,11 +135,11 @@ public class IMMessageHandler extends BmobIMMessageHandler {
             L.i(s);
             L.i("bpm list size: " + mBpmDao.queryBuilder().build().list().size());
             showBpmNotification(event, bpm);
-        } else if ((type.equals(ShareMapMessage.MAP))
+        } else if ((type.equals(ShareMapMessage.MAP)  && client.equals(User.PARENTS))
                 && client.equals(User.PARENTS)) {
            EventBus.getDefault().post(message.getContent());
         }
-
+    
         L.i(getCurrentUser(User.class).getUsername() + " received. type: " + type + ", client: " + client + ", content: " + message.getContent());
     }
 
