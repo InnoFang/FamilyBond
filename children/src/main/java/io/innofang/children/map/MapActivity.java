@@ -10,7 +10,6 @@ import android.support.v7.widget.AppCompatImageButton;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -107,19 +106,8 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
         setContentView(R.layout.activity_map);
         ButterKnife.bind(this);
 
-        // 连接： 监听连接状态，可通过BmobIM.getInstance().getCurrentStatus()来获取当前的长连接状态
-        BmobIM.getInstance().setOnConnectStatusChangeListener(new ConnectStatusChangeListener() {
-            @Override
-            public void onChange(ConnectionStatus status) {
-                Toast.makeText(MapActivity.this, status.getMsg(), Toast.LENGTH_SHORT).show();
-                L.i(BmobIM.getInstance().getCurrentStatus().getMsg());
-                if (status.equals(ConnectionStatus.DISCONNECT)) {
-                    checkConnect();
-                } else if (status.equals(ConnectionStatus.NETWORK_UNAVAILABLE)) {
-                    toast("网络连接不可用");
-                }
-            }
-        });
+
+        checkConnect();
 
 
         // open share map
@@ -158,6 +146,15 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
             @Override
             public void connectFailed(String error) {
                 toast(error);
+            }
+        });
+
+        // 连接： 监听连接状态，可通过BmobIM.getInstance().getCurrentStatus()来获取当前的长连接状态
+        BmobIM.getInstance().setOnConnectStatusChangeListener(new ConnectStatusChangeListener() {
+            @Override
+            public void onChange(ConnectionStatus status) {
+                toast(status.getMsg());
+                L.i(BmobIM.getInstance().getCurrentStatus().getMsg());
             }
         });
     }
