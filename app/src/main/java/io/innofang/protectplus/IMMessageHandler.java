@@ -9,7 +9,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.List;
 import java.util.Map;
 
-import cn.bmob.newim.bean.BmobIMLocationMessage;
 import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMMessageType;
 import cn.bmob.newim.event.MessageEvent;
@@ -19,11 +18,13 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import io.innofang.base.bean.User;
 import io.innofang.base.bean.bmob.BpmMessage;
+import io.innofang.base.bean.bmob.LocationMessage;
 import io.innofang.base.bean.bmob.SMSMessage;
 import io.innofang.base.bean.bmob.ShareMapMessage;
 import io.innofang.base.bean.greendao.Bpm;
 import io.innofang.base.bean.greendao.BpmDao;
 import io.innofang.base.bean.greendao.DaoSession;
+import io.innofang.base.bean.Location;
 import io.innofang.base.bean.greendao.SMS;
 import io.innofang.base.bean.greendao.SMSDao;
 import io.innofang.base.configure.GreenDaoConfig;
@@ -135,11 +136,14 @@ public class IMMessageHandler extends BmobIMMessageHandler {
             L.i(s);
             L.i("bpm list size: " + mBpmDao.queryBuilder().build().list().size());
             showBpmNotification(event, bpm);
-        } else if ((type.equals(ShareMapMessage.MAP)  && client.equals(User.PARENTS))
-                && client.equals(User.PARENTS)) {
-           EventBus.getDefault().post(message.getContent());
+        } else if (type.equals(ShareMapMessage.MAP) && client.equals(User.PARENTS)) {
+            EventBus.getDefault().post(message.getContent());
+        } else if (type.equals(LocationMessage.LOC) && client.equals(User.CHILDREN)) {
+            Location location = LocationMessage.convert(message);
+            L.i("location: " + location.toString());
+            EventBus.getDefault().post(location);
         }
-    
+
         L.i(getCurrentUser(User.class).getUsername() + " received. type: " + type + ", client: " + client + ", content: " + message.getContent());
     }
 
@@ -174,12 +178,12 @@ public class IMMessageHandler extends BmobIMMessageHandler {
 
     private void processSDKMessage(BmobIMMessage msg, MessageEvent event) {
         L.i("processSDKMessage: is called");
-        if (msg.getMsgType().equals(BmobIMMessageType.LOCATION.getType())) {
-            L.i("location information");
-            BmobIMLocationMessage locationMessage = BmobIMLocationMessage.buildFromDB(msg);
-            EventBus.getDefault().post(locationMessage);
-        } else {
+//        if (msg.getMsgType().equals(BmobIMMessageType.LOCATION.getType())) {
+//            L.i("location information");
+//            BmobIMLocationMessage locationMessage = BmobIMLocationMessage.buildFromDB(msg);
+//            EventBus.getDefault().post(locationMessage);
+//        } else {
             EventBus.getDefault().post(event);
-        }
+//        }
     }
 }

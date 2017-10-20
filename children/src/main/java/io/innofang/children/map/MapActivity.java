@@ -39,7 +39,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMConversation;
-import cn.bmob.newim.bean.BmobIMLocationMessage;
 import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMUserInfo;
 import cn.bmob.newim.core.BmobIMClient;
@@ -51,6 +50,7 @@ import cn.bmob.v3.exception.BmobException;
 import io.innofang.base.base.BaseActivity;
 import io.innofang.base.bean.User;
 import io.innofang.base.bean.bmob.ShareMapMessage;
+import io.innofang.base.bean.Location;
 import io.innofang.base.utils.amap.SensorEventHelper;
 import io.innofang.base.utils.bmob.BmobEvent;
 import io.innofang.base.utils.bmob.BmobUtil;
@@ -106,16 +106,13 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
         setContentView(R.layout.activity_map);
         ButterKnife.bind(this);
 
-
-        checkConnect();
-
-
         // open share map
         List<BmobIMConversation> list = BmobIM.getInstance().loadAllConversation();
         if (null != list) {
             mIMConversations.addAll(list);
         }
 
+        checkConnect();
 
         //初始化定位参数
         initLocation();
@@ -131,7 +128,7 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
     public void checkConnect() {
 
         mSendToUsername = BmobUser.getCurrentUser(User.class).getContact().get(0).getUsername();
-
+        L.i("send to " + mSendToUsername);
         BmobUtil.connect(BmobUser.getCurrentUser(User.class), new BmobEvent.onConnectListener() {
             @Override
             public void connectSuccessful(User user) {
@@ -160,8 +157,9 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
     }
 
     private void checkConversations(String username, final boolean isStart) {
-        if (null != mIMConversations && !mIMConversations.isEmpty()) {
 
+        if (null != mIMConversations && !mIMConversations.isEmpty()) {
+            L.i("checkConversations: is called");
             for (BmobIMConversation conversationEntrance : mIMConversations) {
                 if (conversationEntrance.getConversationTitle().equals(username)) {
                     mConversationManager = BmobIMConversation.obtain(
@@ -222,7 +220,7 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
                     toast("开始地图共享");
                 } else {
                     toast(e.getMessage());
-                    L.i("location", e.getMessage());
+                    L.i("start location " + e.getMessage());
                 }
             }
         });
@@ -398,18 +396,51 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
         }
     }
 
+//    @Subscribe
+//    public void onHandBmobIMLocationMessageEvent(BmobIMLocationMessage message) {
+//        mAMap.clear();
+//        L.i("show address" + message.getAddress());
+//        L.i("show latitude : " + message.getLatitude());
+//        L.i("show longitude : " + message.getLongitude());
+//
+//
+//        LatLng latLng = new LatLng(message.getLatitude(), message.getLongitude());
+//        Marker marker = mAMap.addMarker(new MarkerOptions()
+//                .position(latLng)
+//                .title(message.getAddress())
+//                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_marker)))
+//                .snippet("DefaultMarker"));
+//
+//        mAMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
+//            @Override
+//            public boolean onMarkerClick(Marker marker) {
+//                toast(marker.getTitle());
+//                return true;
+//            }
+//        });
+//
+//        String info = "家人ID：" + message.getBmobIMConversation().getConversationTitle() + "\n" +
+//                "当前位置：" + message.getAddress() + "\n";
+//
+//        mAMap.moveCamera(CameraUpdateFactory.changeLatLng(latLng));
+//        mAMap.moveCamera(CameraUpdateFactory.zoomTo(19f));
+//        mInfoTextView.setText(info);
+//
+//
+//    }
+
     @Subscribe
-    public void onHandBmobIMLocationMessageEvent(BmobIMLocationMessage message) {
+    public void onHandLocationEvent(Location location) {
         mAMap.clear();
-        L.i("show address" + message.getAddress());
-        L.i("show latitude : " + message.getLatitude());
-        L.i("show longitude : " + message.getLongitude());
+        L.i("show address" + location.getAddress());
+        L.i("show latitude : " + location.getLatitude());
+        L.i("show longitude : " + location.getLongitude());
 
 
-        LatLng latLng = new LatLng(message.getLatitude(), message.getLongitude());
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         Marker marker = mAMap.addMarker(new MarkerOptions()
                 .position(latLng)
-                .title(message.getAddress())
+                .title(location.getAddress())
                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_marker)))
                 .snippet("DefaultMarker"));
 
@@ -421,13 +452,12 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
             }
         });
 
-        String info = "家人ID：" + message.getBmobIMConversation().getConversationTitle() + "\n" +
-                "当前位置：" + message.getAddress() + "\n";
+        String info = "家人ID：" + location.getId() + "\n" +
+                "当前位置：" + location.getAddress() + "\n";
 
         mAMap.moveCamera(CameraUpdateFactory.changeLatLng(latLng));
         mAMap.moveCamera(CameraUpdateFactory.zoomTo(19f));
         mInfoTextView.setText(info);
-
 
     }
 
@@ -456,7 +486,7 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
                     toast("结束地图共享");
                 } else {
                     toast(e.getMessage());
-                    L.i("location", e.getMessage());
+                    L.i("end location " + e.getMessage());
                 }
             }
         });
@@ -496,7 +526,7 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
     public void onViewClicked(View view) {
         int id = view.getId();
         if (id == R.id.action_locate) {
-            toast("locate");
+            checkConversations(mSendToUsername, true);
         } else if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
         } else if (id == R.id.action_reminder) {

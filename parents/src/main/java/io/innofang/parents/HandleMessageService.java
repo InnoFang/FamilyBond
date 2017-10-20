@@ -5,7 +5,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
@@ -25,11 +24,12 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMConversation;
-import cn.bmob.newim.bean.BmobIMLocationMessage;
 import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMUserInfo;
 import cn.bmob.newim.core.BmobIMClient;
@@ -44,6 +44,7 @@ import cn.bmob.v3.listener.DownloadFileListener;
 import cn.bmob.v3.listener.FindListener;
 import io.innofang.base.bean.SMSModel;
 import io.innofang.base.bean.User;
+import io.innofang.base.bean.bmob.LocationMessage;
 import io.innofang.base.bean.bmob.ShareMapMessage;
 import io.innofang.base.utils.bmob.BmobEvent;
 import io.innofang.base.utils.bmob.BmobUtil;
@@ -95,7 +96,7 @@ public class HandleMessageService extends Service {
 
 
     private void getAddressByLatlng(final LatLng latLng) {
-        Log.i("location", "getAddressByLatlng is called");
+        L.i("location  getAddressByLatlng is called");
         //逆地理编码查询条件：逆地理编码查询的地理坐标点、查询范围、坐标类型。
         LatLonPoint latLonPoint = new LatLonPoint(latLng.latitude, latLng.longitude);
         RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 500f, GeocodeSearch.AMAP);
@@ -104,7 +105,7 @@ public class HandleMessageService extends Service {
             public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
                 RegeocodeAddress regeocodeAddress = regeocodeResult.getRegeocodeAddress();
                 String formatAddress = regeocodeAddress.getFormatAddress();
-                L.i("location", "查询经纬度对应详细地址：\n" + formatAddress);
+                L.i("location 查询经纬度对应详细地址：\n" + formatAddress);
 
                 User user = BmobUser.getCurrentUser(User.class);
                 String username = user.getContact().get(0).getUsername();
@@ -122,15 +123,22 @@ public class HandleMessageService extends Service {
     }
 
     private void sendToChildrenLocation(final String address, final LatLng latLng) {
-        BmobIMLocationMessage message = new BmobIMLocationMessage();
-        message.setAddress(address);
-        message.setLatitude(latLng.latitude);
-        message.setLongitude(latLng.longitude);
+        LocationMessage message = new LocationMessage();
+        message.setContent("location");
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", BmobUser.getCurrentUser(User.class).getUsername());
+        map.put("address", address);
+        map.put("latitude", latLng.latitude);
+        map.put("longitude", latLng.longitude);
+        message.setExtraMap(map);
+
+        L.i("send location");
+
         mConversationManager.sendMessage(message, new MessageSendListener() {
             @Override
             public void done(BmobIMMessage bmobIMMessage, BmobException e) {
                 if (e != null) {
-                    L.i(e.getMessage());
+                    L.i("send location failed " + e.getMessage());
                 } else {
                     L.i("send location successfully");
                     L.i("address: " + address);
