@@ -5,15 +5,17 @@ as well as parents who are older than 65 or more can easily use smart phone.
 
 # Screenshot
 
-![children_main.png](https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_main.png?raw=true)
-![children_receive_parents_heart_rate_report_notification.png](https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_parents_heart_rate_report_notification.png?raw=true)
-![children_receive_suspicious_sms_list.png](https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_list.png?raw=true)
-![children_receive_suspicious_sms_notification.png](https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_notification.png?raw=true
-![children_receive_suspicious_sms_toast.png](https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_toast.png?raw=true)
-![children_shared_map.jpg](https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_shared_map.jpg?raw=true)
-![parents_check_hert_rate.jpg](https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parents_check_hert_rate.jpg?raw=true)
-![parents_main.jpg](https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parents_main.jpg?raw=true)
-![parets_heart_rate_report.jpg](https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parets_heart_rate_report.jpg?raw=true)
+<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_main.png?raw=true" width="300" height="500"/>
+<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_parents_heart_rate_report_notification.png?raw=true" width="300" height="500"/>
+<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_list.png?raw=true" width="300" height="500"/>
+<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_notification.png?raw=true" width="300" height="500"/>
+<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_toast.png?raw=true" width="300" height="500"/>
+<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_shared_map.jpg?raw=true" width="300" height="500"/>
+<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parents_check_hert_rate.jpg?raw=true" width="300" height="500"/>
+<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parents_main.jpg?raw=true" width="300" height="500"/>
+<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parets_heart_rate_report.jpg?raw=true" width="300" height="500"/>
+
+
 
 # [License](https://github.com/InnoFang/FamilyBond/blob/master/LICENSE)
 
