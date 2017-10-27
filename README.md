@@ -1,9 +1,16 @@
 # FamilyBond
 
-An application, combine with Children side port and Parents side port, which let children take good care of their parents,
-as well as parents who are older than 65 or more can easily use smart phone.
+<img src="https://github.com/InnoFang/FamilyBond/blob/master/app/src/main/ic_launcher-web.png?raw=true" width="150" height="150"/>
 
-# [LINCESE](https://github.com/InnoFang/FamilyBond/blob/master/LICENSE)
+An application, combine with Children side port and Parents side port, which let children take good care of their parents and parents can use smart phone to chechk their heart rate.
+
+# Screenshot
+
+<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_main.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_parents_heart_rate_report_notification.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_list.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_notification.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_toast.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_shared_map.jpg?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parents_check_hert_rate.jpg?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parents_main.jpg?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parets_heart_rate_report.jpg?raw=true" width="300" height="500"/>
+
+
+
+# [License](https://github.com/InnoFang/FamilyBond/blob/master/LICENSE)
 
 ```
 Copyright 2017 InnoFang
