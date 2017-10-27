@@ -2,6 +2,8 @@
 
 <img src="https://github.com/InnoFang/FamilyBond/blob/master/app/src/main/ic_launcher-web.png?raw=true" width="150" height="150"/>
 
+[English](https://github.com/InnoFang/FamilyBond/blob/master/README.md) | 中文
+
 家宝分为子女端和父母端，子女可以使用家宝来更好的了解到老人的健康状况，老人可以使用家宝来测量心率
 
 ![](https://github.com/InnoFang/FamilyBond/blob/master/screenshot/structure.jpg?raw=true)

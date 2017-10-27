@@ -2,6 +2,8 @@
 
 <img src="https://github.com/InnoFang/FamilyBond/blob/master/app/src/main/ic_launcher-web.png?raw=true" width="150" height="150"/>
 
+English | [中文](https://github.com/InnoFang/FamilyBond/blob/master/README_zh.md)
+
 An application, combine with Children side port and Parents side port, which let children take good care of their parents and parents can use smart phone to chechk their heart rate.
 
 ![](https://github.com/InnoFang/FamilyBond/blob/master/screenshot/structure.jpg?raw=true)
