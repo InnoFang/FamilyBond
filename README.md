@@ -9,22 +9,23 @@ An application, combine with Children side port and Parents side port, which let
 # Function
 
  + Children Side Port
+
    - **Heart Rate Detection**
 
-   When the elderly use the function, there will be voice prompts, just click the screen to start timing, and then put the index finger on the camera, the phone can automatically detect heart rate.
+     When the elderly use the function, there will be voice prompts, just click the screen to start timing, and then put the index finger on the camera, the phone can automatically detect heart rate.
 
    - **Suspicious SMS Intercept**
 
-   When the mobile phone receives the message, App can automatically identify the reliability of sms. When the suspicious message are identified as suspicious messages, the content of messages will be sent to children automatically, so the children can identify the contents of the messages and effectively prevent the old people from being defrauded.
+     When the mobile phone receives the message, App can automatically identify the reliability of sms. When the suspicious message are identified as suspicious messages, the content of messages will be sent to children automatically, so the children can identify the contents of the messages and effectively prevent the old people from being defrauded.
 
  + Parents Side Port
    - **Message Reminder**
 
-   Children can send text messages of voice messages to the elderly.
+     Children can send text messages of voice messages to the elderly.
 
    - **Location Display For The Elderly**
 
-   Children can see the location and information of the elderly on the map.
+     Children can see the location and information of the elderly on the map.
 
 # Screenshot
 
