@@ -6,6 +6,16 @@ An application, combine with Children side port and Parents side port, which let
 
 ![](https://github.com/InnoFang/FamilyBond/blob/master/screenshot/structure.jpg?raw=true)
 
+# Function
+
+ + Children Side Port
+   - **Heart Rate Detection**  When the elderly use the function, there will be voice prompts, just click the screen to start timing, and then put the index finger on the camera, the phone can automatically detect heart rate.
+   - **Suspicious SMS Intercept**  When the mobile phone receives the message, App can automatically identify the reliability of sms. When the suspicious message are identified as suspicious messages, the content of messages will be sent to children automatically, so the children can identify the contents of the messages and effectively prevent the old people from being defrauded.
+
+ + Parents Side Port
+   - **Message Reminder**  Children can send text messages of voice messages to the elderly.
+   - **Location Display For The Elderly** Children can see the location and information of the elderly on the map.
+
 # Screenshot
 
 <img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_main.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_parents_heart_rate_report_notification.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_list.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_notification.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_toast.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_shared_map.jpg?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parents_check_hert_rate.jpg?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parents_main.jpg?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parets_heart_rate_report.jpg?raw=true" width="300" height="500"/>
