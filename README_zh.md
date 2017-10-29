@@ -35,6 +35,40 @@
 
 <img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_main.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_parents_heart_rate_report_notification.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_list.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_notification.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_toast.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_shared_map.jpg?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parents_check_hert_rate.jpg?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parents_main.jpg?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parets_heart_rate_report.jpg?raw=true" width="300" height="500"/>
 
+# 第三方库
+
+```
+    /* Gson */
+    compile 'com.google.code.gson:gson:' + rootProject.gson
+
+    /* Glide */
+    compile "com.github.bumptech.glide:glide:rootProject.glide"
+
+    /* RxJava2 */
+    compile 'io.reactivex.rxjava2:rxjava:' + rootProject.rxjava2
+    compile 'io.reactivex.rxjava2:rxandroid:' + rootProject.rxandroid
+
+    /* EventBus */
+    compile 'org.greenrobot:eventbus:' + rootProject.eventbus
+
+    /* GreenDao */
+    compile 'org.greenrobot:greendao:' + rootProject.greendao
+    compile 'org.greenrobot:greendao-generator:' + rootProject.greendao
+
+    /* MPAndroidChart */
+    compile 'com.github.PhilJay:MPAndroidChart:' + rootProject.mp_android_chart
+
+    /* ARouter */
+    compile 'com.alibaba:arouter-api:' + rootProject.arouter_api
+    annotationProcessor 'com.alibaba:arouter-compiler:' + rootProject.arouter_comiler
+
+    /* ButterKnife */
+    compile 'com.jakewharton:butterknife:' + rootProject.butter_knife
+    annotationProcessor 'com.jakewharton:butterknife-compiler:' + rootProject.butter_knife
+
+    /* FloatingActionButton */
+    compile 'com.getbase:floatingactionbutton:' + rootProject.fab
+```
 
 
 # [License](https://github.com/InnoFang/FamilyBond/blob/master/LICENSE)
