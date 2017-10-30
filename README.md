@@ -35,38 +35,16 @@ An application, combine with Children side port and Parents side port, which let
 
 # Third-party Use
 
-```
-    /* Gson */
-    compile 'com.google.code.gson:gson:' + rootProject.gson
-
-    /* Glide */
-    compile "com.github.bumptech.glide:glide:rootProject.glide"
-
-    /* RxJava2 */
-    compile 'io.reactivex.rxjava2:rxjava:' + rootProject.rxjava2
-    compile 'io.reactivex.rxjava2:rxandroid:' + rootProject.rxandroid
-
-    /* EventBus */
-    compile 'org.greenrobot:eventbus:' + rootProject.eventbus
-
-    /* GreenDao */
-    compile 'org.greenrobot:greendao:' + rootProject.greendao
-    compile 'org.greenrobot:greendao-generator:' + rootProject.greendao
-
-    /* MPAndroidChart */
-    compile 'com.github.PhilJay:MPAndroidChart:' + rootProject.mp_android_chart
-
-    /* ARouter */
-    compile 'com.alibaba:arouter-api:' + rootProject.arouter_api
-    annotationProcessor 'com.alibaba:arouter-compiler:' + rootProject.arouter_comiler
-
-    /* ButterKnife */
-    compile 'com.jakewharton:butterknife:' + rootProject.butter_knife
-    annotationProcessor 'com.jakewharton:butterknife-compiler:' + rootProject.butter_knife
-
-    /* FloatingActionButton */
-    compile 'com.getbase:floatingactionbutton:' + rootProject.fab
-```
+ + [Bmob](https://www.bmob.cn/)
+ + [amap](http://lbs.amap.com/)
+ + [xfyun](http://www.xfyun.cn/)
+ + [Glide](https://github.com/bumptech/glide)
+ + [EventBus](https://github.com/greenrobot/EventBus)
+ + [greenDAO](https://github.com/greenrobot/greenDAO)
+ + [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)
+ + [ARouter](https://github.com/alibaba/ARouter)
+ + [butterknife](https://github.com/JakeWharton/butterknife)
+ + [android-floating-action-button](https://github.com/futuresimple/android-floating-action-button)
 
 # [License](https://github.com/InnoFang/FamilyBond/blob/master/LICENSE)
 
