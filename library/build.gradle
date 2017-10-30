@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.jakewharton.butterknife'
-apply plugin: 'org.greenrobot.greendao' 
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -17,7 +17,7 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [ moduleName : project.getName() ]
+                arguments = [moduleName: project.getName()]
             }
         }
     }
@@ -37,33 +37,46 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     /* Android support library */
-    compile "com.android.support.constraint:constraint-layout:$rootProject.ext.constraint_layout" //
-    compile "com.android.support:appcompat-v7:$rootProject.ext.supportVersion"                    //
-    compile "com.android.support:design:$rootProject.ext.supportVersion"                          //
-    compile "com.android.support:recyclerview-v7:$rootProject.ext.supportVersion"                 //
-    compile "com.android.support:cardview-v7:$rootProject.ext.supportVersion"                     //
+    compile 'com.android.support.constraint:constraint-layout:' + rootProject.constraint_layout
+    //
+    compile 'com.android.support:appcompat-v7:' + rootProject.supportVersion
+    //
+    compile 'com.android.support:design:' + rootProject.supportVersion
+    //
+    compile 'com.android.support:recyclerview-v7:' + rootProject.supportVersion
+    //
+    compile 'com.android.support:cardview-v7:' + rootProject.supportVersion
+
     /* Gson */
-    compile "com.google.code.gson:gson:$rootProject.ext.gson"                                     //
+    compile 'com.google.code.gson:gson:' + rootProject.gson
+
     /* Glide */
-    compile "com.github.bumptech.glide:glide:$rootProject.ext.glide"                              //
-    /* RxJava2 */
-    compile "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxjava2"                                //
-    compile "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxandroid"                           //
+    compile 'com.github.bumptech.glide:glide:' + rootProject.glide
+
     /* EventBus */
-    compile "org.greenrobot:eventbus:$rootProject.ext.eventbus"
+    compile 'org.greenrobot:eventbus:' + rootProject.eventbus
+
     /* GreenDao */
-    compile 'org.greenrobot:greendao:' + rootProject.greendao                                     //
-    compile 'org.greenrobot:greendao-generator:' + rootProject.greendao                           //
+    compile 'org.greenrobot:greendao:' + rootProject.greendao
+    //
+    compile 'org.greenrobot:greendao-generator:' + rootProject.greendao
+
     /* MPAndroidChart */
-    compile 'com.github.PhilJay:MPAndroidChart:' + rootProject.mp_android_chart                   //
+    compile 'com.github.PhilJay:MPAndroidChart:' + rootProject.mp_android_chart
+
     /* ARouter */
-    compile "com.alibaba:arouter-api:$rootProject.ext.arouter_api"                                //
-    annotationProcessor "com.alibaba:arouter-compiler:$rootProject.ext.arouter_comiler"           //
+    compile 'com.alibaba:arouter-api:' + rootProject.arouter_api
+    //
+    annotationProcessor 'com.alibaba:arouter-compiler:' + rootProject.arouter_comiler
+
     /* Kotlin */
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"                                  //
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
     /* ButterKnife */
-    compile 'com.jakewharton:butterknife:' + rootProject.butter_knife                        //
-    annotationProcessor 'com.jakewharton:butterknife-compiler:' + rootProject.butter_knife   //
+    compile 'com.jakewharton:butterknife:' + rootProject.butter_knife
+    //
+    annotationProcessor 'com.jakewharton:butterknife-compiler:' + rootProject.butter_knife
+
     /* FloatingActionButton */
     compile 'com.getbase:floatingactionbutton:' + rootProject.fab
 }
