@@ -268,7 +268,7 @@ public class HeartBeatFragment extends Fragment {
             addY = 10;
         else {
             flag = 1;
-            /* 阈值：200，平均像素值大于该值时，视为手指在摄像头上 */
+            /* 阈值：190，平均像素值大于该值时，视为手指在摄像头上 */
             if (averagePixel < THRESHOLD) {
                 if (pulse[20] > 1) {
                     Toast.makeText(getActivity(), "请用您的指尖盖住摄像头镜头！", Toast.LENGTH_SHORT).show();
