@@ -76,4 +76,5 @@ dependencies {
 
     /* FloatingActionButton */
     compile 'com.getbase:floatingactionbutton:' + rootProject.fab
+
 }

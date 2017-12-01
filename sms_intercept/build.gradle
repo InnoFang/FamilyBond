@@ -27,7 +27,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     /* EventBus */
-    compile "org.greenrobot:eventbus:$rootProject.ext.eventbus"                                 //
+    implementation "org.greenrobot:eventbus:$rootProject.ext.eventbus"                                 //
     testCompile 'junit:junit:4.12'
 
     compile files('libs/apache-commons-lang.jar')
