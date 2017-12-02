@@ -56,7 +56,6 @@
  + [greenDAO](https://github.com/greenrobot/greenDAO)
  + [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)
  + [ARouter](https://github.com/alibaba/ARouter)
- + [butterknife](https://github.com/JakeWharton/butterknife)
  + [android-floating-action-button](https://github.com/futuresimple/android-floating-action-button)
 
 # [License](https://github.com/InnoFang/FamilyBond/blob/master/LICENSE)
