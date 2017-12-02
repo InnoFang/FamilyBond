@@ -3,9 +3,6 @@ if (IsDebug.toBoolean()) {
 } else {
     apply plugin: 'com.android.library'
 }
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -66,7 +63,5 @@ dependencies {
     compile project(':medically')
     compile project(':sms_intercept')
 
-    annotationProcessor 'com.jakewharton:butterknife-compiler:' + rootProject.butter_knife      //
     annotationProcessor "com.alibaba:arouter-compiler:$rootProject.ext.arouter_comiler"         //
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"                                //
 }

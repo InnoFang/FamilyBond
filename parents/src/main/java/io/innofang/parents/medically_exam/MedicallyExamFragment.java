@@ -17,17 +17,12 @@ import org.greenrobot.greendao.query.Query;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import io.innofang.base.bean.greendao.Bpm;
 import io.innofang.base.bean.greendao.BpmDao;
 import io.innofang.base.bean.greendao.DaoSession;
 import io.innofang.base.configure.GreenDaoConfig;
 import io.innofang.base.utils.common.RequestPermissions;
 import io.innofang.parents.R;
-import io.innofang.parents.R2;
 import io.innofang.xfyun.XFYunUtil;
 
 /**
@@ -37,18 +32,12 @@ import io.innofang.xfyun.XFYunUtil;
  */
 
 
-public class MedicallyExamFragment extends Fragment {
+public class MedicallyExamFragment extends Fragment implements View.OnClickListener {
 
-    @BindView(R2.id.bpm_text_view)
     TextView mBpmTextView;
-    @BindView(R2.id.tips_text_view)
     TextView mTipsTextView;
-    @BindView(R2.id.card_view)
     CardView mCardView;
-    Unbinder unbinder;
-    @BindView(R2.id.bpm_label)
     TextView mBpmLabel;
-    @BindView(R2.id.start_button)
     Button mStartButton;
 
     private DaoSession mDaoSession;
@@ -65,14 +54,7 @@ public class MedicallyExamFragment extends Fragment {
         mBpmDao = mDaoSession.getBpmDao();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @OnClick({R2.id.bpm_text_view, R2.id.tips_text_view, R2.id.card_view, R2.id.start_button})
-    public void onViewClicked(View view) {
+    public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.card_view || id == R.id.start_button) {
             RequestPermissions.requestRuntimePermission(new String[]{
@@ -98,14 +80,28 @@ public class MedicallyExamFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_medically_exam, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        return inflater.inflate(R.layout.fragment_medically_exam, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mBpmTextView = (TextView) view.findViewById(R.id.bpm_text_view);
+        mTipsTextView = (TextView) view.findViewById(R.id.tips_text_view);
+        mCardView = (CardView) view.findViewById(R.id.card_view);
+        mBpmLabel = (TextView) view.findViewById(R.id.bpm_label);
+        mStartButton = (Button) view.findViewById(R.id.start_button);
+
+        mBpmTextView.setOnClickListener(this);
+        mTipsTextView.setOnClickListener(this);
+        mCardView.setOnClickListener(this);
+        mStartButton.setOnClickListener(this);
+
 
         mDaoSession = GreenDaoConfig.getInstance().getDaoSession();
         mBpmDao = mDaoSession.getBpmDao();
         updateInfo();
-
-        return view;
     }
 
     @Override

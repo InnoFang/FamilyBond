@@ -34,9 +34,6 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMConversation;
 import cn.bmob.newim.bean.BmobIMMessage;
@@ -48,16 +45,15 @@ import cn.bmob.newim.listener.MessageSendListener;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import io.innofang.base.base.BaseActivity;
+import io.innofang.base.bean.Location;
 import io.innofang.base.bean.User;
 import io.innofang.base.bean.bmob.ShareMapMessage;
-import io.innofang.base.bean.Location;
 import io.innofang.base.utils.amap.SensorEventHelper;
 import io.innofang.base.utils.bmob.BmobEvent;
 import io.innofang.base.utils.bmob.BmobUtil;
 import io.innofang.base.utils.common.L;
 import io.innofang.base.utils.common.RequestPermissions;
 import io.innofang.children.R;
-import io.innofang.children.R2;
 import io.innofang.children.reminder.ReminderActivity;
 import io.innofang.children.settings.SettingsActivity;
 
@@ -67,21 +63,14 @@ import io.innofang.children.settings.SettingsActivity;
  * Description:
  */
 
-public class MapActivity extends BaseActivity implements AMapLocationListener, LocationSource {
+public class MapActivity extends BaseActivity implements AMapLocationListener, LocationSource, View.OnClickListener {
 
-    @BindView(R2.id.map)
     MapView mMapView;
-    @BindView(R2.id.locbtn)
     AppCompatImageButton mLocbtn;
-    @BindView(R2.id.action_locate)
     FloatingActionButton mActionLocate;
-    @BindView(R2.id.action_settings)
     FloatingActionButton mActionSettings;
-    @BindView(R2.id.action_reminder)
     FloatingActionButton mActionReminder;
-    @BindView(R2.id.floating_actions_menu)
     FloatingActionsMenu mFloatingActionsMenu;
-    @BindView(R2.id.info_text_view)
     TextView mInfoTextView;
 
     private AMap mAMap;
@@ -100,11 +89,27 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
     private BmobIMConversation mConversationManager;
     private String mSendToUsername;
 
+    void initView() {
+        mMapView = (MapView) findViewById(R.id.map);
+        mLocbtn = (AppCompatImageButton) findViewById(R.id.locbtn);
+        mActionLocate = (FloatingActionButton) findViewById(R.id.action_locate);
+        mActionSettings = (FloatingActionButton) findViewById(R.id.action_settings);
+        mActionReminder = (FloatingActionButton) findViewById(R.id.action_reminder);
+        mFloatingActionsMenu = (FloatingActionsMenu) findViewById(R.id.floating_actions_menu);
+        mInfoTextView = (TextView) findViewById(R.id.info_text_view);
+
+        mActionLocate.setOnClickListener(this);
+        mActionSettings.setOnClickListener(this);
+        mActionReminder.setOnClickListener(this);
+        mLocbtn.setOnClickListener(this);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        ButterKnife.bind(this);
+
+        initView();
 
         // open share map
         List<BmobIMConversation> list = BmobIM.getInstance().loadAllConversation();
@@ -328,10 +333,6 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
         mLocMarker.setTitle(LOCATION_MARKER_FLAG);
     }
 
-    @OnClick(R2.id.locbtn)
-    public void onLocBtnClick() {
-        checkLocationPermission();
-    }
 
     private void startLocation() {
         /*
@@ -522,8 +523,7 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
         mLocationClient = null;
     }
 
-    @OnClick({R2.id.action_locate, R2.id.action_settings, R2.id.action_reminder})
-    public void onViewClicked(View view) {
+    public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.action_locate) {
             checkConversations(mSendToUsername, true);
@@ -531,6 +531,8 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
             startActivity(new Intent(this, SettingsActivity.class));
         } else if (id == R.id.action_reminder) {
             startActivity(new Intent(this, ReminderActivity.class));
+        } else if (id == R.id.locbtn) {
+            checkLocationPermission();
         }
         mFloatingActionsMenu.toggle();
     }

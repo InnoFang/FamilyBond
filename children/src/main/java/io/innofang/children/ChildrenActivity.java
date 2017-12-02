@@ -12,8 +12,6 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import cn.bmob.v3.BmobUser;
 import io.innofang.base.base.BaseActivity;
 import io.innofang.base.bean.User;
@@ -31,18 +29,11 @@ import io.innofang.children.sms_intercept.SMSInterceptionActivity;
 @Route(path = "/children/1")
 public class ChildrenActivity extends BaseActivity {
 
-
-    @BindView(R2.id.card_view_pager)
     ViewPager mCardViewPager;
-    @BindView(R2.id.bpm_text_view)
     TextView mBpmTextView;
-    @BindView(R2.id.tips_text_view)
     TextView mTipsTextView;
-    @BindView(R2.id.view_stub)
     ViewStub mViewStub;
-    @BindView(R2.id.time_text_view)
     TextView mTimeTextView;
-    @BindView(R2.id.description_text_view)
     TextView mDescriptionTextView;
 
     private CardPagerAdapter mCardAdapter;
@@ -51,12 +42,21 @@ public class ChildrenActivity extends BaseActivity {
     private DaoSession mDaoSession;
     private BpmDao mBpmDao;
 
+    void initView() {
+        mCardViewPager = (ViewPager) findViewById(R.id.card_view_pager);
+        mBpmTextView = (TextView) findViewById(R.id.bpm_text_view);
+        mTipsTextView = (TextView) findViewById(R.id.tips_text_view);
+        mViewStub = (ViewStub) findViewById(R.id.view_stub);
+        mTimeTextView = (TextView) findViewById(R.id.time_text_view);
+        mDescriptionTextView = (TextView) findViewById(R.id.description_text_view);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_children);
-        ButterKnife.bind(this);
 
+        initView();
         // start handle message service
         Intent startIntent = new Intent(this, HandleMessageService.class);
         startService(startIntent);

@@ -3,14 +3,12 @@ package io.innofang.parents;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import io.innofang.base.base.BaseActivity;
@@ -26,24 +24,30 @@ import io.innofang.base.utils.common.L;
  */
 
 
-public class AddContactActivity extends BaseActivity {
+public class AddContactActivity extends BaseActivity implements View.OnClickListener {
 
-    @BindView(R2.id.input_contact_edit_text)
     EditText mInputContactEditText;
-    @BindView(R2.id.add_contact_button)
     Button mAddContactButton;
     private User mUser;
+
+    void initView() {
+
+        mInputContactEditText = (EditText) findViewById(R.id.input_contact_edit_text);
+        mAddContactButton = (Button) findViewById(R.id.add_contact_button);
+
+        mAddContactButton.setOnClickListener(this);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_contact);
         mUser = BmobUser.getCurrentUser(User.class);
-        ButterKnife.bind(this);
+
+        initView();
     }
 
-    @OnClick(R2.id.add_contact_button)
-    public void onViewClicked() {
+    public void onClick(View view) {
         final String contact = mInputContactEditText.getText().toString();
         if (!TextUtils.isEmpty(contact)) {
             toast("正在查询，请稍后");

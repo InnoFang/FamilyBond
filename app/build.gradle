@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -20,6 +19,8 @@ android {
                 arguments = [ moduleName : project.getName() ]
             }
         }
+
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -37,11 +38,11 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     if (IsDebug.toBoolean()) {
-        compile project(':base')
+        implementation project(':base')
     } else {
-        compile project(':parents')
-        compile project(':children')
+        implementation project(':parents')
+        implementation project(':children')
     }
-    annotationProcessor 'com.jakewharton:butterknife-compiler:' + rootProject.butter_knife   //
+
     annotationProcessor 'com.alibaba:arouter-compiler:' + rootProject.ext.arouter_comiler    //
 }

@@ -28,7 +28,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile 'cn.bmob.android:bmob-sdk:3.5.5'
+    compile 'cn.bmob.android:bmob-sdk:3.5.6'
     compile 'cn.bmob.android:bmob-im:2.0.9@aar'
     compile 'cn.bmob.android:bmob-sdk:3.5.6'
     testCompile 'junit:junit:4.12'

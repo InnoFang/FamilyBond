@@ -1,6 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'com.jakewharton.butterknife'
 apply plugin: 'org.greenrobot.greendao'
 
 android {
@@ -65,14 +63,6 @@ dependencies {
     compile 'com.alibaba:arouter-api:' + rootProject.arouter_api
     //
     annotationProcessor 'com.alibaba:arouter-compiler:' + rootProject.arouter_comiler
-
-    /* Kotlin */
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
-    /* ButterKnife */
-    compile 'com.jakewharton:butterknife:' + rootProject.butter_knife
-    //
-    annotationProcessor 'com.jakewharton:butterknife-compiler:' + rootProject.butter_knife
 
     /* FloatingActionButton */
     compile 'com.getbase:floatingactionbutton:' + rootProject.fab

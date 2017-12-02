@@ -34,13 +34,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import io.innofang.base.base.BaseFragment;
 import io.innofang.children.R;
-import io.innofang.children.R2;
 
 /**
  * Author: Inno Fang
@@ -49,19 +44,13 @@ import io.innofang.children.R2;
  */
 
 
-public class VoiceReminderFragment extends BaseFragment implements VoiceReminderContract.View {
+public class VoiceReminderFragment extends BaseFragment implements VoiceReminderContract.View, View.OnClickListener {
 
 
-    @BindView(R2.id.voice_reminder_settings_list_view)
     ListView mVoiceReminderSettingsListView;
-    @BindView(R2.id.voice_record_fab)
     FloatingActionButton mVoiceRecordFab;
-    Unbinder unbinder;
-    @BindView(R2.id.record_image_view)
     ImageView mRecordImageView;
-    @BindView(R2.id.voice_tips_text_view)
     TextView mVoiceTipsTextView;
-    @BindView(R2.id.record_layout)
     RelativeLayout mRecordLayout;
 
     private VoiceReminderContract.Presenter mPresenter;
@@ -133,8 +122,21 @@ public class VoiceReminderFragment extends BaseFragment implements VoiceReminder
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_voice_reminder, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        return inflater.inflate(R.layout.fragment_voice_reminder, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mVoiceReminderSettingsListView = (ListView) view.findViewById(R.id.voice_reminder_settings_list_view);
+        mVoiceRecordFab = (FloatingActionButton) view.findViewById(R.id.voice_record_fab);
+        mRecordImageView = (ImageView) view.findViewById(R.id.record_image_view);
+        mVoiceTipsTextView = (TextView) view.findViewById(R.id.voice_tips_text_view);
+        mRecordLayout = (RelativeLayout) view.findViewById(R.id.record_layout);
+
+
+        mVoiceRecordFab.setOnClickListener(this);
 
         mPresenter = new VoiceReminderPresenter(this);
 
@@ -161,18 +163,9 @@ public class VoiceReminderFragment extends BaseFragment implements VoiceReminder
 
             }
         });
-
-        return view;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @OnClick(R2.id.voice_record_fab)
-    public void onViewClicked() {
+    public void onClick(View view) {
         if (TextUtils.isEmpty(mContact)) {
             showInfo(getString(R.string.have_not_choose_a_contact));
         } else {

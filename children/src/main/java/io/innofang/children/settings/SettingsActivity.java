@@ -5,15 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
+import android.view.View;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.bmob.v3.BmobUser;
 import io.innofang.base.base.BaseActivity;
 import io.innofang.base.bean.User;
 import io.innofang.children.R;
-import io.innofang.children.R2;
 
 /**
  * Author: Inno Fang
@@ -22,9 +19,8 @@ import io.innofang.children.R2;
  */
 
 
-public class SettingsActivity extends BaseActivity implements SettingsContract.View {
+public class SettingsActivity extends BaseActivity implements SettingsContract.View, View.OnClickListener {
 
-    @BindView(R2.id.add_contact)
     CardView mAddContact;
     private SettingsContract.Presenter mPresenter;
 
@@ -32,13 +28,14 @@ public class SettingsActivity extends BaseActivity implements SettingsContract.V
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        ButterKnife.bind(this);
+
+        mAddContact = (CardView) findViewById(R.id.add_contact);
+        mAddContact.setOnClickListener(this);
 
         mPresenter = new SettingsPresenter(this);
     }
 
-    @OnClick(R2.id.add_contact)
-    public void onViewClicked() {
+    public void onClick(View view) {
         mPresenter.showPopup(this, BmobUser.getCurrentUser(User.class));
     }
 

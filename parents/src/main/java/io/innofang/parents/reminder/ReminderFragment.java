@@ -14,10 +14,6 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMAudioMessage;
 import cn.bmob.newim.bean.BmobIMConversation;
@@ -26,7 +22,6 @@ import cn.bmob.newim.bean.BmobIMMessageType;
 import cn.bmob.newim.event.MessageEvent;
 import io.innofang.base.utils.common.L;
 import io.innofang.parents.R;
-import io.innofang.parents.R2;
 import io.innofang.xfyun.XFYunUtil;
 
 /**
@@ -36,22 +31,15 @@ import io.innofang.xfyun.XFYunUtil;
  */
 
 
-public class ReminderFragment extends Fragment {
+public class ReminderFragment extends Fragment implements View.OnClickListener {
 
-    @BindView(R2.id.message_text_view)
     TextView mMessageTextView;
-    Unbinder unbinder;
     private String mMessage;
 
     public static ReminderFragment newInstance() {
         return new ReminderFragment();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,10 +56,15 @@ public class ReminderFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_reminder, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        return inflater.inflate(R.layout.fragment_reminder, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mMessageTextView = (TextView) view.findViewById(R.id.message_text_view);
+        mMessageTextView.setOnClickListener(this);
         mMessageTextView.setText(mMessage);
-        return view;
     }
 
     /**
@@ -117,8 +110,7 @@ public class ReminderFragment extends Fragment {
         }
     }
 
-    @OnClick(R2.id.message_text_view)
-    public void onViewClicked() {
+    public void onClick(View view) {
         XFYunUtil.build(getContext()).speak(mMessageTextView.getText().toString());
     }
 }

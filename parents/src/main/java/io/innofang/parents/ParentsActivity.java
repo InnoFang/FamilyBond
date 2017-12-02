@@ -25,8 +25,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMUserInfo;
@@ -53,9 +51,7 @@ import io.innofang.xfyun.XFYunUtil;
 public class ParentsActivity extends BaseActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R2.id.view_pager)
     ViewPager mViewPager;
-    @BindView(R2.id.bottom_navigation_view)
     BottomNavigationView mBottomNavigationView;
 
     private MenuItem mMenuItem;
@@ -76,7 +72,10 @@ public class ParentsActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+
+        mViewPager = (ViewPager) findViewById(R.id.view_pager);
+        mBottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation_view);
+
 
         BottomNavigationViewHelper.disableShiftMode(mBottomNavigationView);
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);
@@ -171,7 +170,7 @@ public class ParentsActivity extends BaseActivity
         });
 
 
-       }
+    }
 
     private void download(SMSModel smsModel) {
         File dir = new File(SMSModelUtil.DIRECTORY);
@@ -206,9 +205,9 @@ public class ParentsActivity extends BaseActivity
         int id = item.getItemId();
         if (id == R.id.item_sms) {
             mViewPager.setCurrentItem(0);
-        } else  if (id == R.id.item_medically_exam) {
+        } else if (id == R.id.item_medically_exam) {
             mViewPager.setCurrentItem(1);
-        } else  if (id == R.id.item_reminder) {
+        } else if (id == R.id.item_reminder) {
             mViewPager.setCurrentItem(2);
         }
         return true;

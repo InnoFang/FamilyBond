@@ -27,13 +27,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import io.innofang.base.base.BaseFragment;
 import io.innofang.children.R;
-import io.innofang.children.R2;
 
 /**
  * Author: Inno Fang
@@ -42,14 +37,10 @@ import io.innofang.children.R2;
  */
 
 
-public class TextReminderFragment extends BaseFragment implements TextReminderContract.View {
+public class TextReminderFragment extends BaseFragment implements TextReminderContract.View, View.OnClickListener {
 
-    @BindView(R2.id.reminder_content_edit_text)
     EditText mReminderContentEditText;
-    @BindView(R2.id.reminder_settings_list_view)
     ListView mReminderSettingsListView;
-    Unbinder unbinder;
-    @BindView(R2.id.send_reminder_fab)
     FloatingActionButton mSendReminderFab;
 
     private TextReminderContract.Presenter mPresenter;
@@ -117,8 +108,18 @@ public class TextReminderFragment extends BaseFragment implements TextReminderCo
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_text_reminder, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        return inflater.inflate(R.layout.fragment_text_reminder, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mReminderContentEditText = (EditText) view.findViewById(R.id.reminder_content_edit_text);
+        mReminderSettingsListView = (ListView) view.findViewById(R.id.reminder_settings_list_view);
+        mSendReminderFab = (FloatingActionButton) view.findViewById(R.id.send_reminder_fab);
+
+
+        mSendReminderFab.setOnClickListener(this);
 
         mAdapter = new SimpleAdapter(getContext(), mapList, android.R.layout.simple_list_item_2,
                 new String[]{"mTitle", "subtext"}, new int[]{android.R.id.text1, android.R.id.text2});
@@ -141,14 +142,6 @@ public class TextReminderFragment extends BaseFragment implements TextReminderCo
 
             }
         });
-
-        return view;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 
 
@@ -217,8 +210,7 @@ public class TextReminderFragment extends BaseFragment implements TextReminderCo
                 .create();
     }
 
-    @OnClick(R2.id.send_reminder_fab)
-    public void onViewClicked() {
+    public void onClick(View view) {
         mPresenter.chooseContact();
     }
 

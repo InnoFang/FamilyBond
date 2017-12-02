@@ -12,9 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import io.innofang.base.base.BaseActivity;
 import io.innofang.base.bean.User;
 import io.innofang.base.utils.common.CircularAnimUtils;
@@ -27,34 +24,43 @@ import io.innofang.protectplus.R;
  */
 
 
-public class RegisterActivity extends BaseActivity implements RegisterContract.View {
+public class RegisterActivity extends BaseActivity implements RegisterContract.View, View.OnClickListener {
 
-    @BindView(R.id.register_username_edit_text)
     EditText mRegisterUsernameEditText;
-    @BindView(R.id.register_password_edit_text)
     EditText mRegisterPasswordEditText;
-    @BindView(R.id.register_repeat_password_edit_text)
     EditText mRegisterRepeatPasswordEditText;
-    @BindView(R.id.next_button)
     Button mNextButton;
-    @BindView(R.id.register_card_view)
     CardView mRegisterCardView;
-    @BindView(R.id.switch_fab)
     FloatingActionButton mSwitchFab;
-    @BindView(R.id.register_progress_bar)
     ProgressBar mRegisterProgressBar;
-    @BindView(R.id.children_client_radio_button)
     AppCompatRadioButton mChildrenClientRadioButton;
-    @BindView(R.id.parents_client_radio_button)
     AppCompatRadioButton mParentsClientRadioButton;
 
     private RegisterContract.Presenter mPresenter;
+
+
+    void initView() {
+        mRegisterUsernameEditText = (EditText) findViewById(R.id.register_username_edit_text);
+        mRegisterPasswordEditText = (EditText) findViewById(R.id.register_password_edit_text);
+        mRegisterRepeatPasswordEditText = (EditText) findViewById(R.id.register_repeat_password_edit_text);
+        mNextButton = (Button) findViewById(R.id.next_button);
+        mRegisterCardView = (CardView) findViewById(R.id.register_card_view);
+        mSwitchFab = (FloatingActionButton) findViewById(R.id.switch_fab);
+        mRegisterProgressBar = (ProgressBar) findViewById(R.id.register_progress_bar);
+        mChildrenClientRadioButton = (AppCompatRadioButton) findViewById(R.id.children_client_radio_button);
+        mParentsClientRadioButton = (AppCompatRadioButton) findViewById(R.id.parents_client_radio_button);
+
+        mNextButton.setOnClickListener(this);
+        mSwitchFab.setOnClickListener(this);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        ButterKnife.bind(this);
+
+        initView();
+
         mPresenter = new RegisterPresenter(this, this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mPresenter.showEnterAnimation(mRegisterCardView, mSwitchFab);
@@ -66,8 +72,8 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
         mPresenter.animateRevealClose(mRegisterCardView, mSwitchFab);
     }
 
-    @OnClick({R.id.next_button, R.id.switch_fab})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.next_button:
                 mPresenter.register(
@@ -112,4 +118,5 @@ public class RegisterActivity extends BaseActivity implements RegisterContract.V
     public void setPresenter(RegisterContract.Presenter presenter) {
         mPresenter = presenter;
     }
+
 }

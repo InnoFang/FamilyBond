@@ -13,43 +13,49 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.bmob.v3.BmobUser;
 import io.innofang.base.base.BaseActivity;
 import io.innofang.base.bean.User;
 import io.innofang.base.utils.common.CircularAnimUtils;
 import io.innofang.protectplus.R;
 
-public class LoginActivity extends BaseActivity implements LoginContract.View {
+public class LoginActivity extends BaseActivity implements LoginContract.View, View.OnClickListener {
 
-    @BindView(R.id.login_username_edit_text)
     EditText mLoginUsernameEditText;
-    @BindView(R.id.login_password_edit_text)
     EditText mLoginPasswordEditText;
-    @BindView(R.id.login_button)
     Button mLoginButton;
-    @BindView(R.id.forget_password_text_view)
     TextView mForgetPasswordTextView;
-    @BindView(R.id.login_card_view)
     CardView mLoginCardView;
-    @BindView(R.id.switch_fab)
     FloatingActionButton mSwitchFab;
-    @BindView(R.id.login_in_progress_bar)
     ProgressBar mLoginInProgressBar;
 
 
     private LoginContract.Presenter mPresenter;
 
+    void initView() {
+        mLoginUsernameEditText = (EditText) findViewById(R.id.login_username_edit_text);
+        mLoginPasswordEditText = (EditText) findViewById(R.id.login_password_edit_text);
+        mLoginButton = (Button) findViewById(R.id.login_button);
+        mForgetPasswordTextView = (TextView) findViewById(R.id.forget_password_text_view);
+        mLoginCardView = (CardView) findViewById(R.id.login_card_view);
+        mSwitchFab = (FloatingActionButton) findViewById(R.id.switch_fab);
+        mLoginInProgressBar = (ProgressBar) findViewById(R.id.login_in_progress_bar);
+
+        mLoginButton.setOnClickListener(this);
+        mForgetPasswordTextView.setOnClickListener(this);
+        mSwitchFab.setOnClickListener(this);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
+
+        initView();
+
         mPresenter = new LoginPresenter(this, this);
 
-        User user = null;
+        User user;
         if ((user = BmobUser.getCurrentUser(User.class)) != null) {
             if (user.getClient().equals(User.CHILDREN)) {
                 ARouter.getInstance().build("/children/1").navigation();
@@ -60,8 +66,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         }
     }
 
-    @OnClick({R.id.login_button, R.id.forget_password_text_view, R.id.switch_fab})
-    public void onViewClicked(View view) {
+
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_button:
                 mPresenter.login(
@@ -110,4 +117,5 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     public void setPresenter(LoginContract.Presenter presenter) {
         mPresenter = presenter;
     }
+
 }
