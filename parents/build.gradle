@@ -20,6 +20,8 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        multiDexEnabled true
+
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [moduleName: project.getName()]
@@ -34,13 +36,12 @@ android {
     }
 
     sourceSets {
+
         main {
-            main {
-                if (IsDebug.toBoolean()) {
-                    manifest.srcFile 'src/main/debug/AndroidManifest.xml'
-                } else {
-                    manifest.srcFile 'src/main/release/AndroidManifest.xml'
-                }
+            if (IsDebug.toBoolean()) {
+                manifest.srcFile 'src/main/debug/AndroidManifest.xml'
+            } else {
+                manifest.srcFile 'src/main/release/AndroidManifest.xml'
             }
         }
 
@@ -55,13 +56,13 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    api fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile project(':medically')
-    compile project(':sms_intercept')
+    api project(':medically')
+    api project(':sms_intercept')
 
     annotationProcessor "com.alibaba:arouter-compiler:$rootProject.ext.arouter_comiler"         //
 }

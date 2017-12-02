@@ -35,13 +35,13 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    api fileTree(dir: 'libs', include: ['*.jar'])
 
     if (IsDebug.toBoolean()) {
-        implementation project(':base')
+        api project(':base')
     } else {
-        implementation project(':parents')
-        implementation project(':children')
+        api project(':parents')
+        api project(':children')
     }
 
     annotationProcessor 'com.alibaba:arouter-compiler:' + rootProject.ext.arouter_comiler    //

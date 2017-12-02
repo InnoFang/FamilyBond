@@ -23,15 +23,15 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    api fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile 'cn.bmob.android:bmob-sdk:3.5.6'
-    compile 'cn.bmob.android:bmob-im:2.0.9@aar'
-    compile 'cn.bmob.android:bmob-sdk:3.5.6'
-    testCompile 'junit:junit:4.12'
+    api 'cn.bmob.android:bmob-sdk:3.5.6'
+    api 'cn.bmob.android:bmob-im:2.0.9@aar'
+    api 'cn.bmob.android:bmob-sdk:3.5.6'
+    testApi 'junit:junit:4.12'
 
 
     implementation "org.greenrobot:eventbus:$rootProject.ext.eventbus"

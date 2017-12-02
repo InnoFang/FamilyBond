@@ -37,9 +37,9 @@ android {
 
 dependencies {
 
-    compile project(':amap')
-    compile project(':bmob')
-    compile project(':library')
-    compile project(':xfyun')
-    testCompile 'junit:junit:4.12'
+    api project(':amap')
+    api project(':bmob')
+    api project(':library')
+    api project(':xfyun')
+    testApi 'junit:junit:4.12'
 }

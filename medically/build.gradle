@@ -18,6 +18,8 @@ android {
                 arguments = [ moduleName : project.getName() ]
             }
         }
+
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -28,12 +30,12 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    api fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile files('libs/achartengine-1.0.0.jar')
+    api files('libs/achartengine-1.0.0.jar')
 
-    compile project(':base')
+    api project(':base')
     annotationProcessor "com.alibaba:arouter-compiler:$rootProject.ext.arouter_comiler"         //
 }
