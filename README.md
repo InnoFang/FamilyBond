@@ -10,7 +10,7 @@ An application, combine with Children side port and Parents side port, which let
 
 # Function
 
- + Children Side Port
+ + Parents Side Port
 
    - **Heart Rate Detection**
 
@@ -20,7 +20,7 @@ An application, combine with Children side port and Parents side port, which let
 
      When the mobile phone receives the message, App can automatically identify the reliability of sms. When the suspicious message are identified as suspicious messages, the content of messages will be sent to children automatically, so the children can identify the contents of the messages and effectively prevent the old people from being defrauded.
 
- + Parents Side Port
+ + Children Side Port
    - **Message Reminder**
 
      Children can send text messages of voice messages to the elderly.
