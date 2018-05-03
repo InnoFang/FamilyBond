@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "io.innofang.protectplus"
@@ -32,6 +31,7 @@ android {
         exclude 'assets/*'
         exclude 'META-INF/*'
     }
+    buildToolsVersion '27.0.3'
 }
 
 dependencies {
