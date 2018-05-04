@@ -15,15 +15,19 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [ moduleName : project.getName() ]
+                arguments = [moduleName: project.getName()]
             }
         }
 
         multiDexEnabled true
     }
+//    dexOptions {
+//        javaMaxHeapSize "2g"
+//        incremental true
+//    }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -35,14 +39,15 @@ android {
 }
 
 dependencies {
-    api fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     if (IsDebug.toBoolean()) {
-        api project(':base')
+        implementation project(':base')
     } else {
-        api project(':parents')
-        api project(':children')
-    }
+        implementation project(':parents')
+        implementation project(':children')
 
+    }
+    testImplementation 'junit:junit:4.12'
     annotationProcessor 'com.alibaba:arouter-compiler:' + rootProject.ext.arouter_comiler    //
 }

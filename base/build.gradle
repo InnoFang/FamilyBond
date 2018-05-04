@@ -37,9 +37,10 @@ android {
 
 dependencies {
 
-    api project(':amap')
     api project(':bmob')
     api project(':library')
     api project(':xfyun')
-    testApi 'junit:junit:4.12'
+    api project(':amap')
+    api'com.android.support:multidex:1.0.3'
+    testImplementation 'junit:junit:4.12'
 }

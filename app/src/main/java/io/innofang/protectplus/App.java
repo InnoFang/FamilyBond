@@ -1,6 +1,8 @@
 package io.innofang.protectplus;
 
-import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 
@@ -17,7 +19,7 @@ import io.innofang.xfyun.XFYun;
  */
 
 
-public class App extends Application {
+public class App extends MultiDexApplication {
 
     @Override
     public void onCreate() {
@@ -44,5 +46,10 @@ public class App extends Application {
 
           /* initialize Bmob */
         BmobAPI.init(this, new IMMessageHandler(this));
+    }
+
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 }
