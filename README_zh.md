@@ -1,12 +1,18 @@
-# 家宝
+<div align="center">
 
 <img src="https://github.com/InnoFang/FamilyBond/blob/master/app/src/main/ic_launcher-web.png?raw=true" width="150" height="150"/>
+
+# 家宝
 
 [English](https://github.com/InnoFang/FamilyBond/blob/master/README.md) | 中文
 
 家宝分为子女端和父母端，子女可以使用家宝来更好的了解到老人的健康状况，老人可以使用家宝来测量心率
 
 ![](https://github.com/InnoFang/FamilyBond/blob/master/screenshot/structure.jpg?raw=true)
+
+</div>
+
+<br />
 
 # 功能
 
@@ -30,6 +36,8 @@
 
       孩子可以在地图上查看到老人位置和信息
 
+<br />
+
 # 核心技术介绍
 
  1. **使用手机摄像头来测量老人的心率**            
@@ -41,10 +49,7 @@
  3. **基于即时通讯的实施的消息传递与位置共享**          
     为了实现一体化，保证消息传递的及时与可靠性，我们采用了基于即时通讯的消息传递机制。举例来说，地图位置共享，当子女想要查看老人的位置时，只需要打开对应的功能页即可，子女端会发送一条指令给老人端，当老人端收到该指令过后，就会将当前位置回传给子女端，这样子女就能及时的查看到老人位置。采用这种消息传递机制，当老人测完心率过后，APP 会自动的将心率报告发送给子女端，子女就能及时的了解到老人的健康状况并简化了老人的操作，同时，当老人端检测到可疑短信后，子女端会收到父母端传来的短信内容，子女就可以帮助老人进行鉴别，双重保险下，更有效的减少可疑短信对老人的坑害。
 
-
-# 截图
-
-<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_main.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_parents_heart_rate_report_notification.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_list.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_notification.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_toast.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_shared_map.jpg?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parents_check_hert_rate.jpg?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parents_main.jpg?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parets_heart_rate_report.jpg?raw=true" width="300" height="500"/>
+<br />
 
 # 第三方库使用
 
@@ -58,6 +63,17 @@
  + [ARouter](https://github.com/alibaba/ARouter)
  + [android-floating-action-button](https://github.com/futuresimple/android-floating-action-button)
 
+
+<br />
+
+<div align="center">
+  
+# 截图
+
+<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_main.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_parents_heart_rate_report_notification.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_list.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_notification.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_toast.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_shared_map.jpg?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parents_check_hert_rate.jpg?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parents_main.jpg?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parets_heart_rate_report.jpg?raw=true" width="300" height="500"/>
+
+<br />
+
 # [License](https://github.com/InnoFang/FamilyBond/blob/master/LICENSE)
 
 ```
@@ -67,3 +83,4 @@
   under certain conditions; type `show c' for details.
 ```
 
+</div>

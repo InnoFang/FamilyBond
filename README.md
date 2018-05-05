@@ -1,12 +1,18 @@
-# FamilyBond
+<div align="center">
 
 <img src="https://github.com/InnoFang/FamilyBond/blob/master/app/src/main/ic_launcher-web.png?raw=true" width="150" height="150"/>
+
+# FamilyBond
 
 English | [中文](https://github.com/InnoFang/FamilyBond/blob/master/README_zh.md)
 
 An application, combine with Children side port and Parents side port, which let children take good care of their parents and parents can use smart phone to detect their heart rate.
 
 ![](https://github.com/InnoFang/FamilyBond/blob/master/screenshot/structure.jpg?raw=true)
+
+</div>
+
+<br />
 
 # Function
 
@@ -29,6 +35,8 @@ An application, combine with Children side port and Parents side port, which let
 
      Children can see the location and information of the elderly on the map.
 
+<br />
+
 # Core technology introduction
 
  1. **Use the phone camera to measure the heart rate of the elderly**      
@@ -40,9 +48,7 @@ An application, combine with Children side port and Parents side port, which let
  3. **Messaging and location sharing based on the implementation of instant messaging**       
     In order to achieve integration, to ensure the timely and reliable messaging, we use a messaging mechanism based on instant messaging. For example, the location of the map is shared. When a child wants to view the location of an elderly person, he / she needs only to open the corresponding function page. The child side port sends an instruction to the parent side port. When the elderly person receives the instruction, The current location back to the children side, so that children can timely view the location of the elderly. Using this messaging mechanism, when the elderly after measuring the heart rate, APP will automatically send the heart rate report to their children, the children will be able to understand the health status of the elderly and to simplify the elderly operation, while the elderly test To the suspicious sms, the child will receive the parental end of the SMS message content, children can help identify the elderly, double insurance, more effectively reduce suspicious texting damage to the elderly.
 
-# Screenshot
-
-<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_main.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_parents_heart_rate_report_notification.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_list.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_notification.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_toast.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_shared_map.jpg?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parents_check_hert_rate.jpg?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parents_main.jpg?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parets_heart_rate_report.jpg?raw=true" width="300" height="500"/>
+<br />
 
 # Third-party Use
 
@@ -56,6 +62,17 @@ An application, combine with Children side port and Parents side port, which let
  + [ARouter](https://github.com/alibaba/ARouter)
  + [android-floating-action-button](https://github.com/futuresimple/android-floating-action-button)
 
+<div align="center">
+
+<br />
+
+# Screenshot
+
+<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_main.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_parents_heart_rate_report_notification.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_list.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_notification.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_receive_suspicious_sms_toast.png?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/children_shared_map.jpg?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parents_check_hert_rate.jpg?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parents_main.jpg?raw=true" width="300" height="500"/>&nbsp;<img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/parets_heart_rate_report.jpg?raw=true" width="300" height="500"/>
+
+
+<br />
+
 # [License](https://github.com/InnoFang/FamilyBond/blob/master/LICENSE)
 
 ```
@@ -64,3 +81,5 @@ An application, combine with Children side port and Parents side port, which let
   This is free software, and you are welcome to redistribute it
   under certain conditions; type `show c' for details.
 ```
+
+</div>
