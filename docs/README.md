@@ -2,9 +2,13 @@
 
 <img src="https://github.com/InnoFang/FamilyBond/blob/master/app/src/main/ic_launcher-web.png?raw=true" width="150" height="150"/>
 
-# FamilyBond
+<br/>
+
+<h1>FamilyBond</h1>
 
 An application, combine with Children side port and Parents side port, which let children take good care of their parents and parents can use smart phone to detect their heart rate.
+
+<br/>
 
 <img src="https://github.com/InnoFang/FamilyBond/blob/master/screenshot/structure.jpg?raw=true"/>
 
@@ -14,7 +18,7 @@ An application, combine with Children side port and Parents side port, which let
 
 # Function
 
- + Parents Side Port
+ + Parents-end
 
    - **Heart Rate Detection**
 
@@ -24,7 +28,7 @@ An application, combine with Children side port and Parents side port, which let
 
      When the mobile phone receives the message, App can automatically identify the reliability of sms. When the suspicious message are identified as suspicious messages, the content of messages will be sent to children automatically, so the children can identify the contents of the messages and effectively prevent the old people from being defrauded.
 
- + Children Side Port
+ + Children-end
    - **Message Reminder**
 
      Children can send text messages of voice messages to the elderly.
@@ -78,9 +82,8 @@ An application, combine with Children side port and Parents side port, which let
 
 # [License](https://github.com/InnoFang/FamilyBond/blob/master/LICENSE)
 
-```
-  FamilyBond  Copyright (C) 2017  InnoFang
-  This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
-  This is free software, and you are welcome to redistribute it
-  under certain conditions; type `show c' for details.
-```
+
+>  FamilyBond  Copyright (C) 2017  InnoFang
+>  This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+>  This is free software, and you are welcome to redistribute it
+>  under certain conditions; type `show c' for details.
