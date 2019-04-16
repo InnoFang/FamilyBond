@@ -4,11 +4,12 @@
 buildscript {
     repositories {
         google()
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         jcenter()
-        mavenCentral()
+//        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.android.tools.build:gradle:3.3.2'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2' // add plugin
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -18,9 +19,10 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url "https://raw.github.com/bmob/bmob-android-sdk/master" }
         maven { url "https://jitpack.io" }
+        jcenter()
     }
 }
 
@@ -31,7 +33,7 @@ task clean(type: Delete) {
 
 ext {
     compileSdkVersion = 25
-    buildToolsVersion = "27.0.3"
+    buildToolsVersion = "28.0.3"
     minSdkVersion = 21
     targetSdkVersion = 25
     versionCode = 1
