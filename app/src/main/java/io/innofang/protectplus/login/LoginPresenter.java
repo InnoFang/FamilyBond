@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 
@@ -14,6 +15,7 @@ import cn.bmob.v3.exception.BmobException;
 import io.innofang.base.bean.User;
 import io.innofang.base.utils.bmob.BmobEvent;
 import io.innofang.base.utils.bmob.BmobUtil;
+import io.innofang.base.utils.common.L;
 import io.innofang.protectplus.R;
 import io.innofang.protectplus.register.RegisterActivity;
 

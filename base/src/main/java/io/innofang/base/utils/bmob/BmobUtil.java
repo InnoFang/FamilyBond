@@ -1,7 +1,9 @@
 package io.innofang.base.utils.bmob;
 
+import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;

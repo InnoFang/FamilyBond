@@ -20,7 +20,7 @@ import cn.bmob.v3.Bmob;
 public class BmobAPI{
 
     public static void init(Context context, BmobIMMessageHandler messageHandler) {
-        Bmob.initialize(context, "6e93f68a2c1522791bb39accfe44237d");
+        Bmob.initialize(context, "ab613455dccb6c4ab58eccfffc31d599");
 
         /* 集成：初始化IM SDK，并注册消息接收器，只有主进程运行的时候才需要初始化 */
         if (context.getApplicationInfo().packageName.equals(getMyProcessName())) {
