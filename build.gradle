@@ -4,8 +4,8 @@
 buildscript {
     repositories {
         google()
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         jcenter()
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
 //        mavenCentral()
     }
     dependencies {
@@ -19,10 +19,10 @@ buildscript {
 allprojects {
     repositories {
         google()
+        jcenter()
         maven { url "https://raw.github.com/bmob/bmob-android-sdk/master" }
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url "https://jitpack.io" }
-        jcenter()
     }
 }
 

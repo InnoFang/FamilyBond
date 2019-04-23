@@ -130,6 +130,7 @@ public class HandleMessageService extends Service {
         map.put("address", address);
         map.put("latitude", latLng.latitude);
         map.put("longitude", latLng.longitude);
+        L.i("Latitude: "+ latLng.latitude + ", Longitude: " + latLng.longitude);
         message.setExtraMap(map);
 
         L.i("send location");
