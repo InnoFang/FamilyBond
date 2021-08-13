@@ -16,7 +16,7 @@ An application, combined with children's end and parents' end, which lets childr
 
 # Function
 
- + Parents Side Port
+ + Parents' End
 
    - **Heart Rate Detection**
 
@@ -26,7 +26,7 @@ An application, combined with children's end and parents' end, which lets childr
 
      When the mobile phone receives the message, App can automatically identify the reliability of sms. When the suspicious message are identified as suspicious messages, the content of messages will be sent to children automatically, so the children can identify the contents of the messages and effectively prevent the old people from being defrauded.
 
- + Children Side Port
+ + Children's End
    - **Message Reminder**
 
      Children can send text messages of voice messages to the elderly.
@@ -37,7 +37,7 @@ An application, combined with children's end and parents' end, which lets childr
 
 <br />
 
-# Core technology introduction
+# Core Function Introduction
 
  1. **Use the phone camera to measure the heart rate of the elderly**      
     The principle is the use of photoplethysmography (ie, PPG). We use the phone's camera and flashlight to act as a PPG sensor and light source. When an elderly person puts his finger on the camera, we capture the image of each frame, calculate the eigenvalues ​​and save them. When a certain amount of data is collected After that, we will preprocess the data for this period of time, filter out the noise, detect the peak and calculate the signal frequency, and finally get the heart rate.
@@ -46,7 +46,7 @@ An application, combined with children's end and parents' end, which lets childr
     We got 800,000 open-source Chinese messages on Github, of which 80,000 suspicious messages, using the Chinese text classification toolkit THUCTC, to achieve a custom identification of suspicious messages. In the process of model establishment, the bigram of the word string is selected as the characteristic unit, the tfidf is used for the weight calculation, and the liblinear algorithm is selected as the classification model. Finally got a good accuracy. We will train a good model on the background and the core algorithm is ported to Android, so that when the elderly receive text messages, SMS reliability can be screened, when judged as suspicious messages, will forward a SMS content to their children, thus effectively reducing suspicion of short messages to the elderly.
 
  3. **Messaging and location sharing based on the implementation of instant messaging**       
-    In order to achieve integration, to ensure the timely and reliable messaging, we use a messaging mechanism based on instant messaging. For example, the location of the map is shared. When a child wants to view the location of an elderly person, he / she needs only to open the corresponding function page. The child side port sends an instruction to the parent side port. When the elderly person receives the instruction, The current location back to the children side, so that children can timely view the location of the elderly. Using this messaging mechanism, when the elderly after measuring the heart rate, APP will automatically send the heart rate report to their children, the children will be able to understand the health status of the elderly and to simplify the elderly operation, while the elderly test To the suspicious sms, the child will receive the parental end of the SMS message content, children can help identify the elderly, double insurance, more effectively reduce suspicious texting damage to the elderly.
+    In order to achieve integration, to ensure the timely and reliable messaging, we use a messaging mechanism based on instant messaging. For example, the location of the map is shared. When a child wants to view the location of an elderly person, he / she needs only to open the corresponding function page. The children's end sends an instruction to the parents' end. When the elderly person receives the instruction, The current location back to the children's end, so that children can timely view the location of the elderly. Using this messaging mechanism, when the elderly after measuring the heart rate, APP will automatically send the heart rate report to their children, the children will be able to understand the health status of the elderly and to simplify the elderly operation, while the elderly test To the suspicious sms, the child will receive the parental end of the SMS message content, children can help identify the elderly, double insurance, more effectively reduce suspicious texting damage to the elderly.
 
 <br />
 
