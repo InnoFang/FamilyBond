@@ -6,7 +6,7 @@
 
 English | [中文](https://github.com/InnoFang/FamilyBond/blob/master/README_zh.md)
 
-An application, combine with Children side port and Parents side port, which let children take good care of their parents and parents can use smart phone to detect their heart rate.
+An application, combined with children's end and parents' end, which lets children take good care of their parents and parents can use a smartphone to detect their heart rate.
 
 ![](https://cdn.jsdelivr.net/gh/innofang/familybond/screenshot/structure.jpg)
 
